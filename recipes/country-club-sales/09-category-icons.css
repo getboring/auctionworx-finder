@@ -1,0 +1,126 @@
+/*
+ * COUNTRY CLUB SALES RECIPE: Category Icons for Livestock
+ * Difficulty: Moderate
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Style category thumbnails and add icon styling for livestock categories.
+ * Requires category images to be uploaded via AuctionWorx CMS.
+ */
+
+/* Category thumbnail container */
+.category-thumbnail,
+.category-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 0; /* Sharp corners to match theme */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+    border: 1px solid #dddddd;
+    transition: all 0.2s ease;
+}
+
+.category-thumbnail:hover,
+.category-icon:hover {
+    border-color: #18801f;
+    box-shadow: 0 2px 8px rgba(24, 128, 31, 0.2);
+}
+
+.category-thumbnail img,
+.category-icon img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* Category list item */
+.category-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid #eeeeee;
+    transition: background-color 0.2s ease;
+}
+
+.category-item:hover {
+    background-color: #fafafa;
+}
+
+.category-item .category-name {
+    margin-left: 16px;
+    font-weight: 600;
+    color: #000000;
+}
+
+.category-item .category-count {
+    margin-left: auto;
+    color: #777777;
+    font-size: 0.875rem;
+}
+
+/* Category grid layout */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+/* Category card in grid */
+.category-card {
+    text-align: center;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #dddddd;
+    transition: all 0.2s ease;
+}
+
+.category-card:hover {
+    border-color: #18801f;
+    transform: translateY(-2px);
+}
+
+.category-card .category-thumbnail {
+    margin: 0 auto 12px;
+}
+
+.category-card .category-name {
+    font-weight: 700;
+    color: #000000;
+}
+
+/* Livestock-specific category icons using Unicode/emoji fallbacks */
+/* Add these classes to category elements in CMS if needed */
+.category-cattle::before { content: "cattle"; } /* Replace with actual icons */
+.category-embryo::before { content: "embryo"; }
+.category-semen::before { content: "semen"; }
+.category-equipment::before { content: "equipment"; }
+
+/* Chevron icons for navigation */
+.glyphicon-chevron-left,
+.glyphicon-chevron-right {
+    color: #000000;
+}
+
+.glyphicon-chevron-left:hover,
+.glyphicon-chevron-right:hover {
+    color: #18801f;
+}
+
+/* Back link styling */
+.category-back-link {
+    display: inline-flex;
+    align-items: center;
+    color: #000000;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.category-back-link:hover {
+    color: #18801f;
+}
+
+.category-back-link .glyphicon {
+    margin-right: 8px;
+}

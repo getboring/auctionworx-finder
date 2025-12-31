@@ -1,0 +1,79 @@
+<!--
+ * AUKSJONARIUS RECIPE: Fullres.net Analytics Tracking
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts (paste before </body>)
+ *
+ * Integrates Fullres.net analytics for Nordic market tracking.
+ * Sign up at: https://fullres.net
+ *
+ * Fullres is a Norwegian analytics provider, offering GDPR-compliant
+ * tracking popular in Scandinavian markets.
+-->
+
+<!-- Fullres.net Analytics -->
+<script>
+(function(f,u,l,r,e,s) {
+    f['FullresObject'] = r;
+    f[r] = f[r] || function() {
+        (f[r].q = f[r].q || []).push(arguments)
+    };
+    f[r].l = 1 * new Date();
+    e = u.createElement(l);
+    s = u.getElementsByTagName(l)[0];
+    e.async = 1;
+    e.src = 'https://cdn.fullres.net/fr.js';
+    s.parentNode.insertBefore(e, s);
+})(window, document, 'script', 'fr');
+
+// Initialize with your tracking ID
+fr('init', 'YOUR_FULLRES_ID_HERE');
+fr('track', 'pageview');
+</script>
+
+<!--
+ * CUSTOM EVENT TRACKING:
+ *
+ * Track auction-specific events by adding these calls:
+ *
+ * // When user places a bid
+ * fr('track', 'bid_placed', {
+ *     listing_id: '12345',
+ *     amount: 500,
+ *     currency: 'NOK'
+ * });
+ *
+ * // When user wins an auction
+ * fr('track', 'auction_won', {
+ *     listing_id: '12345',
+ *     final_price: 750,
+ *     currency: 'NOK'
+ * });
+ *
+ * // When user creates a listing
+ * fr('track', 'listing_created', {
+ *     category: 'stamps',
+ *     starting_price: 100
+ * });
+ *
+ * // When user views a listing
+ * fr('track', 'listing_view', {
+ *     listing_id: '12345',
+ *     category: 'stamps/norway/classics'
+ * });
+-->
+
+<!--
+ * ALTERNATIVE: Google Analytics 4 for Norway
+ * If you prefer GA4, here's a Norwegian-friendly setup:
+ *
+ * <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+ * <script>
+ *   window.dataLayer = window.dataLayer || [];
+ *   function gtag(){dataLayer.push(arguments);}
+ *   gtag('js', new Date());
+ *   gtag('config', 'G-XXXXXXXXXX', {
+ *     'anonymize_ip': true,
+ *     'cookie_flags': 'SameSite=None;Secure'
+ *   });
+ * </script>
+-->

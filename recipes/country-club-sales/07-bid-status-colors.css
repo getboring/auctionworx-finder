@@ -1,0 +1,103 @@
+/*
+ * COUNTRY CLUB SALES RECIPE: Bid Status Color System
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Color-coded bid status indicators for real-time auction feedback.
+ * Uses green (#18801f) for positive states, red for alerts.
+ */
+
+/* Winning bid status - green */
+.awe-rt-bidStatus[data-status="WINNING"],
+.bid-status.winning,
+.status-winning {
+    color: #18801f !important;
+    font-weight: 700;
+}
+
+/* Not winning / outbid status - red */
+.awe-rt-bidStatus[data-status="NOT WINNING"],
+.awe-rt-bidStatus[data-status="LOSING"],
+.bid-status.losing,
+.bid-status.outbid,
+.status-losing {
+    color: #cc0000 !important;
+    font-weight: 700;
+}
+
+/* Reserve met - green */
+.reserve-status.met,
+.reserve-met {
+    color: #18801f;
+    font-weight: 600;
+}
+
+/* Reserve not met - red */
+.reserve-status.not-met,
+.reserve-not-met {
+    color: #cc0000;
+    font-weight: 600;
+}
+
+/* Active auction indicator */
+.status-active,
+.listing-status.active {
+    color: #18801f;
+    font-weight: 600;
+}
+
+/* Ended auction indicator */
+.status-ended,
+.listing-status.ended {
+    color: #999999;
+}
+
+/* Scheduled/upcoming indicator */
+.status-scheduled,
+.listing-status.scheduled {
+    color: #0066cc;
+}
+
+/* Awaiting payment status */
+.status-awaiting-payment {
+    color: #ff9900;
+    font-weight: 600;
+}
+
+/* No sale status */
+.status-no-sale {
+    color: #cc0000;
+    font-weight: 600;
+}
+
+/* Bid error messages */
+.bid-error,
+.bid-too-low {
+    color: #cc0000;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Success messages */
+.bid-success,
+.bid-placed {
+    color: #18801f;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Badge styling for status */
+.badge.status-active {
+    background-color: #18801f;
+    color: #ffffff;
+}
+
+.badge.status-ended {
+    background-color: #999999;
+    color: #ffffff;
+}
+
+.badge.status-scheduled {
+    background-color: #0066cc;
+    color: #ffffff;
+}

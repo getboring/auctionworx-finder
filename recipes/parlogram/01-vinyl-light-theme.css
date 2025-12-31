@@ -1,0 +1,115 @@
+/*
+ * PARLOGRAM RECIPE: Vinyl Light Theme
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Complete white/light theme inversion from default AuctionWorx dark navy.
+ * Creates a clean, professional look suited for high-end vinyl auctions.
+ * Parlogram uses this to make their record photography pop against
+ * the neutral background.
+ */
+
+/* White header - complete theme inversion */
+.header-splash {
+    background-color: #ffffff !important;
+}
+
+/* Subtle dark borders for definition */
+.navbar-default {
+    border-color: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Dark text for white background */
+.navbar-default .navbar-nav > li > a {
+    color: rgba(0, 0, 0, 0.6);
+    transition: all 0.2s ease;
+}
+
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+    color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Active nav state */
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+    color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Dropdown menus */
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.9);
+}
+
+.dropdown-menu {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-menu > li > a {
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.9);
+}
+
+/* Secondary navigation / search bar */
+.nav-secondary {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Search inputs */
+.nav-secondary .form-control {
+    background-color: rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.75);
+}
+
+.nav-secondary .form-control:focus {
+    background-color: #ffffff;
+    border-color: rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+}
+
+.nav-secondary .form-control::placeholder {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+/* Mobile navigation toggle (hamburger) */
+.navbar-default .navbar-toggle {
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Logo area adjustments */
+.logo img {
+    /* Ensure logo has good contrast on white background */
+    /* You may need a dark version of your logo */
+}
+
+/*
+ * USAGE NOTES:
+ * - Works best with a dark-colored logo
+ * - Vinyl photography looks excellent against white backgrounds
+ * - Consider adding subtle shadows to listing cards (see 03-vinyl-card-styling.css)
+ */

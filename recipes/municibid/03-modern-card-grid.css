@@ -1,0 +1,121 @@
+/*
+ * MUNICIBID RECIPE: Modern CSS Grid Cards
+ * Difficulty: ⭐⭐ Moderate
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Replaces Bootstrap 3 grid with modern CSS Grid for listing cards.
+ * Creates responsive 3-column layout with better spacing.
+ */
+
+/* Featured sections container */
+.featured-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+/* Individual listing cards */
+.featured-grid .gallery-item,
+.featured-grid .listing-card {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.featured-grid .gallery-item:hover,
+.featured-grid .listing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Card image container */
+.featured-grid .gallery-item img,
+.featured-grid .listing-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Card content area */
+.featured-grid .galleryTitle {
+    padding: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.featured-grid .galleryPrice {
+    padding: 0 1rem 1rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #059669;
+}
+
+/* Count badges with blur effect */
+.count-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    background: rgba(107, 160, 213, 0.2);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1e40af;
+}
+
+/* Section headers */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.section-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.section-header .view-more {
+    color: #2563eb;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.section-header .view-more:hover {
+    text-decoration: underline;
+}
+
+/* Responsive grid */
+@media (max-width: 991px) {
+    .featured-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 575px) {
+    .featured-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Alternative: Apply to existing Bootstrap grid */
+.row.gallery-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.row.gallery-row > [class*="col-"] {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+}

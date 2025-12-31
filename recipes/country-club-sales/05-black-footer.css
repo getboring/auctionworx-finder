@@ -1,0 +1,72 @@
+/*
+ * COUNTRY CLUB SALES RECIPE: Black Footer Theme
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Matches the black header with a cohesive black footer.
+ * Creates a professional bookend effect for the page.
+ */
+
+/* Black footer background */
+footer,
+.footer,
+.site-footer {
+    background-color: #000000 !important;
+    color: #ffffff;
+    border-top: none;
+}
+
+/* Footer links - white with hover effect */
+footer a,
+.footer a,
+.site-footer a {
+    color: #ffffff;
+    transition: color 0.2s ease;
+}
+
+footer a:hover,
+.footer a:hover,
+.site-footer a:hover {
+    color: #18801f;
+    text-decoration: none;
+}
+
+/* Footer headings */
+footer h1, footer h2, footer h3, footer h4, footer h5, footer h6,
+.footer h1, .footer h2, .footer h3, .footer h4, .footer h5, .footer h6 {
+    color: #ffffff;
+}
+
+/* Footer text */
+footer p,
+.footer p,
+.site-footer p {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Footer dividers */
+footer hr,
+.footer hr {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Copyright area */
+.footer-copyright,
+.copyright {
+    background-color: #000000;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+}
+
+/* Social icons in footer */
+footer .social-icons a,
+.footer .social-icons a {
+    color: #ffffff;
+    font-size: 1.25rem;
+    margin: 0 0.5rem;
+}
+
+footer .social-icons a:hover,
+.footer .social-icons a:hover {
+    color: #18801f;
+}

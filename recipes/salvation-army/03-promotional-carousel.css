@@ -1,0 +1,194 @@
+/*
+ * SALVATION ARMY RECIPE: Promotional Banner Carousel
+ * Difficulty: Moderate
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Styles for rotating promotional banners using Owl Carousel.
+ * Supports multiple banners with price filters, seasonal sales,
+ * and donation campaigns.
+ */
+
+/* Banner carousel container */
+.promo-carousel,
+.owl-carousel.banner-carousel {
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+/* Individual banner slides */
+.promo-carousel .owl-item,
+.banner-slide {
+    position: relative;
+    min-height: 350px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+}
+
+/* Overlay for text contrast */
+.banner-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(0, 0, 0, 0.3) 50%,
+        transparent 100%
+    );
+}
+
+/* Banner content positioning */
+.banner-content {
+    position: relative;
+    z-index: 2;
+    padding: 2rem 3rem;
+    max-width: 600px;
+}
+
+/* Banner headline */
+.banner-content h2 {
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Banner description */
+.banner-content p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Banner CTA button */
+.banner-cta {
+    display: inline-block;
+    background-color: #9A1919;
+    color: #ffffff !important;
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.banner-cta:hover {
+    background-color: #ffffff;
+    color: #9A1919 !important;
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
+/* Price filter banners (e.g., "Items under $10") */
+.price-filter-banner {
+    background-color: #9A1919;
+    padding: 0.5rem 1rem;
+    text-align: center;
+}
+
+.price-filter-banner a {
+    color: #ffffff;
+    margin: 0 1rem;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.price-filter-banner a:hover {
+    text-decoration: underline;
+}
+
+/* Carousel navigation dots */
+.owl-dots {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.owl-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin: 0 4px;
+    background-color: #cccccc;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.owl-dot.active {
+    background-color: #9A1919;
+}
+
+/* Carousel arrows */
+.owl-prev,
+.owl-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #333 !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.owl-prev { left: 1rem; }
+.owl-next { right: 1rem; }
+
+.owl-prev:hover,
+.owl-next:hover {
+    background-color: #9A1919 !important;
+    color: #ffffff !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .banner-slide {
+        min-height: 250px;
+    }
+
+    .banner-content {
+        padding: 1.5rem;
+    }
+
+    .banner-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .owl-prev,
+    .owl-next {
+        width: 40px;
+        height: 40px;
+        font-size: 1.25rem;
+    }
+}
+
+/*
+ * REQUIRES: Owl Carousel library
+ * Add to Header Scripts:
+ * <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+ * <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+ *
+ * Initialize with:
+ * $('.promo-carousel').owlCarousel({
+ *     items: 1,
+ *     loop: true,
+ *     autoplay: true,
+ *     autoplayTimeout: 5000,
+ *     nav: true,
+ *     dots: true
+ * });
+ */

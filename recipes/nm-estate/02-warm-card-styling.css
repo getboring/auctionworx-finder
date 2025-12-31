@@ -1,0 +1,205 @@
+/*
+ * NM ESTATE AUCTIONS RECIPE: Warm Card Styling
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Adds warmth and elegance to listing cards, perfect for estate sale items.
+ * Features subtle shadows, warm backgrounds, and refined typography.
+ */
+
+/* ================================================
+   Card Container Styling
+   ================================================ */
+.gallery-item,
+.listing-card,
+.auction-item {
+    background: #FFFCF8;  /* Warm white */
+    border-radius: 8px;
+    border: 1px solid #E6D5C3;  /* Sand border */
+    box-shadow: 0 2px 8px rgba(107, 68, 35, 0.08);  /* Warm shadow */
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.gallery-item:hover,
+.listing-card:hover,
+.auction-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(107, 68, 35, 0.15);
+    border-color: #C75B39;  /* Terracotta border on hover */
+}
+
+/* ================================================
+   Card Image Area
+   ================================================ */
+.gallery-item img,
+.listing-card img,
+.auction-item img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-bottom: 1px solid #E6D5C3;
+}
+
+/* Image overlay gradient for antique feel */
+.gallery-item .image-wrapper {
+    position: relative;
+}
+
+.gallery-item .image-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(
+        to top,
+        rgba(107, 68, 35, 0.1),
+        transparent
+    );
+    pointer-events: none;
+}
+
+/* ================================================
+   Card Content Area
+   ================================================ */
+.gallery-item .card-body,
+.galleryTitle {
+    padding: 1rem;
+    background: linear-gradient(
+        180deg,
+        #FFFCF8 0%,
+        #FDF8F3 100%
+    );
+}
+
+/* Item title */
+.galleryTitle,
+.listing-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #3D3D3D;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+}
+
+.galleryTitle a,
+.listing-title a {
+    color: #3D3D3D;
+    text-decoration: none;
+}
+
+.galleryTitle a:hover,
+.listing-title a:hover {
+    color: #C75B39;
+}
+
+/* ================================================
+   Price Display
+   ================================================ */
+.galleryPrice,
+.current-bid,
+.price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #C75B39;  /* Terracotta */
+    padding: 0 1rem 1rem;
+}
+
+/* Starting bid label */
+.bid-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #7A7267;  /* Warm gray */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ================================================
+   Card Footer / Meta Info
+   ================================================ */
+.card-footer,
+.listing-meta {
+    padding: 0.75rem 1rem;
+    background: #F5EDE4;  /* Light sand */
+    border-top: 1px solid #E6D5C3;
+    font-size: 0.875rem;
+    color: #7A7267;
+}
+
+/* Time remaining */
+.time-remaining {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.time-remaining::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #40A4A4;  /* Turquoise */
+    border-radius: 50%;
+}
+
+/* Urgent time remaining */
+.time-remaining.urgent::before {
+    background: #C75B39;  /* Terracotta */
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ================================================
+   Bid Count / Watchers
+   ================================================ */
+.bid-count,
+.watchers {
+    display: inline-block;
+    padding: 2px 8px;
+    background: rgba(64, 164, 164, 0.15);  /* Turquoise tint */
+    color: #2D7A7A;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* ================================================
+   Category Tag
+   ================================================ */
+.category-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 4px 10px;
+    background: rgba(253, 248, 243, 0.95);  /* Cream with opacity */
+    color: #6B4423;  /* Brown */
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+/* ================================================
+   Featured/Highlight Badge
+   ================================================ */
+.featured-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 4px 10px;
+    background: #C75B39;  /* Terracotta */
+    color: #ffffff;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}

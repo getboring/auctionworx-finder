@@ -1,0 +1,77 @@
+/*
+ * AUKSJONARIUS RECIPE: Nordic Dark Header Theme
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Replaces the default AuctionWorx header with Auksjonarius's signature
+ * Nordic dark blue (#21354f). Creates a professional, sophisticated look
+ * that's common in Scandinavian design.
+ */
+
+/* Dark blue header background - Nordic aesthetic */
+.header-splash {
+    background-color: #21354f !important;
+}
+
+/* Secondary navigation bar - slightly lighter shade */
+.nav-secondary {
+    background-color: #2c4666 !important;
+    border-bottom: 1px solid #1a2a3f;
+}
+
+/* White text for dark background */
+.navbar-default .navbar-nav > li > a {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dropdown menus */
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+/* Mobile navigation toggle (hamburger) */
+.navbar-default .navbar-toggle {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Logo area - ensure visibility on dark background */
+.logo img {
+    /* Light logos work best on this dark background */
+    filter: brightness(1.1);
+}
+
+/* Search input styling */
+.nav-secondary .form-control {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-color: transparent;
+    color: #333;
+}
+
+.nav-secondary .form-control:focus {
+    border-color: #4a90d9;
+    box-shadow: 0 0 0 2px rgba(74, 144, 217, 0.2);
+}
+
+/* Search button */
+.nav-secondary .btn-search {
+    background-color: #4a90d9;
+    border-color: #3d7fc2;
+    color: #ffffff;
+}
+
+.nav-secondary .btn-search:hover {
+    background-color: #3d7fc2;
+}

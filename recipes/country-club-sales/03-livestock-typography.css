@@ -1,0 +1,89 @@
+/*
+ * COUNTRY CLUB SALES RECIPE: Livestock Auction Typography
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Bold, condensed typography optimized for livestock/embryo auction catalogs.
+ * Uses heavy weights (900) and condensed widths for a professional catalog feel.
+ */
+
+/* Lot titles - bold and condensed */
+.gallery_shortTitle,
+.galleryTitle,
+.listing-title {
+    font-weight: 900;
+    font-stretch: 50%;
+    color: #000000;
+    line-height: 1.2;
+}
+
+/* Lot numbers - uppercase, prominent */
+.detail__next-prev-lot,
+.lot-number {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #000000;
+}
+
+/* Price display - large and bold */
+.awe-rt-MinimumBid .NumberPart,
+.current-price,
+.galleryPrice {
+    font-size: 22px;
+    font-weight: 700;
+    color: #000000;
+}
+
+/* Field labels - light weight for contrast */
+.field-label,
+.detail-label {
+    font-weight: 200;
+    color: #777777;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+}
+
+/* Consignor/seller names */
+.consignor-name,
+.seller-info {
+    font-weight: 600;
+    color: #333333;
+}
+
+/* Reserve price indicators */
+.reserve-met {
+    color: #18801f;
+    font-weight: 600;
+}
+
+.reserve-not-met {
+    color: #cc0000;
+    font-weight: 600;
+}
+
+/* Bid status messages */
+.bid-status-winning {
+    color: #18801f;
+    font-weight: 700;
+}
+
+.bid-status-losing,
+.bid-status-not-winning {
+    color: #cc0000;
+    font-weight: 700;
+}
+
+/* Section headings */
+h1, h2, h3 {
+    font-weight: 700;
+    color: #000000;
+}
+
+/* Subtitle text */
+.subtitle,
+.section-subtitle {
+    font-weight: 200;
+    color: #777777;
+}

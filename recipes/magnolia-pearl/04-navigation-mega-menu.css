@@ -1,0 +1,142 @@
+/*
+ * MAGNOLIA PEARL RECIPE: Fashion Mega Menu
+ * Difficulty: Moderate
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Creates an elegant mega-menu navigation suitable for
+ * fashion/clothing categories with multi-column layouts.
+ */
+
+/* ===== Header Container ===== */
+.header-splash {
+    background-color: #fbf7f3 !important;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+/* ===== Main Navigation Bar ===== */
+.navbar-default {
+    background-color: transparent;
+    border: none;
+    margin-bottom: 0;
+}
+
+/* ===== Navigation Links ===== */
+.navbar-nav > li > a {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #594E4B !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 15px 18px;
+    transition: color 0.2s ease;
+}
+
+.navbar-nav > li > a:hover,
+.navbar-nav > li > a:focus {
+    color: #e838bf !important;
+    background-color: transparent !important;
+}
+
+/* ===== Dropdown/Mega Menu Container ===== */
+.navbar-nav > li.dropdown > .dropdown-menu {
+    min-width: 600px;
+    padding: 24px 30px;
+    background: #ffffff;
+    border: 1px solid #e7e7e7;
+    border-radius: 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    display: none;
+
+    /* Multi-column layout */
+    column-count: 3;
+    column-gap: 30px;
+}
+
+.navbar-nav > li.dropdown:hover > .dropdown-menu {
+    display: block;
+}
+
+/* ===== Menu Category Headers ===== */
+.dropdown-menu .menu-header,
+.dropdown-menu > li.dropdown-header {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #594E4B;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 0;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #e7e7e7;
+    break-after: avoid;
+}
+
+/* ===== Menu Links ===== */
+.dropdown-menu > li > a {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 14px;
+    color: #594E4B;
+    padding: 6px 0;
+    transition: color 0.2s ease;
+}
+
+.dropdown-menu > li > a:hover {
+    color: #e838bf;
+    background-color: transparent;
+}
+
+/* ===== Featured Image in Menu ===== */
+.mega-menu-image {
+    break-inside: avoid;
+    margin-top: 16px;
+}
+
+.mega-menu-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* ===== View All Link ===== */
+.dropdown-menu .view-all {
+    display: block;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #e7e7e7;
+    font-weight: 600;
+    color: #e838bf;
+}
+
+/* ===== Mobile Navigation ===== */
+@media (max-width: 991px) {
+    .navbar-nav > li.dropdown > .dropdown-menu {
+        min-width: 100%;
+        column-count: 1;
+        padding: 12px 20px;
+        box-shadow: none;
+        border: none;
+        border-top: 1px solid #e7e7e7;
+    }
+
+    .navbar-nav > li > a {
+        padding: 12px 15px;
+    }
+}
+
+/* ===== Mobile Toggle Button ===== */
+.navbar-toggle {
+    border: none;
+    background: transparent;
+}
+
+.navbar-toggle .icon-bar {
+    background-color: #594E4B;
+    width: 22px;
+    height: 2px;
+}
+
+.navbar-toggle:hover .icon-bar,
+.navbar-toggle:focus .icon-bar {
+    background-color: #e838bf;
+}

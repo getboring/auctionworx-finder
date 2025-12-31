@@ -1,0 +1,246 @@
+/*
+ * NM ESTATE AUCTIONS RECIPE: Estate Typography
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Refined typography suitable for estate sales and antique auctions.
+ * Uses serif fonts for elegance combined with clean sans-serif for readability.
+ */
+
+/* ================================================
+   Font Import (Google Fonts)
+   ================================================
+   Add this to your Header Scripts before the CSS:
+
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+*/
+
+/* ================================================
+   Font Variables
+   ================================================ */
+:root {
+    --nm-font-serif: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
+    --nm-font-sans: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ================================================
+   Base Typography
+   ================================================ */
+body {
+    font-family: var(--nm-font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    color: #3D3D3D;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ================================================
+   Headings - Elegant Serif
+   ================================================ */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--nm-font-serif);
+    font-weight: 700;
+    color: #3D3D3D;
+    line-height: 1.3;
+    margin-bottom: 0.75em;
+}
+
+h1 {
+    font-size: 2.5rem;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 2rem;
+    letter-spacing: -0.01em;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+h4 {
+    font-size: 1.25rem;
+}
+
+h5 {
+    font-size: 1.125rem;
+}
+
+h6 {
+    font-size: 1rem;
+}
+
+/* ================================================
+   Page Titles
+   ================================================ */
+.page-title,
+.section-title {
+    font-family: var(--nm-font-serif);
+    font-size: 2rem;
+    font-weight: 700;
+    color: #6B4423;  /* Brown */
+    text-align: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+/* Decorative underline */
+.page-title::after,
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(
+        90deg,
+        #C75B39,
+        #D4A574
+    );
+    border-radius: 2px;
+}
+
+/* ================================================
+   Listing Titles
+   ================================================ */
+.listing-title,
+.galleryTitle,
+.item-title {
+    font-family: var(--nm-font-sans);
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.4;
+    color: #3D3D3D;
+}
+
+/* Detail page title */
+.detail-title,
+.auction-title {
+    font-family: var(--nm-font-serif);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #3D3D3D;
+    line-height: 1.3;
+}
+
+/* ================================================
+   Item Descriptions
+   ================================================ */
+.item-description,
+.listing-description {
+    font-family: var(--nm-font-sans);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #4A4A4A;
+}
+
+.item-description p {
+    margin-bottom: 1rem;
+}
+
+/* First paragraph emphasis */
+.item-description p:first-of-type {
+    font-size: 1.1rem;
+    color: #3D3D3D;
+}
+
+/* ================================================
+   Category & Label Text
+   ================================================ */
+.category-name,
+.label-text {
+    font-family: var(--nm-font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #7A7267;
+}
+
+/* ================================================
+   Price Typography
+   ================================================ */
+.price-display,
+.current-bid {
+    font-family: var(--nm-font-sans);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #C75B39;
+}
+
+.price-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #7A7267;
+    display: block;
+    margin-bottom: 2px;
+}
+
+/* ================================================
+   Navigation Text
+   ================================================ */
+.navbar-nav > li > a {
+    font-family: var(--nm-font-sans);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    letter-spacing: 0.02em;
+}
+
+/* ================================================
+   Button Text
+   ================================================ */
+.btn {
+    font-family: var(--nm-font-sans);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: 0.03em;
+}
+
+/* ================================================
+   Footer Text
+   ================================================ */
+footer,
+.footer {
+    font-family: var(--nm-font-sans);
+    font-size: 0.875rem;
+}
+
+footer h4,
+footer h5,
+.footer h4,
+.footer h5 {
+    font-family: var(--nm-font-serif);
+    font-size: 1.125rem;
+}
+
+/* ================================================
+   Blockquotes (for testimonials)
+   ================================================ */
+blockquote {
+    font-family: var(--nm-font-serif);
+    font-style: italic;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: #4A4A4A;
+    border-left: 3px solid #C75B39;
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+blockquote cite {
+    font-family: var(--nm-font-sans);
+    font-style: normal;
+    font-size: 0.875rem;
+    color: #7A7267;
+    display: block;
+    margin-top: 0.75rem;
+}

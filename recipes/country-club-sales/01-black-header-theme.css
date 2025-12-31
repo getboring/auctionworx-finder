@@ -1,0 +1,54 @@
+/*
+ * COUNTRY CLUB SALES RECIPE: Black Header Theme
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Transforms the default navy (#151C3D) header to pure black (#000000).
+ * Country Club Sales uses this for a bold, agricultural/livestock brand feel.
+ */
+
+/* Black header background */
+.header-splash {
+    background-color: #000000 !important;
+}
+
+/* White text on black header */
+.navbar-default .navbar-nav > li > a {
+    color: #ffffff;
+}
+
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Navigation toggle (hamburger) for mobile */
+.navbar-default .navbar-toggle {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #ffffff;
+}
+
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dropdown menus */
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+/* Mobile collapsed menu */
+@media (max-width: 767px) {
+    .navbar-default .navbar-collapse {
+        background-color: #000000;
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+}

@@ -1,0 +1,186 @@
+/*
+ * SALVATION ARMY RECIPE: Multi-Platform Integration Links
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Styles for linking to external platforms like Amazon, Whatnot,
+ * eBay storefronts, and donation platforms. Creates a cohesive
+ * "Shop With Us Everywhere" experience.
+ */
+
+/* External links container */
+.external-links,
+.platform-links {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    background-color: #f8f9fa;
+}
+
+/* Individual platform button */
+.platform-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    color: #333;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.platform-link:hover {
+    border-color: #9A1919;
+    color: #9A1919;
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Platform icons */
+.platform-link img,
+.platform-link svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Amazon-specific styling */
+.platform-link.amazon {
+    background-color: #FF9900;
+    border-color: #FF9900;
+    color: #000000;
+}
+
+.platform-link.amazon:hover {
+    background-color: #e68a00;
+    border-color: #e68a00;
+    color: #000000;
+}
+
+/* Whatnot livestream styling */
+.platform-link.whatnot {
+    background-color: #000000;
+    border-color: #000000;
+    color: #ffffff;
+}
+
+.platform-link.whatnot:hover {
+    background-color: #333333;
+    border-color: #333333;
+    color: #ffffff;
+}
+
+/* eBay styling */
+.platform-link.ebay {
+    background-color: #0064D2;
+    border-color: #0064D2;
+    color: #ffffff;
+}
+
+.platform-link.ebay:hover {
+    background-color: #0054b3;
+    border-color: #0054b3;
+    color: #ffffff;
+}
+
+/* Donation platform (Classy, etc.) */
+.platform-link.donate {
+    background-color: #9A1919;
+    border-color: #9A1919;
+    color: #ffffff;
+}
+
+.platform-link.donate:hover {
+    background-color: #7d1414;
+    border-color: #7d1414;
+    color: #ffffff;
+}
+
+/* "Live Now" indicator for Whatnot */
+.live-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.5rem;
+    background-color: #ff0000;
+    color: #ffffff;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 3px;
+    animation: pulse 2s infinite;
+}
+
+.live-indicator::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background-color: #ffffff;
+    border-radius: 50%;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Platform section header */
+.platform-section {
+    text-align: center;
+    padding: 2rem;
+    background-color: #fafafa;
+}
+
+.platform-section h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+/* Responsive stacking */
+@media (max-width: 767px) {
+    .external-links,
+    .platform-links {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .platform-link {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/*
+ * USAGE: Add platform links to header or footer:
+ *
+ * <div class="platform-section">
+ *     <h3>Shop With Us Everywhere</h3>
+ *     <div class="platform-links">
+ *         <a href="https://amazon.com/shops/yourstore" class="platform-link amazon">
+ *             <img src="/Content/Images/icons/amazon.svg" alt="">
+ *             Amazon Store
+ *         </a>
+ *         <a href="https://whatnot.com/user/yourstore" class="platform-link whatnot">
+ *             <img src="/Content/Images/icons/whatnot.svg" alt="">
+ *             Whatnot Livestreams
+ *             <span class="live-indicator">Live</span>
+ *         </a>
+ *         <a href="https://www.ebay.com/str/yourstore" class="platform-link ebay">
+ *             <img src="/Content/Images/icons/ebay.svg" alt="">
+ *             eBay Store
+ *         </a>
+ *         <a href="https://classy.org/campaign/yourorg" class="platform-link donate">
+ *             <svg>...</svg>
+ *             Donate Now
+ *         </a>
+ *     </div>
+ * </div>
+ */

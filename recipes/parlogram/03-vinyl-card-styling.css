@@ -1,0 +1,140 @@
+/*
+ * PARLOGRAM RECIPE: Vinyl Record Card Styling
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Card styling optimized for vinyl record listings. Includes:
+ * - Title truncation for long album names
+ * - Photography-focused image display
+ * - Subtle shadows for depth against white backgrounds
+ */
+
+/* Gallery item cards */
+.gallery-item,
+.listing-card {
+    background: #ffffff;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+}
+
+.gallery-item:hover,
+.listing-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+/* Image container - square aspect for album art */
+.gallery-item img,
+.listing-card img,
+.listing-image img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    background-color: #f5f5f5;
+}
+
+/* Alternative: Preserve original aspect ratio for vinyl photos */
+.gallery-item.preserve-ratio img {
+    aspect-ratio: auto;
+    max-height: 250px;
+    object-fit: contain;
+}
+
+/* Title truncation - prevents long album names breaking layout */
+.galleryTitle,
+.listing-title {
+    max-height: 44px; /* ~2 lines */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-height: 1.4;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    padding: 0.75rem;
+    margin: 0;
+}
+
+/* Show full title on hover */
+.gallery-item:hover .galleryTitle,
+.listing-card:hover .listing-title {
+    max-height: none;
+    -webkit-line-clamp: unset;
+}
+
+/* Price area */
+.galleryPrice,
+.listing-price {
+    padding: 0 0.75rem 0.75rem;
+    font-weight: 600;
+    color: #059669; /* Green for prices */
+}
+
+/* Time remaining */
+.galleryTime,
+.listing-time {
+    padding: 0 0.75rem 0.75rem;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* Bid count */
+.galleryBids,
+.listing-bids {
+    font-size: 0.75rem;
+    color: #888;
+}
+
+/* Vinyl-specific: Catalog number styling */
+.catalog-number {
+    font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+    font-size: 0.6875rem;
+    color: #888;
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-top: 0.25rem;
+}
+
+/* Pressing info badge */
+.pressing-info {
+    font-size: 0.6875rem;
+    color: #666;
+    padding: 0.5rem 0.75rem;
+    background: #fafafa;
+    border-top: 1px solid #eee;
+}
+
+/* Matrix number (important for vinyl collectors) */
+.matrix-number {
+    font-family: monospace;
+    font-size: 0.6875rem;
+    color: #888;
+}
+
+/* No image placeholder - vinyl-themed */
+.no-image,
+.placeholder-image {
+    background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 3rem;
+}
+
+.no-image::before {
+    content: '\1F3B5'; /* Music note emoji */
+}
+
+/*
+ * USAGE NOTES:
+ * - Title truncation is essential for vinyl listings (album names are long)
+ * - Square aspect ratio works well for album art photography
+ * - Catalog numbers and matrix numbers are important to vinyl collectors
+ */

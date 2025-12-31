@@ -1,0 +1,89 @@
+/*
+ * COUNTRY CLUB SALES RECIPE: Sale Badge Overlay
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Adds a "SALE" badge to listing images using CSS pseudo-elements.
+ * No HTML changes required - works with existing AuctionWorx markup.
+ */
+
+/* Sale badge via pseudo-element */
+.listing-badge::before,
+.galleryUnit.on-sale::before {
+    content: "SALE";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #cc0000;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 10;
+}
+
+/* Make parent container relative for positioning */
+.galleryUnit,
+.listing-card {
+    position: relative;
+}
+
+/* Alternative badge colors */
+.galleryUnit.featured::before {
+    content: "FEATURED";
+    background-color: #18801f;
+}
+
+.galleryUnit.ending-soon::before {
+    content: "ENDING SOON";
+    background-color: #ff9900;
+}
+
+.galleryUnit.new-listing::before {
+    content: "NEW";
+    background-color: #0066cc;
+}
+
+/* Multiple badges - stack vertically */
+.galleryUnit.on-sale.featured::after {
+    content: "FEATURED";
+    position: absolute;
+    top: 40px; /* Below the SALE badge */
+    left: 10px;
+    background-color: #18801f;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 10;
+}
+
+/* Status badge positioning (top-right) */
+.galleryUnit .status-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 8px;
+    text-transform: uppercase;
+}
+
+.status-badge.active {
+    background-color: #18801f;
+    color: #ffffff;
+}
+
+.status-badge.ended {
+    background-color: #999999;
+    color: #ffffff;
+}
+
+.status-badge.scheduled {
+    background-color: #0066cc;
+    color: #ffffff;
+}

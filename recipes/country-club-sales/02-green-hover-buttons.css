@@ -1,0 +1,81 @@
+/*
+ * COUNTRY CLUB SALES RECIPE: Green Hover Button Theme
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Implements the signature black-to-green button hover effect.
+ * Primary: #000000 (black) -> Hover: #18801f (agricultural green)
+ */
+
+/* Primary action buttons */
+.btn-primary {
+    background-color: #000000;
+    border-color: #000000;
+    color: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active {
+    background-color: #18801f !important;
+    border-color: #18801f !important;
+    color: #ffffff;
+}
+
+/* Default buttons with green hover */
+.btn-default {
+    background-color: #000000;
+    border-color: #000000;
+    color: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.btn-default:hover,
+.btn-default:focus,
+.btn-default:active {
+    background-color: #18801f !important;
+    border-color: #18801f !important;
+    color: #ffffff;
+}
+
+/* Quick Bid and Max Bid buttons */
+.awe-rt-HideOnEnd .btn,
+.btn-bid,
+.bid-button {
+    background-color: #000000;
+    border-color: #000000;
+    color: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.awe-rt-HideOnEnd .btn:hover,
+.btn-bid:hover,
+.bid-button:hover {
+    background-color: #18801f !important;
+    border-color: #18801f !important;
+    color: #ffffff;
+}
+
+/* Disabled state - gray with no hover effect */
+.btn-primary:disabled,
+.btn-primary.disabled,
+.btn-default:disabled,
+.btn-default.disabled {
+    background-color: #eeeeee !important;
+    border-color: #cccccc !important;
+    color: #999999 !important;
+    cursor: not-allowed;
+}
+
+/* Link buttons (text-style) */
+a.btn-link {
+    color: #000000;
+}
+
+a.btn-link:hover,
+a.btn-link:focus {
+    color: #18801f;
+    text-decoration: none;
+}

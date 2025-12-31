@@ -1,0 +1,114 @@
+/*
+ * MAGNOLIA PEARL RECIPE: Boho Color Theme
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Transforms the default AuctionWorx navy theme into a warm,
+ * vintage-inspired palette with pink accents and neutral backgrounds.
+ *
+ * Brand Colors:
+ * - Primary Accent: #e838bf (Magenta Pink)
+ * - Header Background: #fbf7f3 (Warm Cream)
+ * - Text Primary: #594E4B (Warm Dark Gray)
+ * - Text Secondary: #92807f (Taupe)
+ * - Border/Subtle: #e7e7e7 (Light Gray)
+ */
+
+/* ===== Header Background ===== */
+.header-splash {
+    background-color: #fbf7f3 !important;
+}
+
+/* ===== Navigation Links ===== */
+.navbar-default .navbar-nav > li > a {
+    color: #594E4B;
+}
+
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+    color: #e838bf;
+    background-color: transparent;
+}
+
+/* ===== Mobile Navigation Toggle ===== */
+.navbar-default .navbar-toggle {
+    border-color: #92807f;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #594E4B;
+}
+
+/* ===== Primary Buttons ===== */
+.btn-primary {
+    background-color: #e838bf !important;
+    border-color: #e838bf !important;
+    color: #ffffff !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #d42bad !important;
+    border-color: #d42bad !important;
+}
+
+/* ===== Links ===== */
+a {
+    color: #e838bf;
+}
+
+a:hover,
+a:focus {
+    color: #d42bad;
+}
+
+/* ===== Body Background ===== */
+body {
+    background-color: #fbf7f3;
+    color: #594E4B;
+}
+
+/* ===== Cards and Panels ===== */
+.panel,
+.well,
+.listing-card {
+    background-color: #ffffff;
+    border-color: #e7e7e7;
+}
+
+/* ===== Footer ===== */
+.footer,
+footer {
+    background-color: #594E4B;
+    color: #fbf7f3;
+}
+
+.footer a,
+footer a {
+    color: #e838bf;
+}
+
+/* ===== Price/Bid Colors ===== */
+.galleryPrice,
+.current-bid,
+.listing-price {
+    color: #e838bf;
+}
+
+/* ===== Form Elements ===== */
+.form-control:focus {
+    border-color: #e838bf;
+    box-shadow: 0 0 0 2px rgba(232, 56, 191, 0.2);
+}
+
+/* ===== Secondary Text ===== */
+.text-muted,
+.help-block {
+    color: #92807f !important;
+}
+
+/* ===== Alert/Badge Accents ===== */
+.badge,
+.label-primary {
+    background-color: #e838bf;
+}

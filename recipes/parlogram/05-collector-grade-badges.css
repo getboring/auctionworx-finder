@@ -1,0 +1,253 @@
+/*
+ * PARLOGRAM RECIPE: Collector Grade Badges
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Vinyl record grading badge styles using the Goldmine Standard.
+ * Essential for record collectors who need to quickly assess condition.
+ * Parlogram uses terminology like NMINT (Near Mint), 1M1M (1st Matrix).
+ */
+
+/* Base badge styling */
+.grade-badge,
+.condition-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+/* === GOLDMINE STANDARD GRADES === */
+
+/* Mint (M) - Perfect, unplayed */
+.grade-mint,
+.grade-m {
+    background-color: #065f46;
+    color: #ffffff;
+}
+
+/* Near Mint (NM/M-) - Nearly perfect */
+.grade-nm,
+.grade-nmint,
+.grade-near-mint {
+    background-color: #059669;
+    color: #ffffff;
+}
+
+/* Very Good Plus (VG+) - Shows some wear but plays well */
+.grade-vgplus,
+.grade-vg-plus {
+    background-color: #0284c7;
+    color: #ffffff;
+}
+
+/* Very Good (VG) - Noticeable wear, still enjoyable */
+.grade-vg,
+.grade-very-good {
+    background-color: #0369a1;
+    color: #ffffff;
+}
+
+/* Good Plus (G+) */
+.grade-gplus,
+.grade-g-plus {
+    background-color: #ca8a04;
+    color: #ffffff;
+}
+
+/* Good (G) - Significant wear */
+.grade-g,
+.grade-good {
+    background-color: #a16207;
+    color: #ffffff;
+}
+
+/* Fair (F) - Barely playable */
+.grade-f,
+.grade-fair {
+    background-color: #dc2626;
+    color: #ffffff;
+}
+
+/* Poor (P) - Damaged */
+.grade-p,
+.grade-poor {
+    background-color: #7f1d1d;
+    color: #ffffff;
+}
+
+/* === SLEEVE/VINYL COMBINED GRADES === */
+/* Format: Vinyl Grade / Sleeve Grade (e.g., NM/VG+) */
+
+.grade-combo {
+    display: inline-flex;
+    gap: 2px;
+}
+
+.grade-combo .vinyl-grade {
+    border-radius: 3px 0 0 3px;
+    padding-right: 4px;
+}
+
+.grade-combo .sleeve-grade {
+    border-radius: 0 3px 3px 0;
+    padding-left: 4px;
+    opacity: 0.85;
+}
+
+/* === PRESSING INFO BADGES === */
+
+/* First pressing indicator */
+.badge-1st-press,
+.badge-first-pressing {
+    background-color: #7c3aed;
+    color: #ffffff;
+}
+
+/* Original pressing */
+.badge-original,
+.badge-og {
+    background-color: #6d28d9;
+    color: #ffffff;
+}
+
+/* Reissue/Repress */
+.badge-reissue,
+.badge-repress {
+    background-color: #64748b;
+    color: #ffffff;
+}
+
+/* UK pressing (important for Beatles collectors) */
+.badge-uk {
+    background-color: #1e40af;
+    color: #ffffff;
+}
+
+/* US pressing */
+.badge-us {
+    background-color: #be123c;
+    color: #ffffff;
+}
+
+/* German pressing */
+.badge-german,
+.badge-de {
+    background-color: #15803d;
+    color: #ffffff;
+}
+
+/* Japanese pressing (often prized for quality) */
+.badge-japan,
+.badge-jp {
+    background-color: #dc2626;
+    color: #ffffff;
+}
+
+/* === MATRIX/STAMPER BADGES === */
+
+/* 1M1M - First matrix both sides (highly collectible) */
+.badge-1m1m,
+.badge-matrix-1 {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: #1a1a1a;
+    font-weight: 800;
+}
+
+/* Motherlode/stamper info */
+.badge-stamper {
+    font-family: 'Monaco', 'Menlo', monospace;
+    background-color: #374151;
+    color: #e5e7eb;
+}
+
+/* === SPECIAL EDITION BADGES === */
+
+/* Promo/Demo copy */
+.badge-promo,
+.badge-demo {
+    background-color: #0891b2;
+    color: #ffffff;
+}
+
+/* White label */
+.badge-white-label {
+    background-color: #f8fafc;
+    color: #1e293b;
+    border: 1px solid #cbd5e1;
+}
+
+/* Test pressing */
+.badge-test-press {
+    background-color: #ec4899;
+    color: #ffffff;
+}
+
+/* Mono pressing */
+.badge-mono {
+    background-color: #4b5563;
+    color: #ffffff;
+}
+
+/* Stereo pressing */
+.badge-stereo {
+    background-color: #6366f1;
+    color: #ffffff;
+}
+
+/* === PARLOGRAM SPECIFIC === */
+
+/* "SUPERB" quality indicator */
+.badge-superb {
+    background: linear-gradient(135deg, #fcd34d 0%, #f59e0b 100%);
+    color: #1a1a1a;
+    font-weight: 800;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* "RARE" indicator */
+.badge-rare {
+    background: linear-gradient(135deg, #c026d3 0%, #9333ea 100%);
+    color: #ffffff;
+}
+
+/* Beatles-specific: EMI pressing */
+.badge-emi {
+    background-color: #1e3a8a;
+    color: #ffffff;
+}
+
+/* Beatles-specific: Parlophone label */
+.badge-parlophone {
+    background-color: #0f172a;
+    color: #ffffff;
+}
+
+/* Box set indicator */
+.badge-box-set {
+    background-color: #854d0e;
+    color: #ffffff;
+}
+
+/*
+ * USAGE NOTES:
+ * - Apply classes to span elements: <span class="grade-badge grade-nm">NM</span>
+ * - For vinyl/sleeve combo: Use .grade-combo wrapper with two badges
+ * - First pressing badges are highly valued by collectors
+ * - Matrix badges (1M1M) indicate original stampers
+ *
+ * HTML Examples:
+ * <span class="grade-badge grade-nmint">NMINT</span>
+ * <span class="badge-1st-press">1ST UK</span>
+ * <span class="badge-1m1m">1M1M</span>
+ *
+ * Combo grade:
+ * <span class="grade-combo">
+ *     <span class="grade-badge grade-nm vinyl-grade">NM</span>
+ *     <span class="grade-badge grade-vgplus sleeve-grade">VG+</span>
+ * </span>
+ */

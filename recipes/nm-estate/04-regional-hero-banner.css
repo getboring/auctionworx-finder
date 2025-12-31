@@ -1,0 +1,294 @@
+/*
+ * NM ESTATE AUCTIONS RECIPE: Regional Hero Banner
+ * Difficulty: Moderate
+ * Apply via: CMS > Content > Header Scripts
+ * Note: Also requires HTML modification in homepage template
+ *
+ * Creates a New Mexico-themed hero section featuring desert landscape imagery.
+ * Perfect for establishing regional identity and estate sale branding.
+ */
+
+/* ================================================
+   Hero Section Container
+   ================================================ */
+.nm-hero {
+    min-height: 65vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Default gradient if no image */
+.nm-hero.no-image {
+    background: linear-gradient(
+        135deg,
+        #C75B39 0%,
+        #D4A574 50%,
+        #8B9A7C 100%
+    );
+}
+
+/* ================================================
+   Desert Sunset Overlay
+   ================================================ */
+.nm-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(199, 91, 57, 0.3) 0%,     /* Terracotta tint at top */
+        rgba(107, 68, 35, 0.5) 50%,    /* Brown in middle */
+        rgba(61, 61, 61, 0.7) 100%     /* Dark at bottom */
+    );
+    z-index: 1;
+}
+
+/* ================================================
+   Hero Content
+   ================================================ */
+.nm-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    padding: 2rem;
+}
+
+/* Regional tagline */
+.nm-hero-tagline {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #D4A574;  /* Adobe tan */
+    margin-bottom: 1rem;
+}
+
+/* Main title */
+.nm-hero-title {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #FDF8F3;  /* Cream */
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Subtitle */
+.nm-hero-subtitle {
+    font-size: 1.25rem;
+    color: rgba(253, 248, 243, 0.9);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ================================================
+   Call-to-Action Buttons
+   ================================================ */
+.nm-hero-cta {
+    display: inline-flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.nm-hero-btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+/* Primary CTA */
+.nm-hero-btn.primary {
+    background: #C75B39;
+    color: #ffffff;
+    border: 2px solid #C75B39;
+}
+
+.nm-hero-btn.primary:hover {
+    background: #A14830;
+    border-color: #A14830;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(199, 91, 57, 0.4);
+}
+
+/* Secondary CTA */
+.nm-hero-btn.secondary {
+    background: transparent;
+    color: #FDF8F3;
+    border: 2px solid rgba(253, 248, 243, 0.5);
+}
+
+.nm-hero-btn.secondary:hover {
+    background: rgba(253, 248, 243, 0.15);
+    border-color: #FDF8F3;
+}
+
+/* ================================================
+   Decorative Elements
+   ================================================ */
+
+/* Southwest pattern divider */
+.nm-hero-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+}
+
+.nm-hero-divider span {
+    width: 8px;
+    height: 8px;
+    background: #D4A574;
+    transform: rotate(45deg);
+}
+
+.nm-hero-divider::before,
+.nm-hero-divider::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(212, 165, 116, 0.5)
+    );
+}
+
+.nm-hero-divider::after {
+    background: linear-gradient(
+        90deg,
+        rgba(212, 165, 116, 0.5),
+        transparent
+    );
+}
+
+/* ================================================
+   Stats Bar (below hero)
+   ================================================ */
+.nm-stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    padding: 2rem;
+    background: #6B4423;  /* Brown */
+    color: #FDF8F3;
+}
+
+.nm-stat {
+    text-align: center;
+}
+
+.nm-stat-number {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #D4A574;  /* Adobe */
+    display: block;
+}
+
+.nm-stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(253, 248, 243, 0.7);
+}
+
+/* ================================================
+   Responsive Adjustments
+   ================================================ */
+@media (max-width: 991px) {
+    .nm-hero {
+        min-height: 55vh;
+    }
+    .nm-hero-title {
+        font-size: 2.25rem;
+    }
+    .nm-stats-bar {
+        flex-wrap: wrap;
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .nm-hero {
+        min-height: 50vh;
+    }
+    .nm-hero-title {
+        font-size: 1.75rem;
+    }
+    .nm-hero-subtitle {
+        font-size: 1rem;
+    }
+    .nm-hero-cta {
+        flex-direction: column;
+        align-items: center;
+    }
+    .nm-hero-btn {
+        width: 100%;
+        max-width: 280px;
+        text-align: center;
+    }
+    .nm-stats-bar {
+        gap: 1.5rem;
+    }
+    .nm-stat-number {
+        font-size: 1.5rem;
+    }
+}
+
+/*
+ * ================================================
+ * USAGE EXAMPLE: Add this HTML to your homepage
+ * ================================================
+ *
+ * <div class="nm-hero" style="background-image: url('/Content/Images/nm-desert.jpg');">
+ *     <div class="nm-hero-content">
+ *         <p class="nm-hero-tagline">New Mexico's Premier Estate Auction House</p>
+ *         <h1 class="nm-hero-title">Discover Treasures from the Land of Enchantment</h1>
+ *         <div class="nm-hero-divider">
+ *             <span></span>
+ *             <span></span>
+ *             <span></span>
+ *         </div>
+ *         <p class="nm-hero-subtitle">
+ *             Specializing in Southwest antiques, Native American art, and estate treasures
+ *         </p>
+ *         <div class="nm-hero-cta">
+ *             <a href="/Browse" class="nm-hero-btn primary">Browse Auctions</a>
+ *             <a href="/About" class="nm-hero-btn secondary">Learn More</a>
+ *         </div>
+ *     </div>
+ * </div>
+ * <div class="nm-stats-bar">
+ *     <div class="nm-stat">
+ *         <span class="nm-stat-number">2,500+</span>
+ *         <span class="nm-stat-label">Items Sold</span>
+ *     </div>
+ *     <div class="nm-stat">
+ *         <span class="nm-stat-number">500+</span>
+ *         <span class="nm-stat-label">Happy Buyers</span>
+ *     </div>
+ *     <div class="nm-stat">
+ *         <span class="nm-stat-number">15+</span>
+ *         <span class="nm-stat-label">Years Experience</span>
+ *     </div>
+ * </div>
+ */

@@ -1,0 +1,129 @@
+/*
+ * MUNICIBID RECIPE: Full-Width Hero Section
+ * Difficulty: ⭐⭐ Moderate
+ * Apply via: CMS > Content > Header Scripts
+ * Note: Also requires HTML modification in homepage template
+ *
+ * Creates a dramatic full-viewport hero section like MuniciBid's homepage.
+ */
+
+/* Hero container - add this class to your homepage banner */
+.hero-section {
+    min-height: 78vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Dark overlay for text readability */
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.5),
+        rgba(0, 0, 0, 0.6)
+    );
+    z-index: 1;
+}
+
+/* Hero content wrapper */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 2rem;
+}
+
+/* Overline text (small caps above title) */
+.hero-overline {
+    color: #FFD43B;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+}
+
+/* Main hero title */
+.hero-title {
+    color: #ffffff;
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
+
+/* Hero subtitle/description */
+.hero-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.25rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+/* Hero CTA button */
+.hero-cta {
+    display: inline-block;
+    background-color: #FFD43B;
+    color: #000000;
+    padding: 1rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.hero-cta:hover {
+    background-color: #ffffff;
+    color: #000000;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .hero-section {
+        min-height: 60vh;
+    }
+    .hero-title {
+        font-size: 2.25rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .hero-section {
+        min-height: 50vh;
+        background-attachment: scroll;
+    }
+    .hero-title {
+        font-size: 1.75rem;
+    }
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+}
+
+/*
+ * USAGE: Add this HTML to your homepage (HomePageFeaturedListings.cshtml):
+ *
+ * <div class="hero-section" style="background-image: url('/Content/Images/hero-bg.jpg');">
+ *     <div class="hero-content">
+ *         <p class="hero-overline">Welcome to Your Auctions</p>
+ *         <h1 class="hero-title">Find Great Deals on Government Surplus</h1>
+ *         <p class="hero-subtitle">Browse thousands of items from trusted sellers.</p>
+ *         <a href="/Browse" class="hero-cta">Start Browsing</a>
+ *     </div>
+ * </div>
+ */

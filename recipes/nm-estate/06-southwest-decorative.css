@@ -1,0 +1,367 @@
+/*
+ * NM ESTATE AUCTIONS RECIPE: Southwest Decorative Elements
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Adds authentic Southwest decorative patterns and elements.
+ * Includes border patterns, dividers, and accent decorations.
+ */
+
+/* ================================================
+   Southwest Section Divider
+   ================================================ */
+.sw-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0;
+    gap: 1rem;
+}
+
+.sw-divider::before,
+.sw-divider::after {
+    content: '';
+    flex: 1;
+    max-width: 200px;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #D4A574,
+        transparent
+    );
+}
+
+/* Diamond pattern in divider */
+.sw-divider-pattern {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sw-divider-pattern span {
+    width: 8px;
+    height: 8px;
+    background: #C75B39;
+    transform: rotate(45deg);
+}
+
+.sw-divider-pattern span:nth-child(2) {
+    width: 12px;
+    height: 12px;
+    background: #40A4A4;  /* Turquoise center */
+}
+
+/* ================================================
+   Stepped Border Pattern
+   ================================================ */
+.sw-border-stepped {
+    position: relative;
+    padding: 2rem;
+}
+
+.sw-border-stepped::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: repeating-linear-gradient(
+        90deg,
+        #C75B39 0px,
+        #C75B39 4px,
+        transparent 4px,
+        transparent 8px,
+        #D4A574 8px,
+        #D4A574 12px,
+        transparent 12px,
+        transparent 16px
+    );
+}
+
+.sw-border-stepped::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: repeating-linear-gradient(
+        90deg,
+        #C75B39 0px,
+        #C75B39 4px,
+        transparent 4px,
+        transparent 8px,
+        #D4A574 8px,
+        #D4A574 12px,
+        transparent 12px,
+        transparent 16px
+    );
+}
+
+/* ================================================
+   Zigzag Border Pattern
+   ================================================ */
+.sw-border-zigzag {
+    position: relative;
+    padding-bottom: 1.5rem;
+}
+
+.sw-border-zigzag::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 12px;
+    background: linear-gradient(135deg, #E6D5C3 25%, transparent 25%) -10px 0,
+                linear-gradient(225deg, #E6D5C3 25%, transparent 25%) -10px 0,
+                linear-gradient(315deg, #E6D5C3 25%, transparent 25%),
+                linear-gradient(45deg, #E6D5C3 25%, transparent 25%);
+    background-size: 20px 12px;
+    background-color: #C75B39;
+}
+
+/* ================================================
+   Decorative Corner Accents
+   ================================================ */
+.sw-corners {
+    position: relative;
+}
+
+.sw-corners::before,
+.sw-corners::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-color: #C75B39;
+    border-style: solid;
+}
+
+.sw-corners::before {
+    top: 0;
+    left: 0;
+    border-width: 3px 0 0 3px;
+}
+
+.sw-corners::after {
+    bottom: 0;
+    right: 0;
+    border-width: 0 3px 3px 0;
+}
+
+/* Full four corners variant */
+.sw-corners-full {
+    position: relative;
+}
+
+.sw-corners-full .corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+}
+
+.sw-corners-full .corner::before,
+.sw-corners-full .corner::after {
+    content: '';
+    position: absolute;
+    background: #C75B39;
+}
+
+.sw-corners-full .corner::before {
+    width: 100%;
+    height: 3px;
+}
+
+.sw-corners-full .corner::after {
+    width: 3px;
+    height: 100%;
+}
+
+.sw-corners-full .corner.top-left { top: 0; left: 0; }
+.sw-corners-full .corner.top-right { top: 0; right: 0; }
+.sw-corners-full .corner.top-right::before { right: 0; }
+.sw-corners-full .corner.top-right::after { right: 0; }
+.sw-corners-full .corner.bottom-left { bottom: 0; left: 0; }
+.sw-corners-full .corner.bottom-left::before { bottom: 0; }
+.sw-corners-full .corner.bottom-left::after { bottom: 0; }
+.sw-corners-full .corner.bottom-right { bottom: 0; right: 0; }
+.sw-corners-full .corner.bottom-right::before { right: 0; bottom: 0; }
+.sw-corners-full .corner.bottom-right::after { right: 0; bottom: 0; }
+
+/* ================================================
+   Terracotta Accent Line
+   ================================================ */
+.sw-accent-line {
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(
+        90deg,
+        #C75B39,
+        #D4A574
+    );
+    border-radius: 2px;
+    margin: 1rem 0;
+}
+
+.sw-accent-line.centered {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ================================================
+   Sunburst Decoration
+   ================================================ */
+.sw-sunburst {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+}
+
+.sw-sunburst::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: conic-gradient(
+        from 0deg,
+        #C75B39 0deg 15deg,
+        transparent 15deg 30deg,
+        #D4A574 30deg 45deg,
+        transparent 45deg 60deg,
+        #C75B39 60deg 75deg,
+        transparent 75deg 90deg,
+        #D4A574 90deg 105deg,
+        transparent 105deg 120deg,
+        #C75B39 120deg 135deg,
+        transparent 135deg 150deg,
+        #D4A574 150deg 165deg,
+        transparent 165deg 180deg,
+        #C75B39 180deg 195deg,
+        transparent 195deg 210deg,
+        #D4A574 210deg 225deg,
+        transparent 225deg 240deg,
+        #C75B39 240deg 255deg,
+        transparent 255deg 270deg,
+        #D4A574 270deg 285deg,
+        transparent 285deg 300deg,
+        #C75B39 300deg 315deg,
+        transparent 315deg 330deg,
+        #D4A574 330deg 345deg,
+        transparent 345deg 360deg
+    );
+    border-radius: 50%;
+    opacity: 0.3;
+}
+
+.sw-sunburst-center {
+    position: relative;
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+    background: #40A4A4;  /* Turquoise */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ================================================
+   Quote Box with Southwest Styling
+   ================================================ */
+.sw-quote-box {
+    position: relative;
+    padding: 2rem;
+    background: #FFFCF8;
+    border-left: 4px solid #C75B39;
+    margin: 2rem 0;
+}
+
+.sw-quote-box::before {
+    content: '"';
+    position: absolute;
+    top: 0.5rem;
+    left: 1rem;
+    font-family: Georgia, serif;
+    font-size: 4rem;
+    color: #E6D5C3;
+    line-height: 1;
+}
+
+.sw-quote-box p {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-style: italic;
+    font-size: 1.125rem;
+    color: #4A4A4A;
+    margin: 0;
+    padding-left: 2rem;
+}
+
+.sw-quote-box cite {
+    display: block;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-size: 0.875rem;
+    color: #7A7267;
+    margin-top: 1rem;
+    padding-left: 2rem;
+}
+
+/* ================================================
+   Section Label with Southwest Flair
+   ================================================ */
+.sw-section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #6B4423;
+}
+
+.sw-section-label::before,
+.sw-section-label::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: #C75B39;
+    transform: rotate(45deg);
+}
+
+/*
+ * ================================================
+ * USAGE EXAMPLES
+ * ================================================
+ *
+ * <!-- Divider -->
+ * <div class="sw-divider">
+ *     <div class="sw-divider-pattern">
+ *         <span></span>
+ *         <span></span>
+ *         <span></span>
+ *     </div>
+ * </div>
+ *
+ * <!-- Section with stepped border -->
+ * <section class="sw-border-stepped">
+ *     <h2>Featured Auctions</h2>
+ * </section>
+ *
+ * <!-- Accent line -->
+ * <h2>Our Story</h2>
+ * <div class="sw-accent-line centered"></div>
+ *
+ * <!-- Quote box -->
+ * <div class="sw-quote-box">
+ *     <p>The finest estate treasures from the Land of Enchantment.</p>
+ *     <cite>- NM Estate Auctions</cite>
+ * </div>
+ */

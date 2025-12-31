@@ -1,0 +1,78 @@
+/*
+ * COUNTRY CLUB SALES RECIPE: Sharp Corners Theme
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Removes rounded corners for a more traditional, catalog-style appearance.
+ * Agricultural/livestock auctions often prefer this professional look.
+ */
+
+/* Remove all border-radius globally */
+.btn,
+.form-control,
+.panel,
+.thumbnail,
+.well,
+.alert,
+.modal-content,
+.dropdown-menu,
+.nav-tabs > li > a,
+.nav-pills > li > a,
+.badge,
+.label,
+.input-group-addon,
+.galleryUnit,
+.gallery-item,
+.listing-card {
+    border-radius: 0 !important;
+}
+
+/* Image containers */
+.galleryImage img,
+.thumbnail img,
+.listing-image img {
+    border-radius: 0;
+}
+
+/* Form inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+select,
+textarea {
+    border-radius: 0 !important;
+}
+
+/* Cards and panels */
+.panel-default,
+.panel-primary,
+.card {
+    border-radius: 0;
+}
+
+.panel-heading,
+.card-header {
+    border-radius: 0;
+}
+
+/* Modals */
+.modal-header,
+.modal-footer {
+    border-radius: 0;
+}
+
+/* Pagination */
+.pagination > li:first-child > a,
+.pagination > li:first-child > span,
+.pagination > li:last-child > a,
+.pagination > li:last-child > span {
+    border-radius: 0;
+}
+
+/* Progress bars */
+.progress,
+.progress-bar {
+    border-radius: 0;
+}

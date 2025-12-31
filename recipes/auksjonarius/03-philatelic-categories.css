@@ -1,0 +1,101 @@
+/*
+ * AUKSJONARIUS RECIPE: Philatelic Category Structure
+ * Difficulty: Moderate
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Styles for stamp collecting (philatelic) category hierarchies.
+ * Optimized for deep categorization typical in stamp auctions:
+ * Country > Era > Type > Condition
+ */
+
+/* Category tree styling */
+.category-tree,
+.category-nav {
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+/* Parent categories - countries/regions */
+.category-tree .category-parent {
+    font-weight: 600;
+    color: #21354f;
+    padding: 8px 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.category-tree .category-parent:hover {
+    background-color: #f5f7fa;
+    border-left-color: #21354f;
+}
+
+/* Sub-categories - eras, types */
+.category-tree .category-child {
+    padding-left: 24px;
+    color: #555;
+    font-size: 0.8125rem;
+}
+
+/* Count badges - number of items per category */
+.category-count {
+    float: right;
+    background: #e9ecef;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.6875rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+/* Active category highlight */
+.category-tree .active,
+.category-nav .active {
+    background-color: #21354f !important;
+    color: #ffffff !important;
+    border-radius: 4px;
+}
+
+.category-tree .active .category-count {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+/* Stamp-specific category icons (optional) */
+.category-stamps::before { content: "\2709"; margin-right: 8px; } /* Envelope icon */
+.category-postmarks::before { content: "\25CE"; margin-right: 8px; } /* Circle icon */
+.category-covers::before { content: "\2709"; margin-right: 8px; }
+.category-collections::before { content: "\25A0"; margin-right: 8px; }
+
+/* Catalog reference styling (e.g., "NK #123") */
+.catalog-ref {
+    font-family: 'Monaco', 'Menlo', monospace;
+    font-size: 0.75rem;
+    color: #666;
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+/* Country flags for international stamp categories */
+.flag-icon {
+    width: 16px;
+    height: 12px;
+    margin-right: 6px;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+}
+
+/* Philatelic condition grades */
+.condition-grade {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.condition-mint { background: #d4edda; color: #155724; }
+.condition-fine { background: #cce5ff; color: #004085; }
+.condition-good { background: #fff3cd; color: #856404; }
+.condition-fair { background: #f8d7da; color: #721c24; }

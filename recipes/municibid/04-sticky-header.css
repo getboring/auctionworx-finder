@@ -1,0 +1,39 @@
+/*
+ * MUNICIBID RECIPE: Sticky Header with Scroll Effects
+ * Difficulty: ⭐ Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Makes the header stick to the top when scrolling,
+ * with a smooth transition effect.
+ */
+
+/* Sticky header base */
+.header-splash {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+/* Scrolled state - add via JavaScript */
+.header-splash.scrolled {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Optional: Shrink header on scroll */
+.header-splash.scrolled .logo img {
+    max-height: 50px;
+    transition: max-height 0.3s ease;
+}
+
+/* Optional: Change background opacity on scroll */
+.header-splash.scrolled {
+    background-color: rgba(255, 255, 255, 0.98) !important;
+}
+
+/* Mobile adjustments */
+@media (max-width: 767px) {
+    .header-splash {
+        position: relative; /* Disable sticky on mobile if needed */
+    }
+}

@@ -1,0 +1,153 @@
+/*
+ * PARLOGRAM RECIPE: Multi-Currency Price Display
+ * Difficulty: Moderate
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Styles for displaying prices in multiple currencies simultaneously.
+ * Parlogram shows GBP as primary with EUR and USD conversions.
+ * Essential for international record collectors bidding from different countries.
+ */
+
+/* Price display container - horizontal layout */
+.price-display,
+.multi-currency-price {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: baseline;
+}
+
+/* Primary price (usually GBP) */
+.price-primary,
+.price-gbp {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+/* Currency symbol prefix */
+.price-gbp::before { content: '\00A3'; } /* Pound sign */
+.price-eur::before { content: '\20AC'; } /* Euro sign */
+.price-usd::before { content: '$'; }
+.price-cad::before { content: 'CA$'; }
+.price-aud::before { content: 'A$'; }
+.price-nzd::before { content: 'NZ$'; }
+.price-chf::before { content: 'CHF '; }
+.price-sek::before { content: 'SEK '; }
+.price-nok::before { content: 'NOK '; }
+.price-dkk::before { content: 'DKK '; }
+.price-jpy::before { content: '\00A5'; } /* Yen sign */
+.price-hkd::before { content: 'HK$'; }
+.price-sgd::before { content: 'S$'; }
+
+/* Secondary prices (conversions) */
+.price-secondary,
+.price-eur,
+.price-usd {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #666;
+}
+
+/* Currency separator */
+.price-separator {
+    color: #ccc;
+    margin: 0 0.25rem;
+}
+
+/* Stacked layout variant (for smaller spaces) */
+.price-display-stacked {
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.price-display-stacked .price-secondary {
+    font-size: 0.75rem;
+}
+
+/* Current bid styling */
+.current-bid .price-display {
+    justify-content: center;
+}
+
+/* Listing card price area */
+.galleryPrice .price-display,
+.listing-price .price-display {
+    justify-content: flex-start;
+}
+
+/* Compact inline display for tables */
+.price-inline {
+    display: inline;
+}
+
+.price-inline .price-secondary {
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+.price-inline .price-secondary::before {
+    content: '(';
+}
+
+.price-inline .price-secondary::after {
+    content: ')';
+}
+
+/* Exchange rate tooltip styling */
+.currency-tooltip {
+    position: relative;
+    cursor: help;
+}
+
+.currency-tooltip::after {
+    content: attr(data-rate);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.6875rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease;
+}
+
+.currency-tooltip:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Responsive adjustments */
+@media (max-width: 575px) {
+    .price-display {
+        flex-direction: column;
+        gap: 0.125rem;
+    }
+
+    .price-primary {
+        font-size: 1.125rem;
+    }
+
+    .price-secondary {
+        font-size: 0.75rem;
+    }
+}
+
+/*
+ * USAGE NOTES:
+ * - Pair with 04-currency-converter.js for dynamic conversion
+ * - Primary currency should match your business location
+ * - Exchange rates should be updated regularly for accuracy
+ *
+ * HTML Structure:
+ * <div class="price-display">
+ *     <span class="price-primary price-gbp">87.99</span>
+ *     <span class="price-secondary price-eur">99.99</span>
+ *     <span class="price-secondary price-usd">109.99</span>
+ * </div>
+ */

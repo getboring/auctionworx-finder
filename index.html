@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuctionWorx Site Finder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #0f0f0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 2rem;
+            border-bottom: 2px solid #0f3460;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 2rem;
+            padding: 1rem 2rem;
+            background: #1a1a1a;
+            border-bottom: 1px solid #333;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4ade80;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .controls {
+            padding: 1.5rem 2rem;
+            background: #151515;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #333;
+            border-radius: 6px;
+            background: #0f0f0f;
+            color: #e0e0e0;
+            font-size: 0.9rem;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #4ade80;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #333;
+            border-radius: 20px;
+            background: transparent;
+            color: #888;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            border-color: #4ade80;
+            color: #4ade80;
+        }
+
+        .filter-btn.active {
+            background: #4ade80;
+            border-color: #4ade80;
+            color: #0f0f0f;
+        }
+
+        .main {
+            padding: 2rem;
+        }
+
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+        }
+
+        .site-card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1.25rem;
+            transition: all 0.2s;
+        }
+
+        .site-card:hover {
+            border-color: #4ade80;
+            transform: translateY(-2px);
+        }
+
+        .site-card.verified {
+            border-left: 3px solid #4ade80;
+        }
+
+        .site-card.real-estate {
+            border-left: 3px solid #f59e0b;
+        }
+
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .site-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #fff;
+        }
+
+        .site-badges {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .badge {
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-verified {
+            background: #065f46;
+            color: #4ade80;
+        }
+
+        .badge-unverified {
+            background: #44403c;
+            color: #a8a29e;
+        }
+
+        .badge-realestate {
+            background: #78350f;
+            color: #fbbf24;
+        }
+
+        .badge-score {
+            font-weight: bold;
+        }
+
+        .badge-score.high {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .badge-score.medium {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .badge-score.low {
+            background: #44403c;
+            color: #a8a29e;
+        }
+
+        .site-card.high-custom {
+            border-left: 4px solid #10b981;
+        }
+
+        /* Customization Analysis Cards */
+        .customization-section {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .custom-analysis-card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .custom-header {
+            background: linear-gradient(135deg, #1e3a5f, #0f172a);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .custom-header h4 {
+            margin: 0;
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        .custom-score-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .custom-category {
+            background: rgba(255,255,255,0.1);
+            color: #94a3b8;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
+
+        .custom-body {
+            padding: 1.5rem;
+        }
+
+        .custom-body h5 {
+            color: #4ade80;
+            margin: 1.5rem 0 0.75rem 0;
+            font-size: 1rem;
+        }
+
+        .custom-body h5:first-child {
+            margin-top: 0;
+        }
+
+        .code-block {
+            background: #0d0d0d;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.8rem;
+            color: #e2e8f0;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .change-list {
+            margin: 0;
+            padding-left: 1.5rem;
+            color: #cbd5e1;
+        }
+
+        .change-list li {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+
+        .change-list strong {
+            color: #fbbf24;
+        }
+
+        .site-url {
+            font-size: 0.8rem;
+            color: #4ade80;
+            text-decoration: none;
+            word-break: break-all;
+            display: block;
+            margin-bottom: 0.75rem;
+        }
+
+        .site-url:hover {
+            text-decoration: underline;
+        }
+
+        .site-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.75rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+
+        .site-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .site-description {
+            font-size: 0.8rem;
+            color: #a0a0a0;
+            line-height: 1.4;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #666;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .fingerprints-section {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .fingerprint-code {
+            background: #0f0f0f;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.8rem;
+            color: #4ade80;
+            overflow-x: auto;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+
+        .tab:hover {
+            color: #e0e0e0;
+        }
+
+        .tab.active {
+            color: #4ade80;
+            border-bottom-color: #4ade80;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .partner-card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        .partner-card h3 {
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .partner-card a {
+            color: #4ade80;
+            text-decoration: none;
+        }
+
+        .partner-card p {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 0.5rem;
+        }
+
+        /* Recipe Pack Cards */
+        .recipe-packs-section {
+            margin-bottom: 3rem;
+        }
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .recipe-card {
+            background: linear-gradient(135deg, #1a2a1a 0%, #1a1a1a 100%);
+            border: 1px solid #2d5a2d;
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.2s;
+        }
+
+        .recipe-card:hover {
+            border-color: #4ade80;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(74, 222, 128, 0.15);
+        }
+
+        .recipe-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .recipe-card h4 {
+            margin: 0;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        .recipe-score {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 0.75rem;
+        }
+
+        .recipe-meta {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .recipe-tag {
+            background: rgba(255, 255, 255, 0.08);
+            color: #a0a0a0;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .recipe-tag.difficulty-easy {
+            background: rgba(74, 222, 128, 0.15);
+            color: #4ade80;
+        }
+
+        .recipe-tag.difficulty-moderate {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+        }
+
+        .recipe-description {
+            font-size: 0.85rem;
+            color: #a0a0a0;
+            line-height: 1.4;
+            margin-bottom: 1rem;
+        }
+
+        .recipe-files {
+            font-size: 0.75rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .recipe-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .recipe-btn {
+            flex: 1;
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .recipe-btn-primary {
+            background: #4ade80;
+            color: #0f0f0f;
+        }
+
+        .recipe-btn-primary:hover {
+            background: #22c55e;
+        }
+
+        .recipe-btn-secondary {
+            background: transparent;
+            border: 1px solid #333;
+            color: #a0a0a0;
+        }
+
+        .recipe-btn-secondary:hover {
+            border-color: #4ade80;
+            color: #4ade80;
+        }
+
+        @media (max-width: 768px) {
+            .stats-bar {
+                gap: 1rem;
+            }
+            .sites-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Theme Engine Launch Button */
+        .theme-engine-banner a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(74, 222, 128, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>AuctionWorx Site Finder</h1>
+        <p>Discovered sites using RainWorx AuctionWorx platform</p>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat">
+            <div class="stat-value" id="total-count">0</div>
+            <div class="stat-label">Total Sites</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="verified-count">0</div>
+            <div class="stat-label">Verified</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="realestate-count">0</div>
+            <div class="stat-label">Real Estate</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="countries-count">0</div>
+            <div class="stat-label">Countries</div>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab active" data-tab="sites">All Sites</button>
+        <button class="tab" data-tab="customization">Customization Scripts</button>
+        <button class="tab" data-tab="fingerprints">Fingerprints</button>
+        <button class="tab" data-tab="partners">Dev Partners</button>
+    </div>
+
+    <div class="tab-content active" id="sites-tab">
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="search" placeholder="Search sites by name, URL, category...">
+            </div>
+            <div class="filter-group">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="high-custom">High Custom (65+)</button>
+                <button class="filter-btn" data-filter="verified">Verified</button>
+                <button class="filter-btn" data-filter="real-estate">Real Estate</button>
+                <button class="filter-btn" data-filter="estate-sales">Estate Sales</button>
+                <button class="filter-btn" data-filter="government">Government</button>
+                <button class="filter-btn" data-filter="vehicle">Vehicle/Aircraft</button>
+                <button class="filter-btn" data-filter="collectibles">Collectibles</button>
+                <button class="filter-btn" data-filter="b2b">B2B/Corporate</button>
+                <button class="filter-btn" data-filter="international">International</button>
+            </div>
+        </div>
+
+        <div class="main">
+            <div class="sites-grid" id="sites-grid"></div>
+            <div class="no-results" id="no-results" style="display: none;">
+                No sites match your search criteria.
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-content" id="customization-tab">
+        <div class="main">
+            <!-- Theme Engine Launch -->
+            <div class="theme-engine-banner" style="background: linear-gradient(135deg, #1a2e1a 0%, #0f1f0f 100%); border: 2px solid #4ade80; border-radius: 16px; padding: 2rem; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;">
+                <div>
+                    <h3 style="color: #4ade80; margin: 0 0 0.5rem 0; font-size: 1.5rem;">🎨 Theme Engine</h3>
+                    <p style="color: #a0a0a0; margin: 0; max-width: 500px;">Visual CSS configurator for AuctionWorx. Build custom themes with live preview, Bootstrap 3 awareness, and production-ready export.</p>
+                </div>
+                <a href="theme-engine.html" target="_blank" style="background: linear-gradient(135deg, #4ade80, #22c55e); color: #0f0f0f; padding: 1rem 2rem; border-radius: 8px; font-weight: 700; font-size: 1rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.2s; box-shadow: 0 4px 20px rgba(74, 222, 128, 0.3);">
+                    Launch Theme Engine →
+                </a>
+            </div>
+
+            <!-- Recipe Packs Section -->
+            <div class="recipe-packs-section">
+                <h3 class="section-title">📦 Downloadable Recipe Packs</h3>
+                <p style="color: #888; margin-bottom: 1rem;">
+                    Copy-paste CSS/JS customizations extracted from top-tier AuctionWorx sites.
+                    Each pack includes individual components plus an all-in-one Quick Start bundle.
+                </p>
+
+                <div class="recipe-grid">
+                    <!-- MuniciBid -->
+                    <div class="recipe-card">
+                        <div class="recipe-card-header">
+                            <h4>MuniciBid</h4>
+                            <span class="recipe-score">74/100</span>
+                        </div>
+                        <div class="recipe-meta">
+                            <span class="recipe-tag">Government Auctions</span>
+                            <span class="recipe-tag difficulty-moderate">⭐⭐ Moderate</span>
+                        </div>
+                        <p class="recipe-description">White header theme, full-viewport hero section, CSS Grid cards, sticky header, scrollable dropdowns, Intercom chat widget.</p>
+                        <div class="recipe-files">7 files • CSS + JS + HTML</div>
+                        <div class="recipe-actions">
+                            <a href="recipes/municibid/README.md" target="_blank" class="recipe-btn recipe-btn-primary">View README</a>
+                            <a href="https://municibid.com" target="_blank" class="recipe-btn recipe-btn-secondary">Live Site</a>
+                        </div>
+                    </div>
+
+                    <!-- Magnolia Pearl -->
+                    <div class="recipe-card">
+                        <div class="recipe-card-header">
+                            <h4>Magnolia Pearl Trade</h4>
+                            <span class="recipe-score">72/100</span>
+                        </div>
+                        <div class="recipe-meta">
+                            <span class="recipe-tag">Fashion Resale</span>
+                            <span class="recipe-tag difficulty-moderate">⭐⭐ Moderate</span>
+                        </div>
+                        <p class="recipe-description">Boho color theme (pink #e838bf), custom fonts (Playfair Display), product cards, mega-menu navigation, newsletter popup, wishlist hearts.</p>
+                        <div class="recipe-files">7 files • CSS + JS</div>
+                        <div class="recipe-actions">
+                            <a href="recipes/magnolia-pearl/README.md" target="_blank" class="recipe-btn recipe-btn-primary">View README</a>
+                            <a href="https://www.magnoliapearltrade.com" target="_blank" class="recipe-btn recipe-btn-secondary">Live Site</a>
+                        </div>
+                    </div>
+
+                    <!-- Salvation Army -->
+                    <div class="recipe-card">
+                        <div class="recipe-card-header">
+                            <h4>Salvation Army</h4>
+                            <span class="recipe-score">69/100</span>
+                        </div>
+                        <div class="recipe-meta">
+                            <span class="recipe-tag">Charity Thrift</span>
+                            <span class="recipe-tag difficulty-easy">⭐ Easy</span>
+                        </div>
+                        <p class="recipe-description">Charity red branding (#9A1919), 9-tile category grid, Owl Carousel, trust badges, multi-platform links, WCAG accessibility helpers, analytics tracking.</p>
+                        <div class="recipe-files">10 files • CSS + JS + HTML</div>
+                        <div class="recipe-actions">
+                            <a href="recipes/salvation-army/README.md" target="_blank" class="recipe-btn recipe-btn-primary">View README</a>
+                            <a href="https://shopthesalvationarmy.com" target="_blank" class="recipe-btn recipe-btn-secondary">Live Site</a>
+                        </div>
+                    </div>
+
+                    <!-- Country Club Sales -->
+                    <div class="recipe-card">
+                        <div class="recipe-card-header">
+                            <h4>Country Club Sales</h4>
+                            <span class="recipe-score">69/100</span>
+                        </div>
+                        <div class="recipe-meta">
+                            <span class="recipe-tag">Livestock/Embryo</span>
+                            <span class="recipe-tag difficulty-easy">⭐ Easy</span>
+                        </div>
+                        <p class="recipe-description">Black header theme, green hover buttons (#18801f), weight 900 condensed typography, sharp corners, mobile touch buttons, category icons.</p>
+                        <div class="recipe-files">11 files • CSS only</div>
+                        <div class="recipe-actions">
+                            <a href="recipes/country-club-sales/README.md" target="_blank" class="recipe-btn recipe-btn-primary">View README</a>
+                            <a href="https://countryclubsales.com" target="_blank" class="recipe-btn recipe-btn-secondary">Live Site</a>
+                        </div>
+                    </div>
+
+                    <!-- Auksjonarius -->
+                    <div class="recipe-card">
+                        <div class="recipe-card-header">
+                            <h4>Auksjonarius</h4>
+                            <span class="recipe-score">67/100</span>
+                        </div>
+                        <div class="recipe-meta">
+                            <span class="recipe-tag">Nordic Philatelic</span>
+                            <span class="recipe-tag difficulty-moderate">⭐⭐ Moderate</span>
+                        </div>
+                        <p class="recipe-description">Nordic dark header (#21354f), Norwegian sale badges (SALG/NY/SOLGT), Globalize.js locale, GDPR cookie consent, philatelic categories, club-hosted events.</p>
+                        <div class="recipe-files">12 files • CSS + JS + HTML</div>
+                        <div class="recipe-actions">
+                            <a href="recipes/auksjonarius/README.md" target="_blank" class="recipe-btn recipe-btn-primary">View README</a>
+                            <a href="https://auksjonarius.no" target="_blank" class="recipe-btn recipe-btn-secondary">Live Site</a>
+                        </div>
+                    </div>
+
+                    <!-- Parlogram -->
+                    <div class="recipe-card">
+                        <div class="recipe-card-header">
+                            <h4>Parlogram Auctions</h4>
+                            <span class="recipe-score">66/100</span>
+                        </div>
+                        <div class="recipe-meta">
+                            <span class="recipe-tag">Vinyl Records</span>
+                            <span class="recipe-tag difficulty-easy">⭐ Easy</span>
+                        </div>
+                        <p class="recipe-description">Light theme (white header), 13+ currency support, Goldmine Standard grading badges (M/NM/VG+), view toggle persistence, auto-submit filters.</p>
+                        <div class="recipe-files">9 files • CSS + JS</div>
+                        <div class="recipe-actions">
+                            <a href="recipes/parlogram/README.md" target="_blank" class="recipe-btn recipe-btn-primary">View README</a>
+                            <a href="https://parlogramauctions.com" target="_blank" class="recipe-btn recipe-btn-secondary">Live Site</a>
+                        </div>
+                    </div>
+
+                    <!-- NM Estate -->
+                    <div class="recipe-card">
+                        <div class="recipe-card-header">
+                            <h4>NM Estate Auctions</h4>
+                            <span class="recipe-score">65/100</span>
+                        </div>
+                        <div class="recipe-meta">
+                            <span class="recipe-tag">Southwest Estate</span>
+                            <span class="recipe-tag difficulty-moderate">⭐⭐ Moderate</span>
+                        </div>
+                        <p class="recipe-description">Southwest color theme (terracotta #C75B39, turquoise #40A4A4), regional hero banner, estate typography (Libre Baskerville), decorative accents, image gallery lightbox.</p>
+                        <div class="recipe-files">9 files • CSS + JS</div>
+                        <div class="recipe-actions">
+                            <a href="recipes/nm-estate/README.md" target="_blank" class="recipe-btn recipe-btn-primary">View README</a>
+                            <a href="https://nmestateauctions.com" target="_blank" class="recipe-btn recipe-btn-secondary">Live Site</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="customization-section">
+                <h3 class="section-title">Top-Tier Customization Analysis</h3>
+                <p style="color: #888; margin-bottom: 1.5rem;">
+                    Detailed breakdown of how each highly-customized site deviates from the
+                    <a href="https://evdemo36.auctionworx.com" target="_blank" style="color: #4ade80;">default AuctionWorx theme</a>
+                    (dark navy #151C3D header, centered logo, Bootstrap 3). Based on
+                    <a href="https://www.rainworx.com/design-docs/" target="_blank" style="color: #4ade80;">official design docs</a>.
+                </p>
+
+                <!-- MUNICIBID -->
+                <div class="custom-analysis-card">
+                    <div class="custom-header">
+                        <span class="custom-score-badge">74/100</span>
+                        <h4>MuniciBid.com</h4>
+                        <span class="custom-category">Government Auctions</span>
+                    </div>
+                    <div class="custom-body">
+                        <h5>🎨 CSS Color Overrides</h5>
+                        <pre class="code-block">/* Header: White instead of navy */
+.header-splash { background-color: #fff; }
+
+/* Hero section with gradient overlay */
+.hero-section {
+    min-height: 78vh;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('hero.jpg');
+}
+
+/* Primary accent: Yellow */
+.overline-text { color: #FFD43B; }
+
+/* Count badges with blur effect */
+.count-badge {
+    padding: 2px 8px;
+    background: rgb(107 160 213 / 20%);
+    backdrop-filter: blur(3px);
+    border-radius: 12px;
+}</pre>
+
+                        <h5>🏗️ Layout Modifications</h5>
+                        <pre class="code-block">/* Modern responsive typography */
+@media (max-width: 767px) {
+    .hero-title { font-size: 1.95rem; }
+}
+@media (min-width: 992px) {
+    .hero-title { font-size: 3rem; }
+}
+
+/* Three-column card grid (non-Bootstrap) */
+.featured-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+/* Scrollable dropdowns with fade hint */
+.scrollable-dropdown {
+    max-height: 300px;
+    overflow-y: auto;
+    mask-image: linear-gradient(180deg, #000 90%, transparent);
+}</pre>
+
+                        <h5>⚡ Custom JavaScript</h5>
+                        <pre class="code-block">// Lazy-loaded listing images
+$('.listing-image').lazyload({ threshold: 200 });
+
+// Scroll position tracking for sticky elements
+$(window).scroll(function() {
+    if ($(this).scrollTop() > 50) {
+        $('header').addClass('scrolled');
+    }
+});
+
+// Intercom chat widget
+window.intercomSettings = { app_id: "fjb9vq46" };
+
+// Customer.io CDP integration (replaces default analytics)
+_cio.identify({ id: userId });</pre>
+
+                        <h5>📁 Template Changes</h5>
+                        <ul class="change-list">
+                            <li><strong>Framework:</strong> Upgraded from Bootstrap 3 to Bootstrap 4/5 flex utilities</li>
+                            <li><strong>Homepage:</strong> Custom hero section with full-width client logo carousel</li>
+                            <li><strong>Navigation:</strong> Sticky header with hamburger menu (mobile-first)</li>
+                            <li><strong>Unique:</strong> Location-based browsing with state/county filters</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- MAGNOLIA PEARL -->
+                <div class="custom-analysis-card">
+                    <div class="custom-header">
+                        <span class="custom-score-badge">72/100</span>
+                        <h4>MagnoliaPearlTrade.com</h4>
+                        <span class="custom-category">Fashion Resale</span>
+                    </div>
+                    <div class="custom-body">
+                        <h5>🎨 CSS Color Overrides</h5>
+                        <pre class="code-block">/* Warm cream header (vs dark navy) */
+header.header-splash { background: #fbf7f3; }
+
+/* Brand pink accent throughout */
+.btn-primary, a.cta { color: #e838bf; }
+.charityicon { border-color: #e838bf; }
+
+/* Earthy text tones */
+body { color: #594E4B; }
+.secondary-text { color: #92807f; }
+
+/* Splash background */
+.hp-announce { background-color: #e7e7e7; }</pre>
+
+                        <h5>🏗️ Layout Modifications</h5>
+                        <pre class="code-block">/* Custom typography stack (non-Bootstrap) */
+@font-face { font-family: 'Ozzy'; src: url('/fonts/ozzy.woff2'); }
+@font-face { font-family: 'Pearl'; src: url('/fonts/pearl.woff2'); }
+@font-face { font-family: '1786_glc_fourniernormal'; ... }
+
+/* Buy/Sell comparison grid */
+.buy-sell-container {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+}
+
+/* Charity icon badge with rotation */
+.charityicon::after {
+    content: url('charityicon.png');
+    position: absolute;
+    rotate: 338deg;
+    width: 172px;
+}</pre>
+
+                        <h5>⚡ Custom JavaScript</h5>
+                        <pre class="code-block">// First-visit welcome modal
+if (!localStorage.getItem("HomeVisit")) {
+    $('#welcomeModal').modal('show');
+    localStorage.setItem("HomeVisit", "true");
+}
+
+// Custom watch list AJAX endpoints
+$.post('/Listing/AddWatchByAjax', { listingId: id });
+$.post('/Listing/RemoveWatchByAjax', { listingId: id });
+
+// Charity donation redirect
+$('.donate-btn').click(function() {
+    window.location = 'https://bestfriends.org/donate';
+});</pre>
+
+                        <h5>📁 Template Changes</h5>
+                        <ul class="change-list">
+                            <li><strong>Unique:</strong> Fee comparison table (MP 7% vs eBay 15% vs Poshmark 20%)</li>
+                            <li><strong>Charity:</strong> 25% proceeds to Peace Warrior Foundation integrated</li>
+                            <li><strong>Badges:</strong> Custom listing-directmp-badge classes for brand items</li>
+                            <li><strong>Fonts:</strong> Completely custom font stack, no Bootstrap defaults</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- SALVATION ARMY -->
+                <div class="custom-analysis-card">
+                    <div class="custom-header">
+                        <span class="custom-score-badge">69/100</span>
+                        <h4>ShopTheSalvationArmy.com</h4>
+                        <span class="custom-category">Charity Thrift</span>
+                    </div>
+                    <div class="custom-body">
+                        <h5>🎨 CSS Color Overrides</h5>
+                        <pre class="code-block">/* Salvation Army red branding */
+.btn-primary { background-color: #9A1919; }
+.logo-header { background: #9A1919; }
+
+/* Featured category tiles */
+.category-tile {
+    background-size: cover;
+    border-radius: 8px;
+    overflow: hidden;
+}</pre>
+
+                        <h5>🏗️ Layout Modifications</h5>
+                        <pre class="code-block">/* 9-tile featured category grid */
+.featured-categories {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+/* Owl carousel for banner rotation */
+.owl-carousel .owl-item { ... }
+
+/* Multi-platform integration buttons */
+.external-links {
+    display: flex;
+    gap: 1rem;
+}</pre>
+
+                        <h5>⚡ Custom JavaScript</h5>
+                        <pre class="code-block">// Multi-platform tracking stack
+gtag('config', 'G-5C40Y4W4HN');  // GA4
+gtag('config', 'GTM-MKM3BV');     // GTM
+ttq.load('l840ehs');              // TikTok Pixel
+ttd_dom_ready(function() {...});  // Trade Desk
+
+// PayPal conversion tracking
+paypal.analytics.trackConversion();
+
+// Donation button to Classy platform
+$('.donate').attr('href', 'https://classy.org/...');</pre>
+
+                        <h5>📁 Template Changes</h5>
+                        <ul class="change-list">
+                            <li><strong>Multi-platform:</strong> Amazon storefront + Whatnot livestream integration</li>
+                            <li><strong>Banners:</strong> 4+ rotating promotional carousel with price filters</li>
+                            <li><strong>Donation:</strong> Prominent Classy.org donation button in header</li>
+                            <li><strong>Newsletter:</strong> Custom /page/newsletter subscription flow</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- COUNTRY CLUB SALES -->
+                <div class="custom-analysis-card">
+                    <div class="custom-header">
+                        <span class="custom-score-badge">69/100</span>
+                        <h4>CountryClubSales.com</h4>
+                        <span class="custom-category">Livestock/Embryo Auctions</span>
+                    </div>
+                    <div class="custom-body">
+                        <h5>🎨 CSS Color Overrides</h5>
+                        <pre class="code-block">/* Pure black header (vs navy #151C3D) */
+.header-splash { background-color: #000000; }
+footer { background-color: #000000; color: #ffffff; }
+
+/* Green hover state for buttons */
+.btn-primary { background-color: #000000; }
+.btn-primary:hover { background-color: #18801f; }
+
+/* Buy Now / Make Offer muted */
+.btn-secondary {
+    background-color: #eeeeee;
+    color: #aaaaaa;
+    border-color: #aaaaaa;
+}
+
+/* Alternating row backgrounds */
+.detail-row:nth-child(odd) { background: #ffffff; }
+.detail-row:nth-child(even) { background: #fafafa; }</pre>
+
+                        <h5>🏗️ Layout Modifications</h5>
+                        <pre class="code-block">/* Event card with lot carousel */
+.event-card {
+    display: flex;
+    flex-direction: column;
+}
+.lot-carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 0.5rem;
+}
+
+/* Gallery title with condensed font */
+.gallery_shortTitle {
+    font-weight: 900;
+    font-stretch: 50%;
+}
+
+/* Mobile full-width galleries */
+@media(max-width: 359px) {
+    .gallery-col-xxs { width: 100%; }
+}</pre>
+
+                        <h5>⚡ Custom JavaScript</h5>
+                        <pre class="code-block">// Multi-currency conversion matrix
+function PriceFromUSD(usd, currency) {
+    const rates = {
+        'GBP': 0.79, 'AUD': 1.56, 'CAD': 1.42,
+        'EUR': 0.95, 'NZD': 1.73
+    };
+    return usd * rates[currency];
+}
+
+// Hardcoded Central timezone
+var timeZoneLabel = 'CT';
+
+// Dynamic breadcrumb back-links
+if ($('.breadcrumb a').length > 2) {
+    $('.awe-category-back-link').html(
+        '<a href="' + prevUrl + '">« Back</a>'
+    );
+}</pre>
+
+                        <h5>📁 Template Changes</h5>
+                        <ul class="change-list">
+                            <li><strong>Unique:</strong> Embryo/genetics auction categories (HEATWAVE, SUPERMANRC)</li>
+                            <li><strong>Navigation:</strong> Event-focused tabs (Current/Upcoming/Closed)</li>
+                            <li><strong>Cards:</strong> Lot thumbnail carousel within event cards</li>
+                            <li><strong>Timezone:</strong> Fixed "CT" label instead of dynamic detection</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- AUKSJONARIUS -->
+                <div class="custom-analysis-card">
+                    <div class="custom-header">
+                        <span class="custom-score-badge">67/100</span>
+                        <h4>Auksjonarius.no</h4>
+                        <span class="custom-category">Nordic Philatelic</span>
+                    </div>
+                    <div class="custom-body">
+                        <h5>🎨 CSS Color Overrides</h5>
+                        <pre class="code-block">/* Custom dark blue header */
+.header-splash { background-color: #21354f; }
+
+/* Norwegian "SALG" badge */
+.listing-badge:before { content: 'SALG'; }</pre>
+
+                        <h5>🏗️ Layout Modifications</h5>
+                        <pre class="code-block">/* Multi-currency selector */
+.currency-selector {
+    display: flex;
+    gap: 0.5rem;
+}
+.currency-btn {
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* Language flags */
+.lang-flag {
+    width: 24px;
+    height: 16px;
+    background: url('/Content/Images/Languages/[lang].png');
+}</pre>
+
+                        <h5>⚡ Custom JavaScript</h5>
+                        <pre class="code-block">// Norwegian locale (Globalize.js)
+Globalize.locale('nb');
+
+// MiniCourse integration for seller onboarding
+const app = new MiniCourse();
+app.init({
+    code: "selge-pa-auksjonarius-638748639774658502"
+});
+
+// Fullres.net tracking
+(function(f,u,l,r,e,s) { ... })();
+
+// Silktide cookie consent
+localStorage.setItem('silktideCookieChoice_analytics', 'true');</pre>
+
+                        <h5>📁 Template Changes</h5>
+                        <ul class="change-list">
+                            <li><strong>Language:</strong> Full Norwegian UI with "nb" locale</li>
+                            <li><strong>Currencies:</strong> NOK, EUR, DKK, SEK, USD selector</li>
+                            <li><strong>Partner:</strong> "SELG?" CTA links to external partner with UTM tracking</li>
+                            <li><strong>Footer:</strong> "Auksjonsløsning utviklet av PromSys.no" credit</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- PARLOGRAM -->
+                <div class="custom-analysis-card">
+                    <div class="custom-header">
+                        <span class="custom-score-badge">66/100</span>
+                        <h4>ParlogramAuctions.com</h4>
+                        <span class="custom-category">Beatles/Vinyl Records</span>
+                    </div>
+                    <div class="custom-body">
+                        <h5>🎨 CSS Color Overrides</h5>
+                        <pre class="code-block">/* White header (complete theme inversion) */
+.header-splash { background-color: #ffffff; }
+
+/* Subtle dark borders and text */
+.navbar-default { border-color: rgba(0,0,0,.2); }
+nav a { color: rgba(0,0,0,.5); }
+nav a:hover { background: rgba(0,0,0,.1); }
+
+/* Search inputs */
+.nav-secondary .form-control {
+    background: rgba(0,0,0,.1);
+    color: rgba(0,0,0,.75);
+}</pre>
+
+                        <h5>🏗️ Layout Modifications</h5>
+                        <pre class="code-block">/* Gallery title truncation */
+.galleryTitle {
+    max-height: 44px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Grid/List view toggle */
+#ShowGridView, #ShowListView {
+    cursor: pointer;
+    padding: 8px;
+}
+
+/* Multi-currency price display */
+.price-display {
+    display: flex;
+    gap: 0.5rem;
+}
+.price-gbp::before { content: '£'; }
+.price-eur::before { content: '€'; }
+.price-usd::before { content: '$'; }</pre>
+
+                        <h5>⚡ Custom JavaScript</h5>
+                        <pre class="code-block">// View toggle persistence
+$('#ShowListView').click(function() {
+    $('input[name=ViewStyle]').val('list');
+    $('form').submit();
+});
+
+// 13+ currency conversion
+const currencies = ['GBP','EUR','USD','CAD','AUD','NZD',
+    'CHF','SEK','NOK','DKK','JPY','HKD','SGD'];
+
+function PriceToUSD(amount, fromCurrency) { ... }
+function PriceFromUSD(usd, toCurrency) { ... }
+
+// Auto-submit on sort change
+$('select#SortFilterOptions').change(function() {
+    $(this).closest('form').submit();
+});</pre>
+
+                        <h5>📁 Template Changes</h5>
+                        <ul class="change-list">
+                            <li><strong>Categories:</strong> Music-specific (Beatles, Rolling Stones, John Lennon Vinyl)</li>
+                            <li><strong>Theme:</strong> Complete white/light theme inversion</li>
+                            <li><strong>Pricing:</strong> Triple currency display (GBP, EUR, USD)</li>
+                            <li><strong>Grading:</strong> Collector condition terms (NMINT, 1M1M)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- NM ESTATE AUCTIONS -->
+                <div class="custom-analysis-card">
+                    <div class="custom-header">
+                        <span class="custom-score-badge">65/100</span>
+                        <h4>NMEstateAuctions.com</h4>
+                        <span class="custom-category">Southwest Estate Sales</span>
+                    </div>
+                    <div class="custom-body">
+                        <h5>🎨 CSS Color Overrides</h5>
+                        <pre class="code-block">/* Darker navy header */
+.header-splash { background-color: #00071C; }
+
+/* Light footer */
+.footer {
+    background-color: #f8f8f8;
+    border-top: 1px solid #e7e7e7;
+    text-align: center;
+}
+
+/* Primary button color */
+.btn-primary { background-color: #0077cc; }</pre>
+
+                        <h5>🏗️ Layout Modifications</h5>
+                        <pre class="code-block">/* Schema.org LocalBusiness markup */
+<script type="application/ld+json">
+{
+    "@type": "LocalBusiness",
+    "name": "Mesilla Valley Estate Sales",
+    "telephone": "+1-575-639-0213",
+    "address": {
+        "streetAddress": "210 S. Nevarez",
+        "addressLocality": "Las Cruces",
+        "addressRegion": "NM",
+        "postalCode": "88001"
+    }
+}
+</script></pre>
+
+                        <h5>⚡ Custom JavaScript</h5>
+                        <pre class="code-block">// Dual analytics tracking
+gtag('config', 'G-XEKVZFEWGM');  // GA4
+gtag('config', 'AW-988294089');   // Google Ads
+
+// Meta Pixel
+fbq('init', '371670363573656');
+fbq('track', 'PageView');
+
+// LiveChat integration
+window.__lc = { license: 15334254 };
+
+// Custom SignalR config
+var rwx_DisconnectAlertDelayMS = 10000;
+var rwx_AutoRefreshOnCountdownError = false;</pre>
+
+                        <h5>📁 Template Changes</h5>
+                        <ul class="change-list">
+                            <li><strong>Regional:</strong> New Mexico/Las Cruces geographic focus</li>
+                            <li><strong>SEO:</strong> Schema.org LocalBusiness structured data</li>
+                            <li><strong>Support:</strong> LiveChat widget for real-time customer service</li>
+                            <li><strong>Tagline:</strong> "We Sell Everything But the House!"</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-content" id="fingerprints-tab">
+        <div class="main">
+            <div class="fingerprints-section">
+                <h3 class="section-title">AuctionWorx Technical Fingerprints</h3>
+                <p style="color: #888; margin-bottom: 1rem;">Use browser DevTools (F12 > View Source) to search for these patterns:</p>
+
+                <h4 style="color: #4ade80; margin: 1rem 0 0.5rem;">JavaScript Variables (rwx_ prefix)</h4>
+                <div class="fingerprint-code">
+rwx_SignalRDisabled
+rwx_ForceMobileBrowserRefreshOnVisibilityChange
+rwx_SingleSigRListingCh
+rwx_AutoRefreshOnCountdownError
+rwx_DisconnectAlertDelayMS
+rwx_TimePickerDefTime
+RwxProxy
+                </div>
+
+                <h4 style="color: #4ade80; margin: 1rem 0 0.5rem;">CSS Classes (awe- prefix)</h4>
+                <div class="fingerprint-code">
+awe-category-back-link
+awe-short-date
+awe-date-only
+awe-rt-CurrentPrice
+awe-rt-ListingStatus
+awe-rt-MinimumBid
+                </div>
+
+                <h4 style="color: #4ade80; margin: 1rem 0 0.5rem;">URL Patterns</h4>
+                <div class="fingerprint-code">
+/Listing/Details/[id]
+/Event/Details/[id]
+/Browse/C[categoryId]
+/signalr/hubs
+auctions.[domain].com (subdomain pattern)
+                </div>
+
+                <h4 style="color: #4ade80; margin: 1rem 0 0.5rem;">Technology Stack</h4>
+                <div class="fingerprint-code">
+SignalR (real-time bidding)
+Globalize.js (internationalization)
+ASP.NET MVC 5
+Bootstrap 3
+jQuery
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-content" id="partners-tab">
+        <div class="main">
+            <h3 class="section-title">AuctionWorx Development Partners</h3>
+            <div class="partners-grid">
+                <div class="partner-card">
+                    <h3>Artesian Software</h3>
+                    <a href="https://www.artesian.io/auctionworx/" target="_blank">artesian.io</a>
+                    <p>100+ UI customizations, 25+ functional customizations. Strategic consultancy founded in 2012.</p>
+                </div>
+                <div class="partner-card">
+                    <h3>Systenics Solutions</h3>
+                    <a href="https://www.systenics.com/auctionworx/" target="_blank">systenics.com</a>
+                    <p>Premium RainWorx partner. Offers mobile apps, live auctions add-on, Excel plugin. Microsoft Gold Partner.</p>
+                </div>
+                <div class="partner-card">
+                    <h3>RainWorx (Official)</h3>
+                    <a href="https://www.rainworx.com/" target="_blank">rainworx.com</a>
+                    <p>The creators of AuctionWorx. Online since 2002. Enterprise starting at $2,995.</p>
+                </div>
+            </div>
+
+            <h3 class="section-title" style="margin-top: 2rem;">Official Resources</h3>
+            <div class="partners-grid">
+                <div class="partner-card">
+                    <h3>Clients Page</h3>
+                    <a href="https://www.rainworx.com/Clients" target="_blank">rainworx.com/Clients</a>
+                    <p>Official client showcase with logos and screenshots</p>
+                </div>
+                <div class="partner-card">
+                    <h3>Events Edition Clients</h3>
+                    <a href="https://www.rainworx.com/EventsEdition/Clients" target="_blank">rainworx.com/EventsEdition/Clients</a>
+                    <p>Timed auction event platform clients</p>
+                </div>
+                <div class="partner-card">
+                    <h3>Developer Docs</h3>
+                    <a href="https://www.rainworx.com/dev-docs" target="_blank">rainworx.com/dev-docs</a>
+                    <p>Technical documentation for developers</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Customization Score (0-100): Design(25) + Branding(15) + Layout(20) + Functionality(20) + Industry(15) + Polish(5)
+        const sites = [
+            // HIGH CUSTOMIZATION (65+)
+            { name: "MuniciBid", url: "https://municibid.com", category: "Government", country: "USA", verified: true, realEstate: false, customScore: 74, description: "HIGHEST CUSTOMIZATION. Government surplus auctions. 7,000+ agencies. Custom location filters, agency branding, multi-state compliance." },
+            { name: "Magnolia Pearl Trade", url: "https://www.magnoliapearltrade.com", category: "Fashion", country: "USA", verified: true, realEstate: false, customScore: 72, description: "Heavily branded fashion marketplace. Custom charity integration, unique fee structure, brand-specific design language." },
+            { name: "Shop The Salvation Army", url: "https://shopthesalvationarmy.com", category: "Charity", country: "USA", verified: true, realEstate: false, customScore: 69, description: "Excellent charity branding. Multi-platform integration (Amazon, Whatnot), donation focus, thrift-specific categories." },
+            { name: "Country Club Sales", url: "https://countryclubsales.com", category: "Specialty", country: "USA", verified: true, realEstate: false, customScore: 69, description: "LIVESTOCK SPECIALIST. Dairy cattle embryo auctions, genetics tracking, breeding documentation. Highly specialized." },
+            { name: "Auksjonarius", url: "https://auksjonarius.no", category: "Collectibles", country: "Norway", verified: true, realEstate: false, customScore: 67, description: "Nordic stamp specialist. Club-hosted auctions, deep philatelic categorization, multi-currency support." },
+            { name: "Parlogram Auctions", url: "https://parlogramauctions.com", category: "Collectibles", country: "Austria", verified: true, realEstate: false, customScore: 66, description: "Beatles/vinyl specialist. Collector-specific grading, international focus, niche market expertise." },
+            { name: "NM Estate Auctions", url: "https://nmestateauctions.com", category: "Estate Sales", country: "USA", verified: true, realEstate: false, customScore: 65, description: "Strong regional branding (Mesilla Valley). Southwest art focus, Navajo jewelry specialization." },
+
+            // MODERATE-HIGH CUSTOMIZATION (55-64)
+            { name: "DFF Netsalg", url: "https://www.dff-netsalg.dk", category: "Collectibles", country: "Denmark", verified: true, realEstate: false, customScore: 61, description: "Danish Philatelist Association. Deep stamp categorization, AFA catalog references, 'Powered By RainWorx' footer." },
+            { name: "Bid Rustbelt", url: "https://bidrustbelt.com", category: "Estate Sales", country: "USA", verified: true, realEstate: false, customScore: 61, description: "Regional Ohio focus. 70+ categories, military/sports card specialization, collector community." },
+            { name: "Vista Auction", url: "https://vistaauction.com", category: "Estate Sales", country: "USA", verified: true, realEstate: false, customScore: 61, description: "High-volume Charlotte liquidator. Multi-auction daily scheduling, operational sophistication." },
+            { name: "Aircraft Bidder", url: "https://auction.aircraftbidder.com", category: "Vehicle/Aircraft", country: "USA", verified: true, realEstate: false, customScore: 59, description: "Aviation specialist. Tail numbers, airframe hours, multi-state licensing, escrow integration." },
+            { name: "AirSpace Auctions", url: "https://bids.airspaceauctions.com", category: "Vehicle/Aircraft", country: "USA", verified: true, realEstate: false, customScore: 59, description: "Aircraft specialist. Sniper protection, Texas auction law compliance, aviation-only focus." },
+            { name: "Boat Bids", url: "https://boat-bids.com", category: "Vehicle/Aircraft", country: "Canada", verified: true, realEstate: false, customScore: 59, description: "Canada's marine marketplace. Boat categories, transport/financing/insurance services." },
+            { name: "Lisburn Auto Salvage", url: "https://auction.lisburnautosalvage.co.uk", category: "Vehicle/Aircraft", country: "UK", verified: true, realEstate: false, customScore: 59, description: "UK vehicle salvage. Insurance write-off categories (Cat C/D/S/N), trade sales." },
+            { name: "ViewBid", url: "https://viewbid.ca", category: "General", country: "Canada", verified: true, realEstate: false, customScore: 59, description: "Halifax auction house. No buyer fees, real estate subdomain, multi-vertical support." },
+            { name: "FigBid", url: "https://figbid.com", category: "Specialty", country: "USA", verified: true, realEstate: false, customScore: 57, description: "Fig tree specialist. Cultivar categories, origin flags, 1,385+ cutting listings. Niche focus." },
+            { name: "The Stock Room", url: "https://thestockroom.ca", category: "Retail/Liquidation", country: "Canada", verified: true, realEstate: false, customScore: 56, description: "Toronto liquidation. 30-day warranties, free shipping promotions, 87+ categories." },
+            { name: "Berheim Interiør & Antik", url: "https://berheim.no", category: "Estate Sales", country: "Norway", verified: true, realEstate: false, customScore: 55, description: "Norwegian antiques. Confirmed via RainWorx testimonials." },
+            { name: "Arabian Horse Times", url: "https://auction.ahtimes.com", category: "Specialty", country: "USA", verified: true, realEstate: false, customScore: 54, description: "Equine specialist. Mortality insurance, consigned horses category, multi-currency." },
+
+            // MODERATE CUSTOMIZATION (45-54)
+            { name: "Great Lakes VNTG", url: "https://greatlakesvntg.com", category: "Collectibles", country: "USA", verified: true, realEstate: false, customScore: 51, description: "Ohio vintage. Strong branding, curated estate events, collector-focused categories." },
+            { name: "Harvard Media Auctions", url: "https://harvardmediaauctions.com", category: "Equipment", country: "Canada", verified: true, realEstate: false, customScore: 51, description: "Canadian regional focus. Holiday shopping auctions, social tracking integration." },
+            { name: "2nd Supply", url: "https://2ndsupply.com", category: "Equipment", country: "USA", verified: true, realEstate: false, customScore: 50, description: "Restaurant equipment. Florida locations, commercial kitchen specialization." },
+            { name: "Placer Auctions", url: "https://placerauctions.com", category: "Estate Sales", country: "USA", verified: true, realEstate: false, customScore: 48, description: "Northern California estates. Regional branding, standard estate categories." },
+            { name: "QC Auctions", url: "https://qcauctions.com", category: "Equipment", country: "USA", verified: true, realEstate: false, customScore: 47, description: "Arizona tools/equipment. Regional focus, on-site auction support." },
+            { name: "Transitional Design", url: "https://auctions.transitionaldesign.net", category: "Estate Sales", country: "USA", verified: true, realEstate: false, customScore: 45, description: "Ohio estate auctions. NASMM member, off-site liquidations." },
+
+            // LOW-MODERATE CUSTOMIZATION (35-44)
+            { name: "Yellow Brick Road Auctions", url: "https://auctions.yellowbrickroadauctions.com", category: "Estate Sales", country: "USA", verified: true, realEstate: false, customScore: 39, description: "Ohio estates. Wizard of Oz branding theme, stock layout with color customization." },
+            { name: "Nord Auktion", url: "https://nordauktion.dk", category: "Equipment", country: "Denmark", verified: true, realEstate: false, customScore: 39, description: "Danish machinery. Closing in 2025, minimal customization investment." },
+            { name: "ViewBid Real Estate", url: "https://real-estate.viewbid.ca", category: "Real Estate", country: "Canada", verified: true, realEstate: true, customScore: 35, description: "Real estate subdomain. Mostly stock with color/logo customization." },
+
+            // LOW CUSTOMIZATION (<35)
+            { name: "VAuctions", url: "https://vauctions.com", category: "Collectibles", country: "USA", verified: true, realEstate: false, customScore: 31, description: "Ancient coins. STOCK LOOKING. Generic branding, minimal numismatic features." },
+            { name: "Police Auctions Canada", url: "https://www.policeauctionscanada.com", category: "Government", country: "Canada", verified: true, realEstate: false, customScore: 30, description: "Police surplus. STOCK LOOKING. Partner logos, but stock layout and features." },
+
+            // UNSCORED (Unverified or couldn't analyze)
+            { name: "MuniciBid - Real Estate", url: "https://municibid.com/Browse/C169135/", category: "Real Estate", country: "USA", verified: true, realEstate: true, customScore: 74, description: "Government property auctions from 7,000+ agencies. Same platform as MuniciBid." },
+            { name: "ViewBid Events", url: "https://events.viewbid.ca", category: "General", country: "Canada", verified: true, realEstate: false, customScore: 59, description: "Special event auctions from ViewBid." },
+            { name: "Offer Down", url: "https://offerdown.com", category: "Real Estate", country: "USA", verified: false, realEstate: true, customScore: null, description: "Real estate auction platform. Unverified." },
+            { name: "GTS Auctions", url: "https://gtsauctions.com", category: "Government", country: "USA", verified: false, realEstate: false, customScore: null, description: "Government surplus. Could not verify - redirect only." },
+            { name: "Swap Auction", url: "https://swapauction.com", category: "General", country: "USA", verified: false, realEstate: false, customScore: null, description: "Online marketplace. Unverified." },
+            { name: "Sabba Shop", url: "https://sabbashop.com", category: "Collectibles", country: "Caribbean", verified: false, realEstate: false, customScore: null, description: "Caribbean collectibles. Unverified." },
+            { name: "Abrams Auction", url: "https://abramsauction.com", category: "Estate Sales", country: "USA", verified: false, realEstate: false, customScore: null, description: "Pennsylvania estates. Unverified." },
+            { name: "Ingram Micro Renugo", url: "https://app.renugo.com", category: "B2B", country: "USA", verified: false, realEstate: false, customScore: null, description: "B2B IT liquidation. Unverified." },
+            { name: "Ingram Micro UK", url: "https://auctions.ingrammicro.com", category: "B2B", country: "UK", verified: false, realEstate: false, customScore: null, description: "UK/EU B2B auctions. Unverified." },
+            { name: "BraunAbility (Internal)", url: "https://braunability.com", category: "B2B", country: "USA", verified: false, realEstate: false, customScore: null, description: "Internal corporate auction. Not public." },
+            { name: "Maxx Liquidation", url: "https://maxx.ca", category: "Retail/Liquidation", country: "Canada", verified: false, realEstate: false, customScore: null, description: "Toronto liquidation. Could not verify (403 error)." },
+            { name: "BUYMYSKU", url: "https://buymysku.com", category: "Retail/Liquidation", country: "USA", verified: false, realEstate: false, customScore: null, description: "SKU marketplace. Connection refused." },
+            { name: "Creation Entertainment", url: "https://auctions.creationent.com", category: "Collectibles", country: "USA", verified: false, realEstate: false, customScore: null, description: "Entertainment memorabilia. Unverified." },
+            { name: "L5", url: "https://l5.com", category: "Collectibles", country: "USA", verified: false, realEstate: false, customScore: null, description: "Ancient coins. Could not verify (403 error)." },
+            { name: "Rosehill Online", url: "https://rosehillonline.ca", category: "Retail/Liquidation", country: "Canada", verified: false, realEstate: false, customScore: null, description: "Ontario liquidation. Could not verify (403 error)." },
+            { name: "Naples Winter Wine Festival", url: "https://nwwfonlineauction.com", category: "Charity", country: "USA", verified: false, realEstate: false, customScore: null, description: "Charity wine auction. Unverified." },
+            { name: "Grobanites for Charity", url: "https://grobanitesforcharity.org", category: "Charity", country: "USA", verified: false, realEstate: false, customScore: null, description: "Josh Groban charity. Unverified." },
+            { name: "PBS Wisconsin Auction", url: "https://auction.pbswisconsin.org", category: "Charity", country: "USA", verified: false, realEstate: false, customScore: null, description: "PBS fundraising. Unverified." },
+            { name: "KLRN Blazing Gavels", url: "https://blazinggavels.com", category: "Charity", country: "USA", verified: false, realEstate: false, customScore: null, description: "PBS San Antonio. Unverified." },
+            { name: "Pop Auction", url: "https://popauction.com", category: "Collectibles", country: "USA", verified: false, realEstate: false, customScore: null, description: "Comics collectibles. Unverified." },
+            { name: "Ozark Mountain Railcar", url: "https://ozarkmtnrailcar.com", category: "Specialty", country: "USA", verified: false, realEstate: false, customScore: null, description: "Railroad equipment. Unverified." },
+            { name: "Airsoft Auction", url: "https://airsoftauction.com", category: "Specialty", country: "USA", verified: false, realEstate: false, customScore: null, description: "Tactical equipment. Unverified." },
+            { name: "John Pye Vehicles", url: "https://johnpyevehicles.co.uk", category: "Vehicle/Aircraft", country: "UK", verified: false, realEstate: false, customScore: null, description: "UK vehicle auctions. Unverified." },
+
+            // NOT AuctionWorx - Documented
+            { name: "Encan Atlas Auction (NOT AWX)", url: "https://encanatlasauction.com", category: "Equipment", country: "Canada", verified: false, realEstate: false, customScore: 0, description: "NOT AUCTIONWORX. Uses WordPress/Avada platform." },
+            { name: "John Pye Auctions (NOT AWX)", url: "https://www.johnpyeauctions.co.uk", category: "General", country: "UK", verified: false, realEstate: false, customScore: 0, description: "NOT AUCTIONWORX. Uses custom WordPress/Avada platform." },
+            { name: "ART55 (NOT AWX)", url: "https://art55.co.uk", category: "Collectibles", country: "UK", verified: false, realEstate: false, customScore: 0, description: "NOT AUCTIONWORX. This is a Wix education site, not an auction platform." },
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateStats();
+            renderSites(sites);
+            setupEventListeners();
+        });
+
+        function updateStats() {
+            document.getElementById('total-count').textContent = sites.length;
+            document.getElementById('verified-count').textContent = sites.filter(s => s.verified).length;
+            document.getElementById('realestate-count').textContent = sites.filter(s => s.realEstate).length;
+            const countries = [...new Set(sites.map(s => s.country))];
+            document.getElementById('countries-count').textContent = countries.length;
+        }
+
+        function renderSites(sitesToRender) {
+            const grid = document.getElementById('sites-grid');
+            const noResults = document.getElementById('no-results');
+
+            if (sitesToRender.length === 0) {
+                grid.innerHTML = '';
+                noResults.style.display = 'block';
+                return;
+            }
+
+            noResults.style.display = 'none';
+            grid.innerHTML = sitesToRender.map(site => `
+                <div class="site-card ${site.verified ? 'verified' : ''} ${site.realEstate ? 'real-estate' : ''} ${site.customScore >= 65 ? 'high-custom' : ''}">
+                    <div class="site-header">
+                        <span class="site-name">${site.name}</span>
+                        <div class="site-badges">
+                            ${site.customScore !== null ? `<span class="badge badge-score ${site.customScore >= 65 ? 'high' : site.customScore >= 50 ? 'medium' : 'low'}">${site.customScore}/100</span>` : ''}
+                            ${site.realEstate ? '<span class="badge badge-realestate">Real Estate</span>' : ''}
+                            ${site.verified ? '<span class="badge badge-verified">Verified</span>' : '<span class="badge badge-unverified">Unverified</span>'}
+                        </div>
+                    </div>
+                    <a href="${site.url}" target="_blank" class="site-url">${site.url}</a>
+                    <div class="site-meta">
+                        <span>${site.category}</span>
+                        <span>${site.country}</span>
+                    </div>
+                    <p class="site-description">${site.description}</p>
+                </div>
+            `).join('');
+        }
+
+        function setupEventListeners() {
+            // Search
+            document.getElementById('search').addEventListener('input', (e) => {
+                filterSites();
+            });
+
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    filterSites();
+                });
+            });
+
+            // Tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.tab + '-tab').classList.add('active');
+                });
+            });
+        }
+
+        function filterSites() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+
+            let filtered = sites.filter(site => {
+                const matchesSearch =
+                    site.name.toLowerCase().includes(searchTerm) ||
+                    site.url.toLowerCase().includes(searchTerm) ||
+                    site.category.toLowerCase().includes(searchTerm) ||
+                    site.country.toLowerCase().includes(searchTerm) ||
+                    site.description.toLowerCase().includes(searchTerm);
+
+                if (!matchesSearch) return false;
+
+                switch (activeFilter) {
+                    case 'high-custom': return site.customScore !== null && site.customScore >= 65;
+                    case 'verified': return site.verified;
+                    case 'real-estate': return site.realEstate;
+                    case 'estate-sales': return site.category === 'Estate Sales';
+                    case 'government': return site.category === 'Government';
+                    case 'vehicle': return site.category === 'Vehicle/Aircraft';
+                    case 'collectibles': return site.category === 'Collectibles';
+                    case 'b2b': return site.category === 'B2B';
+                    case 'international': return site.country !== 'USA' && site.country !== 'Canada';
+                    default: return true;
+                }
+            });
+
+            renderSites(filtered);
+        }
+    </script>
+</body>
+</html>

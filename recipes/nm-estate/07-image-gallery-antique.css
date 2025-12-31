@@ -1,0 +1,356 @@
+/*
+ * NM ESTATE AUCTIONS RECIPE: Antique-Style Image Gallery
+ * Difficulty: Moderate
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Enhanced image gallery styling for estate items. Features elegant frames,
+ * zoom effects, and vintage-inspired presentation.
+ */
+
+/* ================================================
+   Main Image Container (Detail Page)
+   ================================================ */
+.gallery-main-image {
+    position: relative;
+    background: #FFFCF8;
+    border: 8px solid #E6D5C3;
+    border-radius: 4px;
+    box-shadow:
+        0 4px 20px rgba(107, 68, 35, 0.15),
+        inset 0 0 0 1px rgba(107, 68, 35, 0.1);
+    overflow: hidden;
+}
+
+/* Inner mat/frame effect */
+.gallery-main-image::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    border: 1px solid #D4A574;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.gallery-main-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+/* Zoom on hover */
+.gallery-main-image:hover img {
+    transform: scale(1.02);
+}
+
+/* ================================================
+   Thumbnail Strip
+   ================================================ */
+.gallery-thumbnails {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    padding: 0.5rem 0;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.gallery-thumbnail {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    border: 3px solid #E6D5C3;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+}
+
+.gallery-thumbnail:hover {
+    opacity: 1;
+    border-color: #C75B39;
+}
+
+.gallery-thumbnail.active {
+    opacity: 1;
+    border-color: #C75B39;
+    box-shadow: 0 0 0 2px rgba(199, 91, 57, 0.3);
+}
+
+.gallery-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ================================================
+   Lightbox Overlay
+   ================================================ */
+.gallery-lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(61, 61, 61, 0.95);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.gallery-lightbox.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.gallery-lightbox-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+}
+
+.gallery-lightbox-content img {
+    max-width: 100%;
+    max-height: 85vh;
+    border: 12px solid #FFFCF8;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Lightbox close button */
+.gallery-lightbox-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    width: 36px;
+    height: 36px;
+    background: #C75B39;
+    border: none;
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+}
+
+.gallery-lightbox-close:hover {
+    background: #A14830;
+}
+
+/* Lightbox navigation */
+.gallery-lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    background: rgba(253, 248, 243, 0.9);
+    border: none;
+    border-radius: 50%;
+    color: #6B4423;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.gallery-lightbox-nav:hover {
+    background: #FFFCF8;
+    color: #C75B39;
+}
+
+.gallery-lightbox-nav.prev {
+    left: -60px;
+}
+
+.gallery-lightbox-nav.next {
+    right: -60px;
+}
+
+/* ================================================
+   Image Badge Overlays
+   ================================================ */
+.image-badge {
+    position: absolute;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 4px;
+    z-index: 2;
+}
+
+.image-badge.condition {
+    top: 12px;
+    left: 12px;
+    background: rgba(253, 248, 243, 0.95);
+    color: #6B4423;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.image-badge.lot-number {
+    top: 12px;
+    right: 12px;
+    background: #C75B39;
+    color: #ffffff;
+}
+
+/* Condition variants */
+.image-badge.condition.excellent {
+    border-left: 3px solid #40A4A4;
+}
+
+.image-badge.condition.good {
+    border-left: 3px solid #8B9A7C;
+}
+
+.image-badge.condition.fair {
+    border-left: 3px solid #D4A574;
+}
+
+/* ================================================
+   Multiple Images Grid (Browse Page)
+   ================================================ */
+.image-grid-preview {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 4px;
+    height: 220px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.image-grid-preview .main {
+    grid-row: span 2;
+}
+
+.image-grid-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-grid-preview .more-images {
+    position: relative;
+    background: #3D3D3D;
+}
+
+.image-grid-preview .more-images img {
+    opacity: 0.5;
+}
+
+.image-grid-preview .more-images span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+/* ================================================
+   Vintage Photo Effect (Optional)
+   ================================================ */
+.vintage-effect img {
+    filter: sepia(10%) contrast(1.05);
+}
+
+.vintage-effect:hover img {
+    filter: sepia(0%) contrast(1);
+}
+
+/* ================================================
+   Zoom Magnifier (on hover)
+   ================================================ */
+.gallery-main-image.with-zoom {
+    cursor: zoom-in;
+}
+
+.zoom-lens {
+    position: absolute;
+    border: 2px solid #C75B39;
+    width: 100px;
+    height: 100px;
+    background: rgba(199, 91, 57, 0.1);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.gallery-main-image.with-zoom:hover .zoom-lens {
+    opacity: 1;
+}
+
+/* ================================================
+   Responsive Adjustments
+   ================================================ */
+@media (max-width: 767px) {
+    .gallery-lightbox-nav {
+        width: 40px;
+        height: 40px;
+    }
+
+    .gallery-lightbox-nav.prev {
+        left: 10px;
+    }
+
+    .gallery-lightbox-nav.next {
+        right: 10px;
+    }
+
+    .gallery-thumbnail {
+        width: 60px;
+        height: 60px;
+    }
+
+    .image-grid-preview {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        height: auto;
+    }
+
+    .image-grid-preview .main {
+        grid-row: span 1;
+        height: 200px;
+    }
+
+    .image-grid-preview > div:not(.main) {
+        display: none;
+    }
+}
+
+/*
+ * ================================================
+ * USAGE: Detail page structure
+ * ================================================
+ *
+ * <div class="gallery-main-image with-zoom">
+ *     <span class="image-badge condition excellent">Excellent</span>
+ *     <span class="image-badge lot-number">Lot #142</span>
+ *     <img src="/path/to/main-image.jpg" alt="Item name">
+ * </div>
+ * <div class="gallery-thumbnails">
+ *     <div class="gallery-thumbnail active">
+ *         <img src="/path/to/thumb1.jpg" alt="">
+ *     </div>
+ *     <div class="gallery-thumbnail">
+ *         <img src="/path/to/thumb2.jpg" alt="">
+ *     </div>
+ * </div>
+ */

@@ -1,0 +1,71 @@
+/*
+ * AUKSJONARIUS RECIPE: Norwegian "SALG" Sale Badge
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Localizes the sale/auction badge to Norwegian ("SALG" = "Sale").
+ * Styled with a classic stamp/postal aesthetic to match the philatelic focus.
+ */
+
+/* Norwegian sale badge - replace default text */
+.listing-badge:before,
+.sale-badge:before,
+.badge-sale:before {
+    content: 'SALG' !important;
+}
+
+/* Badge styling - postal/stamp aesthetic */
+.listing-badge,
+.sale-badge,
+.badge-sale {
+    background-color: #c41e3a !important; /* Classic postage red */
+    color: #ffffff !important;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 2px;
+    /* Subtle stamp-like border */
+    border: 1px dashed rgba(255, 255, 255, 0.3);
+}
+
+/* "NY" (New) badge for new listings */
+.badge-new:before {
+    content: 'NY' !important;
+}
+
+.badge-new {
+    background-color: #2e7d32 !important;
+    color: #ffffff !important;
+}
+
+/* "HOT" equivalent - "POPULAER" */
+.badge-hot:before,
+.badge-popular:before {
+    content: 'POPULAER' !important;
+}
+
+/* "ENDING SOON" - "SLUTTER SNART" */
+.badge-ending:before,
+.ending-soon-badge:before {
+    content: 'SLUTTER SNART' !important;
+}
+
+.badge-ending,
+.ending-soon-badge {
+    background-color: #f57c00 !important;
+    color: #ffffff !important;
+}
+
+/* "SOLD" - "SOLGT" */
+.badge-sold:before,
+.sold-badge:before {
+    content: 'SOLGT' !important;
+}
+
+.badge-sold,
+.sold-badge {
+    background-color: #757575 !important;
+    color: #ffffff !important;
+}

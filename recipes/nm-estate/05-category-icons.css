@@ -1,0 +1,241 @@
+/*
+ * NM ESTATE AUCTIONS RECIPE: Estate Category Icons
+ * Difficulty: Moderate
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Custom category styling for estate sale categories: furniture, antiques,
+ * jewelry, art, collectibles, and household items.
+ */
+
+/* ================================================
+   Category Grid Layout
+   ================================================ */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem 0;
+}
+
+/* ================================================
+   Category Card
+   ================================================ */
+.category-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 1rem;
+    background: #FFFCF8;
+    border: 1px solid #E6D5C3;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(107, 68, 35, 0.12);
+    border-color: #C75B39;
+    text-decoration: none;
+}
+
+/* ================================================
+   Category Icon Container
+   ================================================ */
+.category-icon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(
+        135deg,
+        #F5EDE4 0%,
+        #E6D5C3 100%
+    );
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.category-card:hover .category-icon {
+    background: linear-gradient(
+        135deg,
+        #C75B39 0%,
+        #D4A574 100%
+    );
+}
+
+/* Icon color */
+.category-icon svg,
+.category-icon i {
+    width: 28px;
+    height: 28px;
+    color: #6B4423;
+    transition: color 0.3s ease;
+}
+
+.category-card:hover .category-icon svg,
+.category-card:hover .category-icon i {
+    color: #ffffff;
+}
+
+/* ================================================
+   Category Name
+   ================================================ */
+.category-name {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #3D3D3D;
+    text-align: center;
+    margin-bottom: 0.25rem;
+}
+
+.category-card:hover .category-name {
+    color: #C75B39;
+}
+
+/* ================================================
+   Category Count
+   ================================================ */
+.category-count {
+    font-size: 0.75rem;
+    color: #7A7267;
+}
+
+/* ================================================
+   SVG Icon Definitions
+   ================================================
+
+   Use these inline SVGs or replace with your icon library.
+   Example using Font Awesome would be: <i class="fa fa-couch"></i>
+*/
+
+/* Furniture - Armchair icon */
+.category-icon.furniture::before {
+    content: '';
+    width: 28px;
+    height: 28px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B4423' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 9V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v3'/%3E%3Cpath d='M3 11v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z'/%3E%3Cpath d='M5 18v2'/%3E%3Cpath d='M19 18v2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.category-card:hover .category-icon.furniture::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 9V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v3'/%3E%3Cpath d='M3 11v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z'/%3E%3Cpath d='M5 18v2'/%3E%3Cpath d='M19 18v2'/%3E%3C/svg%3E");
+}
+
+/* Antiques - Clock icon */
+.category-icon.antiques::before {
+    content: '';
+    width: 28px;
+    height: 28px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B4423' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpolyline points='12 6 12 12 16 14'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.category-card:hover .category-icon.antiques::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpolyline points='12 6 12 12 16 14'/%3E%3C/svg%3E");
+}
+
+/* Jewelry - Gem icon */
+.category-icon.jewelry::before {
+    content: '';
+    width: 28px;
+    height: 28px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B4423' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 3h12l4 6-10 13L2 9z'/%3E%3Cpath d='M11 3l1 6-1 6'/%3E%3Cpath d='M2 9h20'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.category-card:hover .category-icon.jewelry::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 3h12l4 6-10 13L2 9z'/%3E%3Cpath d='M11 3l1 6-1 6'/%3E%3Cpath d='M2 9h20'/%3E%3C/svg%3E");
+}
+
+/* Art - Frame icon */
+.category-icon.art::before {
+    content: '';
+    width: 28px;
+    height: 28px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B4423' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5'/%3E%3Cpolyline points='21 15 16 10 5 21'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.category-card:hover .category-icon.art::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5'/%3E%3Cpolyline points='21 15 16 10 5 21'/%3E%3C/svg%3E");
+}
+
+/* Collectibles - Star icon */
+.category-icon.collectibles::before {
+    content: '';
+    width: 28px;
+    height: 28px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B4423' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.category-card:hover .category-icon.collectibles::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/%3E%3C/svg%3E");
+}
+
+/* Household - Home icon */
+.category-icon.household::before {
+    content: '';
+    width: 28px;
+    height: 28px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B4423' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'/%3E%3Cpolyline points='9 22 9 12 15 12 15 22'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.category-card:hover .category-icon.household::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'/%3E%3Cpolyline points='9 22 9 12 15 12 15 22'/%3E%3C/svg%3E");
+}
+
+/* ================================================
+   Responsive Grid
+   ================================================ */
+@media (max-width: 767px) {
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .category-card {
+        padding: 1rem;
+    }
+
+    .category-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .category-icon::before {
+        width: 22px !important;
+        height: 22px !important;
+    }
+}
+
+/*
+ * ================================================
+ * USAGE EXAMPLE
+ * ================================================
+ *
+ * <div class="category-grid">
+ *     <a href="/Browse?category=furniture" class="category-card">
+ *         <div class="category-icon furniture"></div>
+ *         <span class="category-name">Furniture</span>
+ *         <span class="category-count">124 items</span>
+ *     </a>
+ *     <a href="/Browse?category=antiques" class="category-card">
+ *         <div class="category-icon antiques"></div>
+ *         <span class="category-name">Antiques</span>
+ *         <span class="category-count">89 items</span>
+ *     </a>
+ *     <!-- Add more categories as needed -->
+ * </div>
+ */

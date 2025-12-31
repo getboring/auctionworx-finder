@@ -1,0 +1,145 @@
+<!--
+ * SALVATION ARMY RECIPE: Header Donation Button
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Adds a prominent "Donate" button to the site header.
+ * Links to external donation platform (Classy, PayPal, etc.)
+ * Includes heart icon and hover effects.
+-->
+
+<!-- Add this CSS in a <style> tag -->
+<style>
+/* Header donate button */
+.header-donate-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #9A1919;
+    color: #ffffff !important;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    margin-left: 1rem;
+}
+
+.header-donate-btn:hover {
+    background-color: #7d1414;
+    color: #ffffff !important;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+/* Heart icon animation on hover */
+.header-donate-btn svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    transition: transform 0.2s ease;
+}
+
+.header-donate-btn:hover svg {
+    transform: scale(1.1);
+}
+
+/* Position in navbar */
+.navbar-right .header-donate-btn {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 767px) {
+    .header-donate-btn {
+        width: 100%;
+        justify-content: center;
+        margin: 0.5rem 0;
+    }
+}
+
+/* Optional: Pulse animation to draw attention */
+.header-donate-btn.pulse {
+    animation: donate-pulse 2s infinite;
+}
+
+@keyframes donate-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(154, 25, 25, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(154, 25, 25, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(154, 25, 25, 0); }
+}
+</style>
+
+<!-- Add this JavaScript to inject the button -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Configuration - update these values
+    var DONATION_URL = 'https://classy.org/give/YOUR_CAMPAIGN_ID/#!/donation/checkout';
+    var BUTTON_TEXT = 'Donate';
+
+    // Create the button
+    var donateBtn = document.createElement('a');
+    donateBtn.href = DONATION_URL;
+    donateBtn.className = 'header-donate-btn';
+    donateBtn.target = '_blank';
+    donateBtn.rel = 'noopener';
+    donateBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' + BUTTON_TEXT;
+
+    // Find navbar and insert button
+    var navbarRight = document.querySelector('.navbar-right');
+    if (navbarRight) {
+        var li = document.createElement('li');
+        li.appendChild(donateBtn);
+        navbarRight.insertBefore(li, navbarRight.firstChild);
+    } else {
+        // Fallback: add to header area
+        var header = document.querySelector('.header-splash, header');
+        if (header) {
+            donateBtn.style.position = 'absolute';
+            donateBtn.style.right = '1rem';
+            donateBtn.style.top = '50%';
+            donateBtn.style.transform = 'translateY(-50%)';
+            header.style.position = 'relative';
+            header.appendChild(donateBtn);
+        }
+    }
+
+    // Optional: Track clicks
+    donateBtn.addEventListener('click', function() {
+        if (window.CharityTracker) {
+            CharityTracker.trackDonation('header-button');
+        }
+        if (window.gtag) {
+            gtag('event', 'donate_click', {
+                'event_category': 'Donation',
+                'event_label': 'header'
+            });
+        }
+    });
+});
+</script>
+
+<!--
+ * CUSTOMIZATION OPTIONS:
+ *
+ * 1. Change donation URL:
+ *    var DONATION_URL = 'https://your-donation-platform.com/donate';
+ *
+ * 2. Change button text:
+ *    var BUTTON_TEXT = 'Support Our Mission';
+ *
+ * 3. Add pulse animation:
+ *    donateBtn.className = 'header-donate-btn pulse';
+ *
+ * 4. Remove heart icon:
+ *    donateBtn.innerHTML = BUTTON_TEXT;
+ *
+ * POPULAR DONATION PLATFORMS:
+ * - Classy: https://classy.org/give/CAMPAIGN_ID/#!/donation/checkout
+ * - PayPal: https://www.paypal.com/donate?hosted_button_id=BUTTON_ID
+ * - GoFundMe Charity: https://charity.gofundme.com/o/en/campaign/CAMPAIGN
+ * - Network for Good: https://networkforgood.org/donate/EXPRESS?CAMPAIGN_ID
+ * - Donorbox: https://donorbox.org/YOUR_CAMPAIGN
+-->

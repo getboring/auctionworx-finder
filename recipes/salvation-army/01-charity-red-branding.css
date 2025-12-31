@@ -1,0 +1,89 @@
+/*
+ * SALVATION ARMY RECIPE: Charity Red Branding
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Replaces default AuctionWorx blue/navy with Salvation Army's
+ * signature red (#9A1919) for charity brand consistency.
+ * This deep red conveys trust, urgency, and nonprofit identity.
+ */
+
+/* Primary brand color - Salvation Army Red */
+:root {
+    --sa-red: #9A1919;
+    --sa-red-hover: #7d1414;
+    --sa-red-light: #b82020;
+}
+
+/* Logo header area */
+.logo-header,
+.header-splash .logo-area {
+    background-color: var(--sa-red) !important;
+}
+
+/* Primary buttons */
+.btn-primary {
+    background-color: var(--sa-red) !important;
+    border-color: var(--sa-red) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--sa-red-hover) !important;
+    border-color: var(--sa-red-hover) !important;
+}
+
+/* Links and accents */
+a {
+    color: var(--sa-red);
+}
+
+a:hover {
+    color: var(--sa-red-hover);
+}
+
+/* Navigation active states */
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+    background-color: var(--sa-red) !important;
+    color: #ffffff !important;
+}
+
+/* Bid buttons */
+.btn-bid,
+.btn-place-bid {
+    background-color: var(--sa-red) !important;
+    border-color: var(--sa-red) !important;
+}
+
+/* Price and winning bid highlights */
+.current-bid,
+.winning-bid {
+    color: var(--sa-red);
+}
+
+/* Progress bars and status indicators */
+.progress-bar {
+    background-color: var(--sa-red);
+}
+
+/* Footer branding */
+footer {
+    background-color: var(--sa-red) !important;
+}
+
+footer a {
+    color: #ffffff;
+}
+
+footer a:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/*
+ * USAGE NOTES:
+ * - Works best with white/light header theme
+ * - Ensure logo has good contrast on red backgrounds
+ * - Consider adding white text for elements on red backgrounds
+ */

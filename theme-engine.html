@@ -1,0 +1,2517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWX Theme Engine</title>
+    <!-- Bootstrap 3 for preview rendering -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --te-bg-primary: #0f0f0f;
+            --te-bg-secondary: #1a1a1a;
+            --te-bg-tertiary: #151515;
+            --te-accent: #4ade80;
+            --te-accent-hover: #22c55e;
+            --te-border: #333;
+            --te-text-primary: #e0e0e0;
+            --te-text-secondary: #888;
+            --te-danger: #ef4444;
+            --te-warning: #f59e0b;
+            --sidebar-width: 320px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--te-bg-primary);
+            color: var(--te-text-primary);
+            line-height: 1.5;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .te-app { display: flex; flex-direction: column; height: 100vh; }
+
+        /* Header */
+        .te-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            height: 56px;
+            background: var(--te-bg-secondary);
+            border-bottom: 1px solid var(--te-border);
+            flex-shrink: 0;
+        }
+
+        .te-header-left { display: flex; align-items: center; gap: 16px; }
+
+        .te-header-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .te-header-title span { color: var(--te-accent); }
+
+        .te-header-right { display: flex; align-items: center; gap: 12px; }
+
+        .te-back-link {
+            color: var(--te-text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .te-back-link:hover { color: var(--te-accent); }
+
+        /* Main Layout */
+        .te-main { display: flex; flex: 1; overflow: hidden; }
+
+        .te-sidebar {
+            width: var(--sidebar-width);
+            background: var(--te-bg-secondary);
+            border-right: 1px solid var(--te-border);
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .te-preview {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--te-bg-tertiary);
+            overflow: hidden;
+        }
+
+        .te-preview-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            background: var(--te-bg-secondary);
+            border-bottom: 1px solid var(--te-border);
+        }
+
+        .te-preview-content {
+            flex: 1;
+            overflow: auto;
+            padding: 20px;
+        }
+
+        .te-preview-frame {
+            background: #fff;
+            border-radius: 8px;
+            min-height: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            transition: max-width 0.3s ease;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .te-preview-frame.desktop { max-width: 100%; }
+        .te-preview-frame.tablet { max-width: 768px; }
+        .te-preview-frame.mobile { max-width: 375px; }
+
+        /* Output Panel */
+        .te-output {
+            background: var(--te-bg-secondary);
+            border-top: 1px solid var(--te-border);
+        }
+
+        .te-output-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            cursor: pointer;
+        }
+
+        .te-output-header:hover { background: var(--te-bg-tertiary); }
+
+        .te-output-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .te-output-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .te-output-content.open { max-height: 250px; overflow: auto; }
+
+        .te-output-code {
+            padding: 16px 20px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.8rem;
+            color: var(--te-text-secondary);
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        /* Syntax Highlighting */
+        .hl-comment { color: #6a9955; font-style: italic; }
+        .hl-selector { color: #d7ba7d; }
+        .hl-property { color: #9cdcfe; }
+        .hl-value { color: #ce9178; }
+        .hl-important { color: #ff6b6b; font-weight: bold; }
+        .hl-variable { color: #4fc3f7; }
+        .hl-number { color: #b5cea8; }
+        .hl-unit { color: #b5cea8; opacity: 0.7; }
+        .hl-color { color: #dcdcaa; }
+
+        /* Contrast Badges */
+        .contrast-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: help;
+        }
+        .contrast-pass { background: rgba(39, 174, 96, 0.2); color: #27ae60; }
+        .contrast-warn { background: rgba(243, 156, 18, 0.2); color: #f39c12; }
+        .contrast-fail { background: rgba(231, 76, 60, 0.2); color: #e74c3c; }
+
+        /* Contrast Section */
+        .te-contrast-section {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--te-border);
+        }
+        .te-contrast-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--te-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        .te-contrast-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+        }
+        .te-contrast-label { font-size: 0.8rem; color: var(--te-text); }
+        .te-contrast-preview {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Palette Generator */
+        .te-palette-preview {
+            display: flex;
+            gap: 8px;
+            margin: 16px 0;
+            flex-wrap: wrap;
+        }
+        .te-palette-swatch {
+            flex: 1;
+            min-width: 50px;
+            height: 60px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 6px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.15s;
+        }
+        .te-palette-swatch:hover { transform: scale(1.05); }
+        .te-palette-hex {
+            font-size: 0.6rem;
+            font-weight: 600;
+            background: rgba(0,0,0,0.4);
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .te-palette-label {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            font-size: 0.55rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            padding: 1px 4px;
+            border-radius: 2px;
+        }
+        .te-select {
+            width: 100%;
+            padding: 8px 12px;
+            background: var(--te-bg-tertiary);
+            border: 1px solid var(--te-border);
+            border-radius: 6px;
+            color: var(--te-text);
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .te-select:focus { border-color: var(--te-accent); outline: none; }
+        .te-btn-full { width: 100%; margin-top: 8px; }
+
+        /* Accordion Panels */
+        .te-panel { border-bottom: 1px solid var(--te-border); }
+
+        .te-panel-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .te-panel-header:hover { background: var(--te-bg-tertiary); }
+
+        .te-panel.open .te-panel-header {
+            background: var(--te-bg-tertiary);
+            border-left: 3px solid var(--te-accent);
+            padding-left: 13px;
+        }
+
+        .te-panel-icon { font-size: 1rem; width: 24px; text-align: center; }
+
+        .te-panel-title {
+            flex: 1;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .te-panel-arrow {
+            color: var(--te-text-secondary);
+            font-size: 0.7rem;
+            transition: transform 0.2s;
+        }
+
+        .te-panel-status {
+            margin-left: auto;
+            margin-right: 8px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+        .te-panel-status.pass { background: rgba(39, 174, 96, 0.2); color: #27ae60; }
+        .te-panel-status.warn { background: rgba(243, 156, 18, 0.2); color: #f39c12; }
+
+        .te-panel.open .te-panel-arrow { -webkit-transform: rotate(180deg); -ms-transform: rotate(180deg); transform: rotate(180deg); }
+        .te-panel-arrow.rotated { -webkit-transform: rotate(180deg); -ms-transform: rotate(180deg); transform: rotate(180deg); }
+
+        .te-panel-content {
+            display: none;
+            padding: 16px;
+            background: var(--te-bg-primary);
+        }
+
+        .te-panel.open .te-panel-content { display: block; }
+
+        /* Form Controls */
+        .te-group { margin-bottom: 16px; }
+        .te-group:last-child { margin-bottom: 0; }
+
+        .te-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--te-text-secondary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .te-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        /* Color Input */
+        .te-color {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--te-bg-secondary);
+            border: 1px solid var(--te-border);
+            border-radius: 6px;
+            padding: 6px 10px;
+        }
+
+        .te-color:focus-within {
+            border-color: var(--te-accent);
+            box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.15);
+        }
+
+        .te-color input[type="color"] {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: none;
+        }
+
+        .te-color input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        .te-color input[type="color"]::-webkit-color-swatch { border: 1px solid var(--te-border); border-radius: 4px; }
+
+        .te-color input[type="text"] {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--te-text-primary);
+            font-size: 0.8rem;
+            font-family: monospace;
+            outline: none;
+            min-width: 0;
+        }
+
+        /* Range Input */
+        .te-range-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+
+        .te-range-value {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--te-accent);
+            background: var(--te-bg-secondary);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .te-range {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: var(--te-bg-secondary);
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .te-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--te-accent);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.15s;
+        }
+
+        .te-range::-webkit-slider-thumb:hover { -webkit-transform: scale(1.15); transform: scale(1.15); }
+
+        /* Firefox range slider */
+        .te-range::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: var(--te-accent);
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+        }
+        .te-range::-moz-range-thumb:hover { transform: scale(1.15); }
+        .te-range::-moz-range-track {
+            background: var(--te-bg-secondary);
+            border-radius: 3px;
+            height: 6px;
+        }
+
+        /* Toggle */
+        .te-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .te-toggle-track {
+            position: relative;
+            width: 40px;
+            height: 22px;
+            background: var(--te-bg-secondary);
+            border: 1px solid var(--te-border);
+            border-radius: 11px;
+            transition: all 0.2s;
+        }
+
+        .te-toggle-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: var(--te-text-secondary);
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        .te-toggle input { display: none; }
+
+        .te-toggle input:checked + .te-toggle-track {
+            background: var(--te-accent);
+            border-color: var(--te-accent);
+        }
+
+        .te-toggle input:checked + .te-toggle-track .te-toggle-thumb {
+            -webkit-transform: translateX(18px);
+            -ms-transform: translateX(18px);
+            transform: translateX(18px);
+            background: #fff;
+        }
+
+        .te-toggle-label { font-size: 0.8rem; }
+
+        /* Select */
+        .te-select { position: relative; }
+
+        .te-select select {
+            width: 100%;
+            padding: 10px 36px 10px 12px;
+            background: var(--te-bg-secondary);
+            border: 1px solid var(--te-border);
+            border-radius: 6px;
+            color: var(--te-text-primary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            outline: none;
+            appearance: none;
+        }
+
+        .te-select select:focus { border-color: var(--te-accent); }
+
+        .te-select::after {
+            content: "▾";
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--te-text-secondary);
+            pointer-events: none;
+        }
+
+        /* Button Group */
+        .te-btn-group {
+            display: flex;
+            background: var(--te-bg-secondary);
+            border: 1px solid var(--te-border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .te-btn-group button {
+            flex: 1;
+            padding: 8px 12px;
+            background: none;
+            border: none;
+            border-right: 1px solid var(--te-border);
+            color: var(--te-text-secondary);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .te-btn-group button:last-child { border-right: none; }
+        .te-btn-group button:hover { background: var(--te-bg-tertiary); color: var(--te-text-primary); }
+        .te-btn-group button.active { background: var(--te-accent); color: #0f0f0f; }
+
+        /* Buttons */
+        .te-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .te-btn-primary { background: var(--te-accent); color: #0f0f0f; }
+        .te-btn-primary:hover { background: var(--te-accent-hover); }
+
+        .te-btn-secondary { background: var(--te-bg-tertiary); border-color: var(--te-border); color: var(--te-text-primary); }
+        .te-btn-secondary:hover { background: var(--te-bg-secondary); }
+
+        .te-btn-ghost { background: none; color: var(--te-text-secondary); }
+        .te-btn-ghost:hover { background: var(--te-bg-tertiary); color: var(--te-text-primary); }
+
+        /* Device Toggle */
+        .te-device-toggle { display: flex; gap: 4px; }
+
+        .te-device-btn {
+            padding: 6px 10px;
+            background: none;
+            border: 1px solid var(--te-border);
+            border-radius: 4px;
+            color: var(--te-text-secondary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .te-device-btn.active { background: var(--te-accent); border-color: var(--te-accent); color: #0f0f0f; }
+        .te-device-btn:hover:not(.active) { border-color: var(--te-text-secondary); }
+
+        /* Preset Menu */
+        .te-preset-dropdown { position: relative; }
+
+        .te-preset-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 4px;
+            min-width: 220px;
+            background: var(--te-bg-secondary);
+            border: 1px solid var(--te-border);
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+        }
+
+        .te-preset-menu.open { display: block; }
+
+        .te-preset-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .te-preset-item:hover { background: var(--te-bg-tertiary); }
+
+        .te-preset-swatch { display: flex; gap: 2px; }
+        .te-preset-swatch span { width: 12px; height: 12px; border-radius: 2px; }
+
+        .te-preset-name { font-size: 0.8rem; }
+        .te-preset-desc { font-size: 0.7rem; color: var(--te-text-secondary); }
+
+        /* Divider */
+        .te-divider { height: 1px; background: var(--te-border); margin: 16px 0; }
+
+        /* Section Title */
+        .te-section { font-size: 0.7rem; font-weight: 600; color: var(--te-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin: 20px 0 12px; }
+        .te-section:first-child { margin-top: 0; }
+
+        /* Toast */
+        .te-toast {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            padding: 12px 20px;
+            background: var(--te-bg-secondary);
+            border: 1px solid var(--te-border);
+            border-radius: 8px;
+            color: var(--te-text-primary);
+            font-size: 0.875rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            -webkit-transform: translateY(20px);
+            -ms-transform: translateY(20px);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 2000;
+        }
+
+        .te-toast.show { -webkit-transform: translateY(0); -ms-transform: translateY(0); transform: translateY(0); opacity: 1; }
+        .te-toast.success { border-left: 3px solid var(--te-accent); }
+        .te-toast.error { border-left: 3px solid var(--te-danger); }
+
+        /* Shortcuts Modal */
+        .te-shortcuts-modal { position: fixed; inset: 0; z-index: 3000; display: flex; align-items: center; justify-content: center; }
+        .te-shortcuts-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.7); }
+        .te-shortcuts-content {
+            position: relative;
+            background: var(--te-bg-secondary);
+            border: 1px solid var(--te-border);
+            border-radius: 12px;
+            padding: 24px 32px;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .te-shortcuts-content h3 { margin: 0 0 16px; font-size: 1rem; font-weight: 600; }
+        .te-shortcuts-content table { width: 100%; margin-bottom: 20px; }
+        .te-shortcuts-content td { padding: 8px 0; font-size: 0.85rem; }
+        .te-shortcuts-content td:first-child { color: var(--te-text-secondary); white-space: nowrap; }
+        .te-shortcuts-content td:last-child { text-align: right; }
+        .te-shortcuts-content kbd {
+            display: inline-block;
+            padding: 3px 8px;
+            background: var(--te-bg-tertiary);
+            border: 1px solid var(--te-border);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+        }
+        .te-shortcuts-content button { width: 100%; }
+
+        /* Search Input */
+        .te-search {
+            position: relative;
+            padding: 12px;
+            border-bottom: 1px solid var(--te-border);
+        }
+        .te-search input {
+            width: 100%;
+            padding: 10px 32px 10px 36px;
+            background: var(--te-bg-tertiary);
+            border: 1px solid var(--te-border);
+            border-radius: 6px;
+            color: var(--te-text);
+            font-size: 0.85rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .te-search input:focus {
+            border-color: var(--te-accent);
+            box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2);
+        }
+        .te-search input::placeholder { color: var(--te-text-secondary); }
+        .te-search-icon {
+            position: absolute;
+            left: 22px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+        .te-search-clear {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            padding: 0;
+            background: var(--te-bg-secondary);
+            border: 1px solid var(--te-border);
+            border-radius: 50%;
+            color: var(--te-text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: none;
+            line-height: 1;
+        }
+        .te-search-clear:hover { color: var(--te-text); background: var(--te-border); }
+
+        /* Import label styling */
+        .te-import-label { cursor: pointer; }
+        .te-import-label:hover { color: var(--te-accent); }
+
+        /* Mode Toggle */
+        .te-mode-toggle {
+            display: flex;
+            background: var(--te-bg-tertiary);
+            border: 1px solid var(--te-border);
+            border-radius: 6px;
+            padding: 2px;
+        }
+
+        .te-mode-btn {
+            padding: 6px 12px;
+            background: none;
+            border: none;
+            border-radius: 4px;
+            color: var(--te-text-secondary);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .te-mode-btn.active { background: var(--te-bg-secondary); color: var(--te-text-primary); }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--te-bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--te-border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--te-text-secondary); }
+
+        /* AWX Preview Styles */
+        .awx-preview { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; color: #333; background: #f5f5f5; }
+
+        .awx-header { background: #151C3D; color: #fff; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+        .awx-logo { font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .awx-logo-icon { width: 32px; height: 32px; background: #3498db; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+        .awx-nav { display: flex; align-items: center; gap: 24px; }
+        .awx-nav-link { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.875rem; font-weight: 500; padding: 8px 0; border-bottom: 2px solid transparent; }
+        .awx-nav-link:hover, .awx-nav-link.active { color: #fff; border-bottom-color: #3498db; }
+        .awx-search { display: flex; align-items: center; background: rgba(255,255,255,0.1); border-radius: 20px; padding: 6px 14px; gap: 8px; }
+        .awx-search input { background: none; border: none; color: #fff; font-size: 0.8rem; outline: none; width: 150px; }
+        .awx-search input::placeholder { color: rgba(255,255,255,0.5); }
+
+        .awx-main { padding: 24px; }
+        .awx-page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+        .awx-page-title { font-size: 1.5rem; font-weight: 600; color: #2c3e50; }
+
+        .awx-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+        .awx-card { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.15s, box-shadow 0.15s; }
+        .awx-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+        .awx-card-image { position: relative; height: 140px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 2rem; }
+        .awx-card-image.c1 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .awx-card-image.c2 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .awx-card-image.c3 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .awx-card-image.c4 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .awx-card-image.c5 { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
+
+        .awx-badge { position: absolute; top: 8px; left: 8px; padding: 4px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; }
+        .awx-badge-hot { background: #e74c3c; color: #fff; }
+        .awx-badge-new { background: #27ae60; color: #fff; }
+        .awx-badge-ending { background: #f39c12; color: #fff; }
+
+        .awx-card-body { padding: 14px; }
+        .awx-card-title { font-size: 0.875rem; font-weight: 600; color: #2c3e50; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .awx-card-meta { font-size: 0.7rem; color: #888; margin-bottom: 8px; }
+        .awx-card-price { font-size: 1.125rem; font-weight: 700; color: #2c3e50; margin-bottom: 4px; }
+        .awx-card-timer { font-size: 0.7rem; color: #e74c3c; margin-bottom: 10px; }
+        .awx-card-actions { display: flex; gap: 8px; }
+
+        .awx-btn { flex: 1; padding: 8px 12px; border: none; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+        .awx-btn-primary { background: #3498db; color: #fff; }
+        .awx-btn-secondary { background: #ecf0f1; color: #2c3e50; }
+
+        .awx-footer { background: #2c3e50; color: rgba(255,255,255,0.7); padding: 30px 24px 20px; margin-top: 30px; }
+        .awx-footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 20px; }
+        .awx-footer-title { font-size: 0.8rem; font-weight: 600; color: #fff; margin-bottom: 12px; text-transform: uppercase; }
+        .awx-footer-links { list-style: none; }
+        .awx-footer-links li { margin-bottom: 8px; }
+        .awx-footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.75rem; }
+        .awx-footer-links a:hover { color: #fff; }
+        .awx-footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px; font-size: 0.7rem; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="te-app">
+        <header class="te-header">
+            <div class="te-header-left">
+                <a href="index.html" class="te-back-link">← Back to Dashboard</a>
+                <h1 class="te-header-title"><span>AWX</span> Theme Engine</h1>
+            </div>
+            <div class="te-header-right">
+                <button class="te-btn te-btn-ghost" id="undoBtn" title="Undo (Cmd+Z)" disabled>↶</button>
+                <button class="te-btn te-btn-ghost" id="redoBtn" title="Redo (Cmd+Shift+Z)" disabled>↷</button>
+                <div class="te-mode-toggle">
+                    <button class="te-mode-btn active" data-mode="safe">Safe</button>
+                    <button class="te-mode-btn" data-mode="modern">Modern</button>
+                    <button class="te-mode-btn" data-mode="aggressive">Aggressive</button>
+                </div>
+                <div class="te-preset-dropdown">
+                    <button class="te-btn te-btn-secondary" id="presetBtn">Presets ▾</button>
+                    <div class="te-preset-menu" id="presetMenu"></div>
+                </div>
+                <button class="te-btn te-btn-ghost" id="resetBtn">Reset</button>
+                <button class="te-btn te-btn-primary" id="copyBtn" title="Copy CSS (Cmd+S)">Copy CSS</button>
+                <button class="te-btn te-btn-secondary" id="downloadBtn" title="Download (Cmd+D)">Download</button>
+                <button class="te-btn te-btn-ghost" id="exportJsonBtn" title="Export theme as JSON">Export JSON</button>
+                <label class="te-btn te-btn-ghost te-import-label" title="Import theme from JSON">
+                    Import
+                    <input type="file" id="importJsonInput" accept=".json" hidden>
+                </label>
+                <button class="te-btn te-btn-ghost" id="helpBtn" title="Keyboard shortcuts (?)">?</button>
+            </div>
+        </header>
+
+        <main class="te-main">
+            <aside class="te-sidebar" id="sidebar"></aside>
+
+            <section class="te-preview">
+                <div class="te-preview-toolbar">
+                    <div class="te-device-toggle">
+                        <button class="te-device-btn active" data-size="desktop">Desktop</button>
+                        <button class="te-device-btn" data-size="tablet">Tablet</button>
+                        <button class="te-device-btn" data-size="mobile">Mobile</button>
+                    </div>
+                    <span style="color: var(--te-text-secondary); font-size: 0.8rem;">Live Preview</span>
+                </div>
+                <div class="te-preview-content">
+                    <div class="te-preview-frame desktop" id="previewFrame">
+                        <style id="previewStyles"></style>
+                        <div class="awx-preview">
+                            <!-- Header with proper Bootstrap 3 navbar structure -->
+                            <header class="header-splash">
+                                <nav class="navbar navbar-default" style="margin-bottom: 0; border-radius: 0;">
+                                    <div class="container-fluid">
+                                        <div class="navbar-header">
+                                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav">
+                                                <span class="sr-only">Toggle navigation</span>
+                                                <span class="icon-bar"></span>
+                                                <span class="icon-bar"></span>
+                                                <span class="icon-bar"></span>
+                                            </button>
+                                            <a class="navbar-brand" href="#">
+                                                <span style="display: inline-block; width: 28px; height: 28px; background: #3498db; border-radius: 4px; text-align: center; line-height: 28px; margin-right: 8px; color: #fff; font-weight: bold;">A</span>
+                                                YourSite
+                                            </a>
+                                        </div>
+                                        <div class="collapse navbar-collapse" id="main-nav">
+                                            <ul class="nav navbar-nav">
+                                                <li class="active"><a href="#">Browse</a></li>
+                                                <li class="dropdown">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categories <span class="caret"></span></a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="#">Electronics</a></li>
+                                                        <li><a href="#">Collectibles</a></li>
+                                                        <li><a href="#">Vehicles</a></li>
+                                                        <li class="divider"></li>
+                                                        <li><a href="#">View All Categories</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="#">Sell</a></li>
+                                                <li><a href="#">My Auctions</a></li>
+                                            </ul>
+                                            <form class="navbar-form navbar-right" role="search">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="Search auctions...">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-default" type="submit">Search</button>
+                                                    </span>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </nav>
+                            </header>
+
+                            <!-- Main Content -->
+                            <div class="container" style="padding-top: 24px; padding-bottom: 24px;">
+                                <!-- Page Header -->
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h1 class="page-header" style="margin-top: 0;">Featured Auctions</h1>
+                                    </div>
+                                </div>
+
+                                <!-- Alert -->
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="alert alert-info">
+                                            <strong>Welcome!</strong> Check out our featured auctions below. New items added daily.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Gallery Grid -->
+                                <div class="row gallery-row">
+                                    <div class="col-xs-12 col-sm-6 col-md-4">
+                                        <div class="thumbnail gallery-item">
+                                            <div style="height: 140px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 2rem; position: relative;">
+                                                <span class="listing-badge label label-danger" style="position: absolute; top: 8px; left: 8px;">Hot</span>
+                                                <span>📦</span>
+                                            </div>
+                                            <div class="caption">
+                                                <h4 class="galleryTitle">Vintage Camera Collection</h4>
+                                                <p class="text-muted" style="font-size: 12px; margin-bottom: 8px;">12 bids - PhotoPro</p>
+                                                <p class="galleryPrice" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 4px;">$450.00</p>
+                                                <p class="galleryTime--active" style="font-size: 12px; color: #e74c3c; margin-bottom: 12px;">2h 15m remaining</p>
+                                                <div class="btn-group btn-group-justified" role="group">
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-primary">Bid Now</button>
+                                                    </div>
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-default">Watch</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-4">
+                                        <div class="thumbnail gallery-item">
+                                            <div style="height: 140px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 2rem; position: relative;">
+                                                <span class="listing-badge label label-success" style="position: absolute; top: 8px; left: 8px;">New</span>
+                                                <span>🎸</span>
+                                            </div>
+                                            <div class="caption">
+                                                <h4 class="galleryTitle">Gibson Les Paul 1959</h4>
+                                                <p class="text-muted" style="font-size: 12px; margin-bottom: 8px;">8 bids - MusicMaster</p>
+                                                <p class="galleryPrice" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 4px;">$2,850.00</p>
+                                                <p class="galleryTime--active" style="font-size: 12px; color: #e74c3c; margin-bottom: 12px;">1d 4h remaining</p>
+                                                <div class="btn-group btn-group-justified" role="group">
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-primary">Bid Now</button>
+                                                    </div>
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-default">Watch</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-4">
+                                        <div class="thumbnail gallery-item">
+                                            <div style="height: 140px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 2rem; position: relative;">
+                                                <span class="listing-badge label label-warning" style="position: absolute; top: 8px; left: 8px;">Ending</span>
+                                                <span>🎨</span>
+                                            </div>
+                                            <div class="caption">
+                                                <h4 class="galleryTitle">Oil Painting - Landscape</h4>
+                                                <p class="text-muted" style="font-size: 12px; margin-bottom: 8px;">23 bids - ArtGallery</p>
+                                                <p class="galleryPrice" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 4px;">$1,200.00</p>
+                                                <p class="galleryTime--active" style="font-size: 12px; color: #e74c3c; font-weight: 600; margin-bottom: 12px;">15m remaining</p>
+                                                <div class="btn-group btn-group-justified" role="group">
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-primary">Bid Now</button>
+                                                    </div>
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-default">Watch</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-4">
+                                        <div class="thumbnail gallery-item">
+                                            <div style="height: 140px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 2rem; position: relative;">
+                                                <span>⌚</span>
+                                            </div>
+                                            <div class="caption">
+                                                <h4 class="galleryTitle">Rolex Submariner 2020</h4>
+                                                <p class="text-muted" style="font-size: 12px; margin-bottom: 8px;">45 bids - LuxWatch</p>
+                                                <p class="galleryPrice" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 4px;">$12,500.00</p>
+                                                <p class="galleryTime--active" style="font-size: 12px; color: #e74c3c; margin-bottom: 12px;">3d 8h remaining</p>
+                                                <div class="btn-group btn-group-justified" role="group">
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-primary">Bid Now</button>
+                                                    </div>
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-default">Watch</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-4">
+                                        <div class="thumbnail gallery-item">
+                                            <div style="height: 140px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 2rem; position: relative;">
+                                                <span class="listing-badge label label-danger" style="position: absolute; top: 8px; left: 8px;">Hot</span>
+                                                <span>🚗</span>
+                                            </div>
+                                            <div class="caption">
+                                                <h4 class="galleryTitle">1967 Ford Mustang</h4>
+                                                <p class="text-muted" style="font-size: 12px; margin-bottom: 8px;">67 bids - ClassicCars</p>
+                                                <p class="galleryPrice" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 4px;">$45,000.00</p>
+                                                <p class="galleryTime--active" style="font-size: 12px; color: #e74c3c; margin-bottom: 12px;">5d 12h remaining</p>
+                                                <div class="btn-group btn-group-justified" role="group">
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-primary">Bid Now</button>
+                                                    </div>
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-default">Watch</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-4">
+                                        <div class="thumbnail gallery-item">
+                                            <div style="height: 140px; background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 2rem; position: relative;">
+                                                <span>💎</span>
+                                            </div>
+                                            <div class="caption">
+                                                <h4 class="galleryTitle">Diamond Bracelet 18K</h4>
+                                                <p class="text-muted" style="font-size: 12px; margin-bottom: 8px;">31 bids - JewelBox</p>
+                                                <p class="galleryPrice" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 4px;">$8,750.00</p>
+                                                <p class="galleryTime--active" style="font-size: 12px; color: #e74c3c; margin-bottom: 12px;">6h 30m remaining</p>
+                                                <div class="btn-group btn-group-justified" role="group">
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-primary">Bid Now</button>
+                                                    </div>
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-default">Watch</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Panel Examples -->
+                                <div class="row" style="margin-top: 30px;">
+                                    <div class="col-xs-12 col-md-6">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Quick Bid</h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label for="bidAmount">Your Maximum Bid</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">$</span>
+                                                        <input type="text" class="form-control" id="bidAmount" placeholder="Enter amount">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-primary" type="button">Place Bid</button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="emailNotify">Email for notifications</label>
+                                                    <input type="email" class="form-control" id="emailNotify" placeholder="your@email.com">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-md-6">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Auction Stats</h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <p><strong>Active Auctions:</strong> 1,234</p>
+                                                <p><strong>Total Bids Today:</strong> 5,678</p>
+                                                <p><strong>New Users:</strong> 89</p>
+                                                <button class="btn btn-default btn-block">View All Statistics</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Footer -->
+                            <footer class="footer" style="background: #2c3e50; color: rgba(255,255,255,0.7); padding: 30px 0 20px; margin-top: 0;">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-3">
+                                            <h4 style="color: #fff; font-size: 14px; font-weight: 600; margin-bottom: 15px; text-transform: uppercase;">Marketplace</h4>
+                                            <ul class="list-unstyled" style="font-size: 13px;">
+                                                <li style="margin-bottom: 8px;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none;">Browse</a></li>
+                                                <li style="margin-bottom: 8px;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none;">Categories</a></li>
+                                                <li style="margin-bottom: 8px;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none;">Featured</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3">
+                                            <h4 style="color: #fff; font-size: 14px; font-weight: 600; margin-bottom: 15px; text-transform: uppercase;">Selling</h4>
+                                            <ul class="list-unstyled" style="font-size: 13px;">
+                                                <li style="margin-bottom: 8px;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none;">Start Selling</a></li>
+                                                <li style="margin-bottom: 8px;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none;">Dashboard</a></li>
+                                                <li style="margin-bottom: 8px;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none;">Fees</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3">
+                                            <h4 style="color: #fff; font-size: 14px; font-weight: 600; margin-bottom: 15px; text-transform: uppercase;">Support</h4>
+                                            <ul class="list-unstyled" style="font-size: 13px;">
+                                                <li style="margin-bottom: 8px;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none;">Help Center</a></li>
+                                                <li style="margin-bottom: 8px;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none;">Contact Us</a></li>
+                                                <li style="margin-bottom: 8px;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none;">Safety Tips</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3">
+                                            <h4 style="color: #fff; font-size: 14px; font-weight: 600; margin-bottom: 15px; text-transform: uppercase;">Company</h4>
+                                            <ul class="list-unstyled" style="font-size: 13px;">
+                                                <li style="margin-bottom: 8px;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none;">About Us</a></li>
+                                                <li style="margin-bottom: 8px;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none;">Careers</a></li>
+                                                <li style="margin-bottom: 8px;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none;">Blog</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                                        <div class="col-xs-12 text-center" style="font-size: 12px;">
+                                            &copy; 2024 YourSite. Powered by AuctionWorx.
+                                        </div>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <div class="te-output">
+            <div class="te-output-header" id="outputToggle" tabindex="0" role="button" aria-expanded="false" aria-controls="outputContent">
+                <div class="te-output-title"><span>Generated CSS</span><span style="color:var(--te-text-secondary);font-weight:400;" id="lineCount">— 0 lines</span></div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <button class="te-btn te-btn-ghost" id="copyBtn2">📋 Copy</button>
+                    <span class="te-panel-arrow">▼</span>
+                </div>
+            </div>
+            <div class="te-output-content" id="outputContent">
+                <pre class="te-output-code" id="outputCode"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // ============================================
+    // AUCTIONWORX THEME ENGINE
+    // ============================================
+
+    const ThemeEngine = {
+        storageKey: 'awx-theme-engine-state',
+
+        // Undo/Redo History
+        _history: [],
+        _historyIndex: -1,
+        _maxHistory: 50,
+        _historyPaused: false,
+
+        pushHistory() {
+            if (this._historyPaused) return;
+            // Truncate forward history if we're not at the end
+            this._history = this._history.slice(0, this._historyIndex + 1);
+            this._history.push(this.clone(this.state));
+            if (this._history.length > this._maxHistory) this._history.shift();
+            this._historyIndex = this._history.length - 1;
+            this.updateUndoRedoButtons();
+        },
+
+        undo() {
+            if (this._historyIndex > 0) {
+                this._historyPaused = true;
+                this._historyIndex--;
+                this.state = this.clone(this._history[this._historyIndex]);
+                this.saveState();
+                this.renderPanels();
+                this.syncModeToggle();
+                this.updatePreview();
+                this.updateUndoRedoButtons();
+                this._historyPaused = false;
+                this.toast('Undo');
+            }
+        },
+
+        redo() {
+            if (this._historyIndex < this._history.length - 1) {
+                this._historyPaused = true;
+                this._historyIndex++;
+                this.state = this.clone(this._history[this._historyIndex]);
+                this.saveState();
+                this.renderPanels();
+                this.syncModeToggle();
+                this.updatePreview();
+                this.updateUndoRedoButtons();
+                this._historyPaused = false;
+                this.toast('Redo');
+            }
+        },
+
+        updateUndoRedoButtons() {
+            const undoBtn = document.getElementById('undoBtn');
+            const redoBtn = document.getElementById('redoBtn');
+            if (undoBtn) undoBtn.disabled = this._historyIndex <= 0;
+            if (redoBtn) redoBtn.disabled = this._historyIndex >= this._history.length - 1;
+        },
+
+        // Default state
+        defaults: {
+            mode: 'safe',
+            header: { bg: '#151C3D', text: '#ffffff', sticky: false, border: false, borderColor: '#e0e0e0' },
+            cards: { bg: '#ffffff', radius: 8, shadow: 'subtle', hover: 'lift', gap: 20, aspect: '4:3' },
+            buttons: { primaryBg: '#3498db', primaryText: '#ffffff', primaryHover: '#2980b9', secondaryBg: '#ecf0f1', secondaryText: '#2c3e50', radius: 6 },
+            typography: { font: 'system', headingColor: '#2c3e50', bodyColor: '#333333', linkColor: '#3498db' },
+            colors: { primary: '#3498db', secondary: '#2c3e50', success: '#27ae60', danger: '#e74c3c', warning: '#f39c12', bodyBg: '#f5f5f5' },
+            badges: { radius: 4, hotBg: '#e74c3c', newBg: '#27ae60', endingBg: '#f39c12' },
+            forms: { radius: 4, border: '#dddddd', focus: '#3498db', ring: true },
+            navigation: { linkColor: '#cccccc', hoverColor: '#ffffff', indicator: '#3498db', dropdownBg: '#ffffff' },
+            footer: { bg: '#2c3e50', text: '#aaaaaa', linkColor: '#888888', linkHover: '#ffffff' },
+            bs3: { fixPanels: true, fixButtons: true, fixForms: true, modernDropdowns: true },
+            panels: { bg: '#ffffff', headingBg: '#f5f5f5', headingText: '#333333', borderColor: '#dddddd' },
+            tables: { headerBg: '#f5f5f5', headerText: '#333333', borderColor: '#dddddd', stripedRowBg: '#f9f9f9', hoverRowBg: '#f5f5f5' },
+            alerts: { radius: 4, successBg: '#dff0d8', infoBg: '#d9edf7', warningBg: '#fcf8e3', dangerBg: '#f2dede' }
+        },
+
+        state: null,
+
+        // Presets
+        presets: {
+            default: { name: 'Default AWX', desc: 'Stock navy theme', swatch: ['#151C3D', '#3498db', '#ffffff'] },
+            municibid: { name: 'MuniciBid', desc: 'Government - White', swatch: ['#ffffff', '#0077cc', '#FFD43B'],
+                header: { bg: '#ffffff', text: '#333333', sticky: true }, buttons: { primaryBg: '#0077cc' }, colors: { primary: '#0077cc' } },
+            magnolia: { name: 'Magnolia Pearl', desc: 'Fashion - Boho', swatch: ['#fbf7f3', '#e838bf', '#594E4B'],
+                header: { bg: '#fbf7f3', text: '#594E4B' }, buttons: { primaryBg: '#e838bf' }, colors: { primary: '#e838bf', bodyBg: '#fbf7f3' } },
+            salvation: { name: 'Salvation Army', desc: 'Charity - Red', swatch: ['#ffffff', '#9A1919', '#f5f5f5'],
+                header: { bg: '#ffffff', text: '#9A1919', border: true, borderColor: '#9A1919' }, buttons: { primaryBg: '#9A1919', primaryHover: '#7a1414' }, colors: { primary: '#9A1919' } },
+            countryclub: { name: 'Country Club', desc: 'Livestock - Black', swatch: ['#000000', '#18801f', '#ffffff'],
+                header: { bg: '#000000', text: '#ffffff' }, buttons: { primaryBg: '#000000', primaryHover: '#18801f' }, cards: { radius: 0 }, footer: { bg: '#000000' } },
+            auksjonarius: { name: 'Auksjonarius', desc: 'Nordic - Blue', swatch: ['#21354f', '#ffffff', '#f5f5f5'],
+                header: { bg: '#21354f', text: '#ffffff' }, buttons: { primaryBg: '#21354f' }, colors: { primary: '#21354f' } },
+            parlogram: { name: 'Parlogram', desc: 'Vinyl - Light', swatch: ['#ffffff', '#333333', '#f5f5f5'],
+                header: { bg: '#ffffff', text: '#333333', border: true }, colors: { primary: '#333333' } },
+            nmestate: { name: 'NM Estate', desc: 'Southwest', swatch: ['#FDF8F3', '#C75B39', '#40A4A4'],
+                header: { bg: '#FDF8F3', text: '#333333' }, buttons: { primaryBg: '#C75B39', primaryHover: '#a64a2e' }, colors: { primary: '#C75B39', secondary: '#40A4A4', bodyBg: '#FDF8F3' } }
+        },
+
+        // Panel definitions
+        panels: [
+            { id: 'header', icon: '🎯', title: 'Header', controls: [
+                { type: 'color', label: 'Background', path: 'header.bg' },
+                { type: 'color', label: 'Text Color', path: 'header.text' },
+                { type: 'toggle', label: 'Sticky Header', path: 'header.sticky' },
+                { type: 'toggle', label: 'Bottom Border', path: 'header.border' },
+                { type: 'color', label: 'Border Color', path: 'header.borderColor' }
+            ]},
+            { id: 'cards', icon: '🃏', title: 'Cards', controls: [
+                { type: 'color', label: 'Background', path: 'cards.bg' },
+                { type: 'range', label: 'Border Radius', path: 'cards.radius', min: 0, max: 24, unit: 'px' },
+                { type: 'select', label: 'Shadow', path: 'cards.shadow', options: ['none', 'subtle', 'medium', 'strong'] },
+                { type: 'select', label: 'Hover Effect', path: 'cards.hover', options: ['none', 'lift', 'glow', 'border'] },
+                { type: 'range', label: 'Grid Gap', path: 'cards.gap', min: 8, max: 48, unit: 'px' }
+            ]},
+            { id: 'buttons', icon: '🔘', title: 'Buttons', controls: [
+                { type: 'color', label: 'Primary BG', path: 'buttons.primaryBg' },
+                { type: 'color', label: 'Primary Text', path: 'buttons.primaryText' },
+                { type: 'color', label: 'Primary Hover', path: 'buttons.primaryHover' },
+                { type: 'color', label: 'Secondary BG', path: 'buttons.secondaryBg' },
+                { type: 'color', label: 'Secondary Text', path: 'buttons.secondaryText' },
+                { type: 'range', label: 'Border Radius', path: 'buttons.radius', min: 0, max: 24, unit: 'px' }
+            ]},
+            { id: 'typography', icon: '🔤', title: 'Typography', controls: [
+                { type: 'select', label: 'Font Family', path: 'typography.font', options: ['system', 'Inter', 'Roboto', 'Open Sans', 'Playfair Display'] },
+                { type: 'color', label: 'Heading Color', path: 'typography.headingColor' },
+                { type: 'color', label: 'Body Color', path: 'typography.bodyColor' },
+                { type: 'color', label: 'Link Color', path: 'typography.linkColor' }
+            ]},
+            { id: 'colors', icon: '🎨', title: 'Colors', controls: [
+                { type: 'color', label: 'Primary', path: 'colors.primary' },
+                { type: 'color', label: 'Secondary', path: 'colors.secondary' },
+                { type: 'color', label: 'Success', path: 'colors.success' },
+                { type: 'color', label: 'Danger', path: 'colors.danger' },
+                { type: 'color', label: 'Warning', path: 'colors.warning' },
+                { type: 'color', label: 'Page Background', path: 'colors.bodyBg' }
+            ]},
+            { id: 'badges', icon: '🏷️', title: 'Badges', controls: [
+                { type: 'range', label: 'Border Radius', path: 'badges.radius', min: 0, max: 16, unit: 'px' },
+                { type: 'color', label: 'Hot Badge', path: 'badges.hotBg' },
+                { type: 'color', label: 'New Badge', path: 'badges.newBg' },
+                { type: 'color', label: 'Ending Badge', path: 'badges.endingBg' }
+            ]},
+            { id: 'forms', icon: '📝', title: 'Forms', controls: [
+                { type: 'range', label: 'Border Radius', path: 'forms.radius', min: 0, max: 12, unit: 'px' },
+                { type: 'color', label: 'Border Color', path: 'forms.border' },
+                { type: 'color', label: 'Focus Color', path: 'forms.focus' },
+                { type: 'toggle', label: 'Focus Ring', path: 'forms.ring' }
+            ]},
+            { id: 'navigation', icon: '🧭', title: 'Navigation', controls: [
+                { type: 'color', label: 'Link Color', path: 'navigation.linkColor' },
+                { type: 'color', label: 'Hover Color', path: 'navigation.hoverColor' },
+                { type: 'color', label: 'Active Indicator', path: 'navigation.indicator' },
+                { type: 'color', label: 'Dropdown BG', path: 'navigation.dropdownBg' }
+            ]},
+            { id: 'footer', icon: '📌', title: 'Footer', controls: [
+                { type: 'color', label: 'Background', path: 'footer.bg' },
+                { type: 'color', label: 'Text Color', path: 'footer.text' },
+                { type: 'color', label: 'Link Color', path: 'footer.linkColor' },
+                { type: 'color', label: 'Link Hover', path: 'footer.linkHover' }
+            ]},
+            { id: 'bs3', icon: '⚡', title: 'BS3 Hacks', controls: [
+                { type: 'toggle', label: 'Fix Panel Borders', path: 'bs3.fixPanels' },
+                { type: 'toggle', label: 'Override btn-default', path: 'bs3.fixButtons' },
+                { type: 'toggle', label: 'Fix Form Focus', path: 'bs3.fixForms' },
+                { type: 'toggle', label: 'Modern Dropdowns', path: 'bs3.modernDropdowns' }
+            ]},
+            { id: 'panels', icon: '📦', title: 'Panels', controls: [
+                { type: 'color', label: 'Panel Background', path: 'panels.bg' },
+                { type: 'color', label: 'Panel Heading BG', path: 'panels.headingBg' },
+                { type: 'color', label: 'Panel Heading Text', path: 'panels.headingText' },
+                { type: 'color', label: 'Panel Border Color', path: 'panels.borderColor' }
+            ]},
+            { id: 'tables', icon: '📊', title: 'Tables', controls: [
+                { type: 'color', label: 'Header Background', path: 'tables.headerBg' },
+                { type: 'color', label: 'Header Text Color', path: 'tables.headerText' },
+                { type: 'color', label: 'Border Color', path: 'tables.borderColor' },
+                { type: 'color', label: 'Striped Row BG', path: 'tables.stripedRowBg' },
+                { type: 'color', label: 'Hover Row BG', path: 'tables.hoverRowBg' }
+            ]},
+            { id: 'alerts', icon: '🔔', title: 'Alerts', controls: [
+                { type: 'range', label: 'Border Radius', path: 'alerts.radius', min: 0, max: 16, unit: 'px' },
+                { type: 'color', label: 'Success BG', path: 'alerts.successBg' },
+                { type: 'color', label: 'Info BG', path: 'alerts.infoBg' },
+                { type: 'color', label: 'Warning BG', path: 'alerts.warningBg' },
+                { type: 'color', label: 'Danger BG', path: 'alerts.dangerBg' }
+            ]}
+        ],
+
+        // Initialize
+        init() {
+            this.loadState();
+            // Initialize history with current state
+            this._history = [this.clone(this.state)];
+            this._historyIndex = 0;
+            // Create debounced preview update for smoother range slider performance
+            this._debouncedPreviewUpdate = this.debounce(() => this.updatePreview(), 30);
+            // Create debounced history push (avoid pushing on every tiny change)
+            this._debouncedHistoryPush = this.debounce(() => this.pushHistory(), 500);
+            this.renderPanels();
+            this.renderPresets();
+            this.bindEvents();
+            this.bindKeyboardShortcuts();
+            this.syncModeToggle();
+            this.updatePreview();
+            this.updateUndoRedoButtons();
+        },
+
+        // Sync mode toggle buttons with saved state
+        syncModeToggle() {
+            document.querySelectorAll('.te-mode-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === this.state.mode);
+            });
+        },
+
+        // State management
+        loadState() {
+            try {
+                const saved = localStorage.getItem(this.storageKey);
+                this.state = saved ? this.merge(this.clone(this.defaults), JSON.parse(saved)) : this.clone(this.defaults);
+            } catch (e) {
+                this.state = this.clone(this.defaults);
+            }
+        },
+
+        saveState() {
+            try {
+                localStorage.setItem(this.storageKey, JSON.stringify(this.state));
+            } catch (e) {
+                // Only show toast once per session to avoid spam
+                if (!this._storageWarningShown) {
+                    this._storageWarningShown = true;
+                    this.toast('Settings may not be saved. Storage unavailable.', 'error');
+                }
+            }
+        },
+
+        getPath(path) {
+            return path.split('.').reduce((o, k) => o?.[k], this.state);
+        },
+
+        setPath(path, value, immediate = false) {
+            const keys = path.split('.');
+            let obj = this.state;
+            for (let i = 0; i < keys.length - 1; i++) {
+                if (!obj[keys[i]]) obj[keys[i]] = {};
+                obj = obj[keys[i]];
+            }
+            obj[keys[keys.length - 1]] = value;
+            this.saveState();
+            // Push to history (debounced to avoid too many snapshots)
+            if (this._debouncedHistoryPush) {
+                this._debouncedHistoryPush();
+            }
+            // Use debounced update for smoother performance (range sliders)
+            // Use immediate for discrete changes (color pickers, toggles)
+            if (immediate || !this._debouncedPreviewUpdate) {
+                this.updatePreview();
+            } else {
+                this._debouncedPreviewUpdate();
+            }
+        },
+
+        clone(obj) { return JSON.parse(JSON.stringify(obj)); },
+
+        // Debounce utility for performance
+        debounce(fn, delay) {
+            let timeout;
+            return (...args) => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => fn.apply(this, args), delay);
+            };
+        },
+
+        merge(target, source) {
+            for (const key of Object.keys(source)) {
+                if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+                    if (!target[key]) target[key] = {};
+                    this.merge(target[key], source[key]);
+                } else {
+                    target[key] = source[key];
+                }
+            }
+            return target;
+        },
+
+        // Render panels
+        renderPanels() {
+            const sidebar = document.getElementById('sidebar');
+            const searchHtml = `
+                <div class="te-search">
+                    <input type="text" id="controlSearch" placeholder="Search controls..." autocomplete="off">
+                    <span class="te-search-icon">🔍</span>
+                    <button class="te-search-clear" id="searchClear" type="button">×</button>
+                </div>`;
+            const panelsHtml = this.panels.map((p, i) => `
+                <div class="te-panel${i === 0 ? ' open' : ''}" data-panel="${p.id}">
+                    <div class="te-panel-header">
+                        <span class="te-panel-icon">${p.icon}</span>
+                        <span class="te-panel-title">${p.title}</span>
+                        <span class="te-panel-arrow">▼</span>
+                    </div>
+                    <div class="te-panel-content">${this.renderControls(p.controls)}</div>
+                </div>
+            `).join('');
+            sidebar.innerHTML = searchHtml + panelsHtml + this.renderContrastPanel() + this.renderPalettePanel();
+            this.bindSearchEvents();
+            this.bindPaletteEvents();
+        },
+
+        // Render contrast checker panel
+        renderContrastPanel() {
+            const s = this.state;
+            const pairs = [
+                { label: 'Header Text/Background', fg: s.header.text, bg: s.header.bg },
+                { label: 'Button Primary', fg: s.buttons.primaryText, bg: s.buttons.primaryBg },
+                { label: 'Button Secondary', fg: s.buttons.secondaryText, bg: s.buttons.secondaryBg },
+                { label: 'Body Text/Background', fg: s.typography.bodyColor, bg: s.colors.bodyBg },
+                { label: 'Headings/Background', fg: s.typography.headingColor, bg: s.colors.bodyBg },
+                { label: 'Footer Text/Background', fg: s.footer.text, bg: s.footer.bg },
+                { label: 'Navigation Links/Header', fg: s.navigation.linkColor, bg: s.header.bg }
+            ];
+
+            let failCount = 0;
+            const items = pairs.map(p => {
+                const result = this.checkContrast(p.fg, p.bg);
+                if (!result.aa) failCount++;
+                return `<div class="te-contrast-item">
+                    <span class="te-contrast-label">${p.label}</span>
+                    <span class="te-contrast-preview" style="background: ${p.bg}; color: ${p.fg};">
+                        Aa ${this.contrastIndicator(p.fg, p.bg)}
+                    </span>
+                </div>`;
+            }).join('');
+
+            const statusIcon = failCount === 0 ? '✓' : `⚠️ ${failCount}`;
+            return `
+                <div class="te-panel" data-panel="contrast">
+                    <div class="te-panel-header">
+                        <span class="te-panel-icon">♿</span>
+                        <span class="te-panel-title">Contrast Checker</span>
+                        <span class="te-panel-status ${failCount === 0 ? 'pass' : 'warn'}">${statusIcon}</span>
+                        <span class="te-panel-arrow">▼</span>
+                    </div>
+                    <div class="te-panel-content">
+                        <div class="te-contrast-section" style="border-top: none; margin-top: 0; padding-top: 0;">
+                            <div class="te-contrast-title">WCAG 2.1 AA Compliance</div>
+                            ${items}
+                        </div>
+                    </div>
+                </div>`;
+        },
+
+        // Render palette generator panel
+        renderPalettePanel() {
+            const baseColor = this.state.colors.primary;
+            return `
+                <div class="te-panel" data-panel="palette">
+                    <div class="te-panel-header">
+                        <span class="te-panel-icon">🎨</span>
+                        <span class="te-panel-title">Palette Generator</span>
+                        <span class="te-panel-arrow">▼</span>
+                    </div>
+                    <div class="te-panel-content">
+                        <div class="te-group">
+                            <label class="te-label">Base Color</label>
+                            <div class="te-color">
+                                <input type="color" value="${baseColor}" id="paletteBase">
+                                <input type="text" value="${baseColor}" id="paletteBaseHex" data-hex>
+                            </div>
+                        </div>
+                        <div class="te-group">
+                            <label class="te-label">Harmony Type</label>
+                            <select class="te-select" id="paletteHarmony">
+                                <option value="complementary">Complementary</option>
+                                <option value="analogous">Analogous</option>
+                                <option value="triadic">Triadic</option>
+                                <option value="splitComplementary">Split Complementary</option>
+                                <option value="tetradic">Tetradic</option>
+                                <option value="monochromatic">Monochromatic</option>
+                            </select>
+                        </div>
+                        <div class="te-palette-preview" id="palettePreview"></div>
+                        <button class="te-btn te-btn-secondary te-btn-full" id="applyPalette">Apply to Theme</button>
+                    </div>
+                </div>`;
+        },
+
+        bindPaletteEvents() {
+            const baseInput = document.getElementById('paletteBase');
+            const baseHex = document.getElementById('paletteBaseHex');
+            const harmonySelect = document.getElementById('paletteHarmony');
+            const preview = document.getElementById('palettePreview');
+            const applyBtn = document.getElementById('applyPalette');
+
+            if (!baseInput || !preview) return;
+
+            const updatePalette = () => {
+                const colors = this.generatePalette(baseInput.value, harmonySelect.value);
+                preview.innerHTML = colors.map((c, i) => `
+                    <div class="te-palette-swatch" style="background: ${c};" title="${c}">
+                        <span class="te-palette-hex">${c}</span>
+                        ${i === 0 ? '<span class="te-palette-label">Base</span>' : ''}
+                    </div>
+                `).join('');
+            };
+
+            baseInput.addEventListener('input', (e) => {
+                baseHex.value = e.target.value;
+                updatePalette();
+            });
+
+            baseHex.addEventListener('input', (e) => {
+                if (/^#[0-9A-Fa-f]{6}$/.test(e.target.value)) {
+                    baseInput.value = e.target.value;
+                    updatePalette();
+                }
+            });
+
+            harmonySelect.addEventListener('change', updatePalette);
+
+            applyBtn.addEventListener('click', () => {
+                const colors = this.generatePalette(baseInput.value, harmonySelect.value);
+                this.pushHistory();
+                this.state.colors.primary = colors[0];
+                if (colors[1]) this.state.colors.secondary = colors[1];
+                if (colors[2]) this.state.buttons.primaryBg = colors[2];
+                if (colors[3]) this.state.colors.success = colors[3];
+                this.saveState();
+                this.renderPanels();
+                this.syncModeToggle();
+                this.updatePreview();
+                this.toast('Palette applied!');
+            });
+
+            updatePalette();
+        },
+
+        // Search filter functionality
+        bindSearchEvents() {
+            const searchInput = document.getElementById('controlSearch');
+            const clearBtn = document.getElementById('searchClear');
+            if (!searchInput) return;
+
+            searchInput.addEventListener('input', (e) => {
+                this.filterControls(e.target.value);
+                clearBtn.style.display = e.target.value ? 'block' : 'none';
+            });
+
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                this.filterControls('');
+                clearBtn.style.display = 'none';
+                searchInput.focus();
+            });
+        },
+
+        filterControls(query) {
+            const q = query.toLowerCase().trim();
+            document.querySelectorAll('.te-panel').forEach(panel => {
+                const title = panel.querySelector('.te-panel-title')?.textContent.toLowerCase() || '';
+                const groups = panel.querySelectorAll('.te-group');
+                let hasMatch = !q || title.includes(q);
+
+                groups.forEach(group => {
+                    const label = group.querySelector('.te-label, .te-toggle-label');
+                    const labelText = label?.textContent.toLowerCase() || '';
+                    const matches = !q || labelText.includes(q) || title.includes(q);
+                    group.style.display = matches ? '' : 'none';
+                    if (matches && q) hasMatch = true;
+                });
+
+                panel.style.display = hasMatch || !q ? '' : 'none';
+                if (hasMatch && q) panel.classList.add('open');
+            });
+        },
+
+        renderControls(controls) {
+            return controls.map(c => {
+                const val = this.getPath(c.path);
+                switch (c.type) {
+                    case 'color':
+                        return `<div class="te-group"><label class="te-label">${c.label}</label>
+                            <div class="te-color"><input type="color" value="${val}" data-path="${c.path}">
+                            <input type="text" value="${val}" data-path="${c.path}" data-hex></div></div>`;
+                    case 'range':
+                        return `<div class="te-group"><label class="te-label">${c.label}</label>
+                            <div class="te-range-header"><span class="te-range-value">${val}${c.unit || ''}</span></div>
+                            <input type="range" class="te-range" min="${c.min}" max="${c.max}" value="${val}" data-path="${c.path}" data-unit="${c.unit || ''}"></div>`;
+                    case 'toggle':
+                        return `<div class="te-group"><label class="te-toggle">
+                            <input type="checkbox" ${val ? 'checked' : ''} data-path="${c.path}">
+                            <div class="te-toggle-track"><div class="te-toggle-thumb"></div></div>
+                            <span class="te-toggle-label">${c.label}</span></label></div>`;
+                    case 'select':
+                        return `<div class="te-group"><label class="te-label">${c.label}</label>
+                            <div class="te-select"><select data-path="${c.path}">${c.options.map(o =>
+                                `<option value="${o}" ${val === o ? 'selected' : ''}>${o}</option>`).join('')}</select></div></div>`;
+                    default: return '';
+                }
+            }).join('');
+        },
+
+        renderPresets() {
+            const menu = document.getElementById('presetMenu');
+            menu.innerHTML = Object.entries(this.presets).map(([id, p]) => `
+                <div class="te-preset-item" data-preset="${id}">
+                    <div class="te-preset-swatch">${p.swatch.map(c => `<span style="background:${c}"></span>`).join('')}</div>
+                    <div><div class="te-preset-name">${p.name}</div><div class="te-preset-desc">${p.desc}</div></div>
+                </div>
+            `).join('');
+        },
+
+        // Keyboard shortcuts
+        bindKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                // Skip if user is typing in an input
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+                    if (e.key === 'Escape') {
+                        e.target.blur();
+                    }
+                    return;
+                }
+
+                const isMac = navigator.platform.includes('Mac');
+                const mod = isMac ? e.metaKey : e.ctrlKey;
+
+                // Cmd/Ctrl+S = Copy CSS
+                if (mod && e.key === 's') {
+                    e.preventDefault();
+                    this.copyCSS();
+                }
+                // Cmd/Ctrl+Z = Undo
+                if (mod && e.key === 'z' && !e.shiftKey) {
+                    e.preventDefault();
+                    this.undo();
+                }
+                // Cmd/Ctrl+Shift+Z = Redo
+                if (mod && e.shiftKey && (e.key === 'z' || e.key === 'Z')) {
+                    e.preventDefault();
+                    this.redo();
+                }
+                // Cmd/Ctrl+D = Download
+                if (mod && e.key === 'd') {
+                    e.preventDefault();
+                    this.downloadCSS();
+                }
+                // Escape = Close menus
+                if (e.key === 'Escape') {
+                    document.getElementById('presetMenu')?.classList.remove('open');
+                    this._shortcutsModalOpen && this.hideShortcutsModal();
+                }
+                // ? = Show shortcuts help
+                if (e.key === '?' && !mod) {
+                    this.showShortcutsModal();
+                }
+                // Number keys 1-9 to switch panels (when not holding modifier)
+                if (!mod && !e.shiftKey && e.key >= '1' && e.key <= '9') {
+                    const panels = document.querySelectorAll('.te-panel');
+                    const idx = parseInt(e.key) - 1;
+                    if (panels[idx]) {
+                        panels.forEach(p => p.classList.remove('open'));
+                        panels[idx].classList.add('open');
+                        panels[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                }
+            });
+        },
+
+        _shortcutsModalOpen: false,
+
+        showShortcutsModal() {
+            if (this._shortcutsModalOpen) return;
+            this._shortcutsModalOpen = true;
+            const isMac = navigator.platform.includes('Mac');
+            const mod = isMac ? '⌘' : 'Ctrl';
+            const modal = document.createElement('div');
+            modal.className = 'te-shortcuts-modal';
+            modal.innerHTML = `
+                <div class="te-shortcuts-overlay" onclick="ThemeEngine.hideShortcutsModal()"></div>
+                <div class="te-shortcuts-content">
+                    <h3>Keyboard Shortcuts</h3>
+                    <table>
+                        <tr><td><kbd>${mod}</kbd> + <kbd>S</kbd></td><td>Copy CSS</td></tr>
+                        <tr><td><kbd>${mod}</kbd> + <kbd>Z</kbd></td><td>Undo</td></tr>
+                        <tr><td><kbd>${mod}</kbd> + <kbd>⇧</kbd> + <kbd>Z</kbd></td><td>Redo</td></tr>
+                        <tr><td><kbd>${mod}</kbd> + <kbd>D</kbd></td><td>Download CSS</td></tr>
+                        <tr><td><kbd>1</kbd> - <kbd>9</kbd></td><td>Switch panels</td></tr>
+                        <tr><td><kbd>Esc</kbd></td><td>Close menus</td></tr>
+                        <tr><td><kbd>?</kbd></td><td>Show this help</td></tr>
+                    </table>
+                    <button class="te-btn te-btn-primary" onclick="ThemeEngine.hideShortcutsModal()">Got it</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        },
+
+        hideShortcutsModal() {
+            this._shortcutsModalOpen = false;
+            document.querySelector('.te-shortcuts-modal')?.remove();
+        },
+
+        // Event binding
+        bindEvents() {
+            const sidebar = document.getElementById('sidebar');
+            const presetBtn = document.getElementById('presetBtn');
+            const presetMenu = document.getElementById('presetMenu');
+            const outputToggle = document.getElementById('outputToggle');
+            const outputContent = document.getElementById('outputContent');
+
+            // Guard: ensure required elements exist
+            if (!sidebar || !presetBtn || !presetMenu || !outputToggle) {
+                this.toast('Theme Engine failed to load. Please refresh.', 'error');
+                return;
+            }
+
+            // Panel accordion
+            sidebar.addEventListener('click', e => {
+                const header = e.target.closest('.te-panel-header');
+                if (header) {
+                    const panel = header.closest('.te-panel');
+                    document.querySelectorAll('.te-panel').forEach(p => p !== panel && p.classList.remove('open'));
+                    panel.classList.toggle('open');
+                }
+            });
+
+            // Input changes (use both input and change for better checkbox support)
+            sidebar.addEventListener('change', e => {
+                const input = e.target;
+                if (input.type === 'checkbox') {
+                    const path = input.dataset.path;
+                    if (path) {
+                        this.setPath(path, input.checked);
+                    }
+                }
+            });
+
+            sidebar.addEventListener('input', e => {
+                const input = e.target;
+                const path = input.dataset.path;
+                if (!path) return;
+
+                let value = input.type === 'checkbox' ? input.checked : input.value;
+                if (input.type === 'range') value = parseInt(value);
+
+                this.setPath(path, value);
+
+                // Sync color inputs
+                if (input.type === 'color') {
+                    const hex = input.parentElement.querySelector('[data-hex]');
+                    if (hex) hex.value = value;
+                } else if (input.dataset.hex !== undefined) {
+                    const color = input.parentElement.querySelector('[type="color"]');
+                    if (color && /^#[0-9A-Fa-f]{6}$/.test(value)) color.value = value;
+                }
+
+                // Update range value display (use closest to find parent group)
+                if (input.type === 'range') {
+                    const group = input.closest('.te-group');
+                    const display = group?.querySelector('.te-range-value');
+                    if (display) display.textContent = value + (input.dataset.unit || '');
+                }
+            });
+
+            // Mode toggle
+            document.querySelectorAll('.te-mode-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.te-mode-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    this.state.mode = btn.dataset.mode;
+                    this.saveState();
+                    this.updatePreview();
+                });
+            });
+
+            // Device toggle
+            document.querySelectorAll('.te-device-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.te-device-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const frame = document.getElementById('previewFrame');
+                    frame.className = 'te-preview-frame ' + btn.dataset.size;
+                });
+            });
+
+            // Preset menu
+            presetBtn.addEventListener('click', () => {
+                presetMenu.classList.toggle('open');
+            });
+
+            presetMenu.addEventListener('click', e => {
+                const item = e.target.closest('.te-preset-item');
+                if (item) {
+                    this.loadPreset(item.dataset.preset);
+                    presetMenu.classList.remove('open');
+                }
+            });
+
+            document.addEventListener('click', e => {
+                if (!e.target.closest('.te-preset-dropdown')) {
+                    presetMenu.classList.remove('open');
+                }
+            });
+
+            // Output toggle (click and keyboard)
+            const toggleOutput = () => {
+                if (outputContent) outputContent.classList.toggle('open');
+                outputToggle.querySelector('.te-panel-arrow')?.classList.toggle('rotated');
+                const isOpen = outputContent?.classList.contains('open');
+                outputToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            };
+            outputToggle.addEventListener('click', toggleOutput);
+            outputToggle.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleOutput();
+                }
+            });
+
+            // Copy/Download
+            document.getElementById('copyBtn').addEventListener('click', () => this.copyCSS());
+            document.getElementById('copyBtn2').addEventListener('click', () => this.copyCSS());
+            document.getElementById('downloadBtn').addEventListener('click', () => this.downloadCSS());
+            document.getElementById('resetBtn').addEventListener('click', () => {
+                if (confirm('Reset all settings to defaults?')) {
+                    this.state = this.clone(this.defaults);
+                    this.saveState();
+                    this.pushHistory();
+                    this.renderPanels();
+                    this.syncModeToggle();
+                    this.updatePreview();
+                    this.toast('Reset to defaults');
+                }
+            });
+
+            // Undo/Redo buttons
+            document.getElementById('undoBtn')?.addEventListener('click', () => this.undo());
+            document.getElementById('redoBtn')?.addEventListener('click', () => this.redo());
+
+            // Export/Import JSON
+            document.getElementById('exportJsonBtn')?.addEventListener('click', () => this.exportJSON());
+            document.getElementById('importJsonInput')?.addEventListener('change', (e) => {
+                if (e.target.files?.[0]) {
+                    this.importJSON(e.target.files[0]);
+                    e.target.value = ''; // Reset to allow same file again
+                }
+            });
+
+            // Help button (keyboard shortcuts modal)
+            document.getElementById('helpBtn')?.addEventListener('click', () => this.showShortcutsModal());
+        },
+
+        loadPreset(id) {
+            const preset = this.presets[id];
+            if (!preset) return;
+            this.state = this.merge(this.clone(this.defaults), preset);
+            this.saveState();
+            this.pushHistory();
+            this.renderPanels();
+            this.syncModeToggle();
+            this.updatePreview();
+            this.toast(`Loaded "${preset.name}"`);
+        },
+
+        // CSS Generation
+        generateCSS() {
+            const s = this.state;
+            const m = s.mode;
+            const imp = m === 'aggressive' ? ' !important' : '';
+            const gap = s.cards.gap;
+
+            let css = `/*
+ * AuctionWorx Custom Theme
+ * Generated by AWX Theme Engine
+ * Mode: ${m}
+ * Date: ${new Date().toISOString()}
+ *
+ * INSTALLATION:
+ * 1. Go to AuctionWorx Admin > CMS > Content > Header Scripts
+ * 2. Paste this CSS inside a <style> tag
+ */\n\n`;
+
+            // CSS Variables (modern/aggressive only)
+            if (m !== 'safe') {
+                css += `:root {
+    --awx-primary: ${s.colors.primary};
+    --awx-secondary: ${s.colors.secondary};
+    --awx-success: ${s.colors.success};
+    --awx-danger: ${s.colors.danger};
+    --awx-warning: ${s.colors.warning};
+    --awx-body-bg: ${s.colors.bodyBg};
+    --awx-header-bg: ${s.header.bg};
+    --awx-header-text: ${s.header.text};
+    --awx-card-bg: ${s.cards.bg};
+    --awx-card-radius: ${s.cards.radius}px;
+    --awx-btn-radius: ${s.buttons.radius}px;
+}\n\n`;
+            }
+
+            // Header
+            css += `/* Header */
+.header-splash {
+    background-color: ${s.header.bg}${imp};
+}
+.header-splash, .navbar-default {
+    border-bottom: ${s.header.border ? `1px solid ${s.header.borderColor}` : 'none'}${imp};
+}
+${s.header.sticky ? `.header-splash { position: sticky${imp}; top: 0${imp}; z-index: 1000${imp}; }` : ''}
+.navbar-default .navbar-nav > li > a {
+    color: ${s.header.text}${imp};
+}
+.navbar-default .navbar-nav > li > a:hover {
+    color: ${s.navigation.hoverColor}${imp};
+}\n\n`;
+
+            // Cards
+            const shadows = { none: 'none', subtle: '0 2px 8px rgba(0,0,0,0.08)', medium: '0 4px 16px rgba(0,0,0,0.12)', strong: '0 8px 32px rgba(0,0,0,0.16)' };
+            css += `/* Cards */
+.gallery-item, .thumbnail, .listing-card {
+    background: ${s.cards.bg}${imp};
+    border-radius: ${s.cards.radius}px${imp};
+    box-shadow: ${shadows[s.cards.shadow]}${imp};
+    overflow: hidden${imp};
+}
+${s.cards.hover === 'lift' ? `.gallery-item:hover {
+    -webkit-transform: translateY(-4px)${imp};
+    -ms-transform: translateY(-4px)${imp};
+    transform: translateY(-4px)${imp};
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15)${imp};
+}` : ''}
+${s.cards.hover === 'glow' ? `.gallery-item:hover { box-shadow: 0 0 20px ${s.colors.primary}40${imp}; }` : ''}
+${s.cards.hover === 'border' ? `.gallery-item:hover { border-color: ${s.colors.primary}${imp}; }` : ''}
+/* Fallback for older browsers */
+.row.gallery-row {
+    margin-left: -${gap/2}px${imp};
+    margin-right: -${gap/2}px${imp};
+}
+.row.gallery-row > [class*="col-"] {
+    padding-left: ${gap/2}px${imp};
+    padding-right: ${gap/2}px${imp};
+    margin-bottom: ${gap}px${imp};
+}
+/* Modern browsers with CSS Grid support */
+@supports (display: grid) {
+    .row.gallery-row {
+        display: grid${imp};
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))${imp};
+        gap: ${gap}px${imp};
+        margin-left: 0${imp};
+        margin-right: 0${imp};
+    }
+    .row.gallery-row > [class*="col-"] {
+        padding: 0${imp};
+        margin-bottom: 0${imp};
+        width: 100%${imp};
+        max-width: 100%${imp};
+    }
+}\n\n`;
+
+            // Buttons
+            css += `/* Buttons */
+.btn.btn-primary {
+    background-color: ${s.buttons.primaryBg}${imp};
+    background-image: none${imp};
+    border-color: ${s.buttons.primaryBg}${imp};
+    color: ${s.buttons.primaryText}${imp};
+    border-radius: ${s.buttons.radius}px${imp};
+}
+.btn.btn-primary:hover, .btn.btn-primary:focus {
+    background-color: ${s.buttons.primaryHover || this.darken(s.buttons.primaryBg, 10)}${imp};
+    background-image: none${imp};
+    border-color: ${s.buttons.primaryHover || this.darken(s.buttons.primaryBg, 10)}${imp};
+}
+.btn.btn-default {
+    background-color: ${s.buttons.secondaryBg}${imp};
+    background-image: none${imp};
+    border-color: ${s.buttons.secondaryBg}${imp};
+    color: ${s.buttons.secondaryText}${imp};
+    border-radius: ${s.buttons.radius}px${imp};
+}
+.btn.btn-default:hover, .btn.btn-default:focus {
+    background-color: ${this.darken(s.buttons.secondaryBg, 10)}${imp};
+    background-image: none${imp};
+    border-color: ${this.darken(s.buttons.secondaryBg, 10)}${imp};
+}\n\n`;
+
+            // Typography
+            const fonts = { system: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", Inter: "'Inter', sans-serif", Roboto: "'Roboto', sans-serif", 'Open Sans': "'Open Sans', sans-serif", 'Playfair Display': "'Playfair Display', serif" };
+            const safeFont = this.sanitizeFont(s.typography.font);
+            if (safeFont !== 'system') {
+                css += `@import url('https://fonts.googleapis.com/css2?family=${safeFont.replace(' ', '+')}:wght@400;500;600;700&display=swap');\n\n`;
+            }
+            css += `/* Typography */
+body {
+    font-family: ${fonts[safeFont]}${imp};
+    color: ${this.sanitizeColor(s.typography.bodyColor)}${imp};
+    background-color: ${s.colors.bodyBg}${imp};
+}
+h1, h2, h3, h4, h5, h6, .galleryTitle {
+    color: ${s.typography.headingColor}${imp};
+}
+a {
+    color: ${s.typography.linkColor}${imp};
+}\n\n`;
+
+            // Badges
+            css += `/* Badges */
+.listing-badge, .badge, .label {
+    border-radius: ${s.badges.radius}px${imp};
+}\n\n`;
+
+            // Forms
+            css += `/* Forms */
+.form-control {
+    border-radius: ${s.forms.radius}px${imp};
+    border-color: ${s.forms.border}${imp};
+}
+.form-control:focus {
+    border-color: ${s.forms.focus}${imp};
+    ${s.forms.ring ? `box-shadow: 0 0 0 3px ${s.forms.focus}25${imp};` : ''}
+}\n\n`;
+
+            // Navigation
+            css += `/* Navigation */
+.dropdown-menu {
+    background: ${s.navigation.dropdownBg}${imp};
+    border-radius: 8px${imp};
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15)${imp};
+}\n\n`;
+
+            // Footer
+            css += `/* Footer */
+.footer, footer {
+    background-color: ${s.footer.bg}${imp};
+    color: ${s.footer.text}${imp};
+}
+.footer a, footer a {
+    color: ${s.footer.linkColor}${imp};
+}
+.footer a:hover, footer a:hover {
+    color: ${s.footer.linkHover}${imp};
+}\n\n`;
+
+            // BS3 Hacks
+            if (s.bs3.fixPanels || s.bs3.fixButtons || s.bs3.fixForms || s.bs3.modernDropdowns) {
+                css += `/* Bootstrap 3 Fixes */\n`;
+                if (s.bs3.fixPanels) css += `.panel { border-radius: ${s.cards.radius}px${imp}; }\n`;
+                if (s.bs3.fixForms) css += `.form-control:focus { outline: none${imp}; }\n`;
+                if (s.bs3.modernDropdowns) css += `.dropdown-menu { border: 1px solid rgba(0,0,0,0.1)${imp}; }\n`;
+            }
+
+            // AWX-specific classes
+            css += `\n/* AuctionWorx Gallery Classes */
+.galleryTitle {
+    font-size: 0.875rem${imp};
+    font-weight: 600${imp};
+    color: ${s.typography.headingColor}${imp};
+    margin-bottom: 6px${imp};
+    white-space: nowrap${imp};
+    overflow: hidden${imp};
+    text-overflow: ellipsis${imp};
+}
+.galleryPrice {
+    font-size: 1.25rem${imp};
+    font-weight: 700${imp};
+    color: ${s.typography.headingColor}${imp};
+}
+.galleryTime--active {
+    font-size: 0.75rem${imp};
+    color: ${s.colors.danger}${imp};
+}
+.galleryImage {
+    position: relative${imp};
+    overflow: hidden${imp};
+}
+.listing-badge, .sale-badge, .badge-new, .badge-ending {
+    position: absolute${imp};
+    top: 8px${imp};
+    left: 8px${imp};
+    padding: 4px 8px${imp};
+    font-size: 0.65rem${imp};
+    font-weight: 600${imp};
+    text-transform: uppercase${imp};
+    border-radius: ${s.badges.radius}px${imp};
+}
+.label-danger, .badge-hot { background-color: ${s.badges.hotBg}${imp}; }
+.label-success, .badge-new { background-color: ${s.badges.newBg}${imp}; }
+.label-warning, .badge-ending { background-color: ${s.badges.endingBg}${imp}; }\n`;
+
+            // Panels
+            css += `\n/* Panels */
+.panel.panel-default {
+    background-color: ${s.panels.bg}${imp};
+    border-color: ${s.panels.borderColor}${imp};
+}
+.panel.panel-default > .panel-heading {
+    background-color: ${s.panels.headingBg}${imp};
+    background-image: none${imp};
+    color: ${s.panels.headingText}${imp};
+    border-color: ${s.panels.borderColor}${imp};
+}
+.panel-body {
+    background-color: ${s.panels.bg}${imp};
+}\n`;
+
+            // Tables
+            css += `\n/* Tables */
+.table > thead > tr > th {
+    background-color: ${s.tables.headerBg}${imp};
+    color: ${s.tables.headerText}${imp};
+    border-bottom-color: ${s.tables.borderColor}${imp};
+}
+.table > tbody > tr > td {
+    border-top-color: ${s.tables.borderColor}${imp};
+}
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: ${s.tables.stripedRowBg}${imp};
+}
+.table-hover > tbody > tr:hover {
+    background-color: ${s.tables.hoverRowBg}${imp};
+}\n`;
+
+            // Alerts
+            css += `\n/* Alerts */
+.alert {
+    border-radius: ${s.alerts.radius}px${imp};
+}
+.alert-success {
+    background-color: ${s.alerts.successBg}${imp};
+}
+.alert-info {
+    background-color: ${s.alerts.infoBg}${imp};
+}
+.alert-warning {
+    background-color: ${s.alerts.warningBg}${imp};
+}
+.alert-danger {
+    background-color: ${s.alerts.dangerBg}${imp};
+}\n`;
+
+            return css;
+        },
+
+        // Security: Validate and sanitize color values
+        sanitizeColor(color) {
+            if (!color || typeof color !== 'string') return '#000000';
+            // Normalize short hex codes
+            if (/^#[0-9A-Fa-f]{3}$/.test(color)) {
+                color = '#' + color[1] + color[1] + color[2] + color[2] + color[3] + color[3];
+            }
+            // Only allow valid 6-digit hex codes
+            if (/^#[0-9A-Fa-f]{6}$/.test(color)) {
+                return color;
+            }
+            // Invalid color - return safe default
+            return '#000000';
+        },
+
+        // Security: Validate font names against whitelist
+        allowedFonts: ['system', 'Inter', 'Roboto', 'Open Sans', 'Playfair Display'],
+
+        sanitizeFont(font) {
+            return this.allowedFonts.includes(font) ? font : 'system';
+        },
+
+        darken(hex, percent) {
+            hex = this.sanitizeColor(hex);
+            const num = parseInt(hex.slice(1), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = Math.max(0, (num >> 16) - amt);
+            const G = Math.max(0, ((num >> 8) & 0x00FF) - amt);
+            const B = Math.max(0, (num & 0x0000FF) - amt);
+            return `#${(0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1)}`;
+        },
+
+        // WCAG 2.1 Color Contrast Methods
+        hexToRgb(hex) {
+            hex = this.sanitizeColor(hex);
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : { r: 0, g: 0, b: 0 };
+        },
+
+        // Relative luminance per WCAG 2.1
+        getLuminance(hex) {
+            const rgb = this.hexToRgb(hex);
+            const [r, g, b] = [rgb.r, rgb.g, rgb.b].map(v => {
+                v /= 255;
+                return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+            });
+            return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        },
+
+        // Contrast ratio per WCAG 2.1
+        getContrastRatio(hex1, hex2) {
+            const l1 = this.getLuminance(hex1);
+            const l2 = this.getLuminance(hex2);
+            const lighter = Math.max(l1, l2);
+            const darker = Math.min(l1, l2);
+            return (lighter + 0.05) / (darker + 0.05);
+        },
+
+        // Check contrast and return pass/fail status
+        checkContrast(fg, bg) {
+            const ratio = this.getContrastRatio(fg, bg);
+            return {
+                ratio: ratio.toFixed(2),
+                aa: ratio >= 4.5,       // Normal text (14pt or smaller)
+                aaLarge: ratio >= 3,    // Large text (18pt+ or 14pt bold)
+                aaa: ratio >= 7         // Enhanced accessibility
+            };
+        },
+
+        // Format contrast indicator for display
+        contrastIndicator(fg, bg) {
+            const result = this.checkContrast(fg, bg);
+            const icon = result.aa ? '✓' : (result.aaLarge ? '⚠️' : '✗');
+            const cls = result.aa ? 'pass' : (result.aaLarge ? 'warn' : 'fail');
+            return `<span class="contrast-badge contrast-${cls}" title="Contrast: ${result.ratio}:1 | AA: ${result.aa ? 'Pass' : 'Fail'} | AAA: ${result.aaa ? 'Pass' : 'Fail'}">${icon} ${result.ratio}</span>`;
+        },
+
+        // Color Palette Generator - HSL conversion
+        rgbToHsl(r, g, b) {
+            r /= 255; g /= 255; b /= 255;
+            const max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+
+            if (max === min) {
+                h = s = 0;
+            } else {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+                    case g: h = ((b - r) / d + 2) / 6; break;
+                    case b: h = ((r - g) / d + 4) / 6; break;
+                }
+            }
+            return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+        },
+
+        hslToHex(h, s, l) {
+            s /= 100; l /= 100;
+            const c = (1 - Math.abs(2 * l - 1)) * s;
+            const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+            const m = l - c / 2;
+            let r = 0, g = 0, b = 0;
+
+            if (h >= 0 && h < 60) { r = c; g = x; b = 0; }
+            else if (h >= 60 && h < 120) { r = x; g = c; b = 0; }
+            else if (h >= 120 && h < 180) { r = 0; g = c; b = x; }
+            else if (h >= 180 && h < 240) { r = 0; g = x; b = c; }
+            else if (h >= 240 && h < 300) { r = x; g = 0; b = c; }
+            else if (h >= 300 && h < 360) { r = c; g = 0; b = x; }
+
+            r = Math.round((r + m) * 255);
+            g = Math.round((g + m) * 255);
+            b = Math.round((b + m) * 255);
+
+            return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+        },
+
+        hexToHsl(hex) {
+            const rgb = this.hexToRgb(hex);
+            return this.rgbToHsl(rgb.r, rgb.g, rgb.b);
+        },
+
+        // Generate color palette based on harmony type
+        generatePalette(baseHex, harmony = 'complementary') {
+            const hsl = this.hexToHsl(baseHex);
+            const h = hsl.h, s = hsl.s, l = hsl.l;
+
+            const harmonies = {
+                complementary: [
+                    { h: (h + 180) % 360, s, l }
+                ],
+                analogous: [
+                    { h: (h + 30) % 360, s, l },
+                    { h: (h - 30 + 360) % 360, s, l }
+                ],
+                triadic: [
+                    { h: (h + 120) % 360, s, l },
+                    { h: (h + 240) % 360, s, l }
+                ],
+                splitComplementary: [
+                    { h: (h + 150) % 360, s, l },
+                    { h: (h + 210) % 360, s, l }
+                ],
+                tetradic: [
+                    { h: (h + 90) % 360, s, l },
+                    { h: (h + 180) % 360, s, l },
+                    { h: (h + 270) % 360, s, l }
+                ],
+                monochromatic: [
+                    { h, s, l: Math.min(l + 20, 95) },
+                    { h, s, l: Math.max(l - 20, 5) },
+                    { h, s: Math.min(s + 20, 100), l }
+                ]
+            };
+
+            const colors = harmonies[harmony] || harmonies.complementary;
+            return [baseHex, ...colors.map(c => this.hslToHex(c.h, c.s, c.l))];
+        },
+
+        updatePreview() {
+            const css = this.generateCSS();
+            document.getElementById('previewStyles').textContent = css;
+            document.getElementById('outputCode').innerHTML = this.highlightCSS(css);
+            document.getElementById('lineCount').textContent = `— ${css.split('\n').length} lines`;
+        },
+
+        // CSS Syntax Highlighting
+        highlightCSS(css) {
+            if (!css || typeof css !== 'string') return '';
+            // Escape HTML entities first to prevent XSS
+            const escaped = css
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#x27;');
+
+            return escaped
+                // Comments (/* ... */)
+                .replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="hl-comment">$1</span>')
+                // Selectors (before {) - match things like .class, #id, element, [attr]
+                .replace(/^([^{}:;\/]+?)(\s*\{)/gm, '<span class="hl-selector">$1</span>$2')
+                // Properties (word before :)
+                .replace(/(\s+)([\w-]+)(\s*:)/g, '$1<span class="hl-property">$2</span>$3')
+                // Values (after : before ; or })
+                .replace(/:\s*([^;{}]+)(;)/g, ': <span class="hl-value">$1</span>$2')
+                // !important
+                .replace(/(!important)/g, '<span class="hl-important">$1</span>')
+                // CSS Variables
+                .replace(/(--[\w-]+)/g, '<span class="hl-variable">$1</span>')
+                // Numbers with units
+                .replace(/(\d+(?:\.\d+)?)(px|em|rem|%|vh|vw|deg|s|ms)/g, '<span class="hl-number">$1</span><span class="hl-unit">$2</span>')
+                // Hex colors
+                .replace(/(#[0-9A-Fa-f]{3,8})/g, '<span class="hl-color">$1</span>');
+        },
+
+        copyCSS() {
+            const css = this.generateCSS();
+            navigator.clipboard.writeText(css).then(() => this.toast('CSS copied!')).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = css;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                this.toast('CSS copied!');
+            });
+        },
+
+        downloadCSS() {
+            const css = this.generateCSS();
+            const blob = new Blob([css], { type: 'text/css' });
+            const url = URL.createObjectURL(blob);
+            try {
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `auctionworx-theme-${Date.now()}.css`;
+                a.click();
+                this.toast('Downloaded!');
+            } finally {
+                URL.revokeObjectURL(url);
+            }
+        },
+
+        // Export theme as JSON file
+        exportJSON() {
+            const data = {
+                version: '2.0',
+                exportedAt: new Date().toISOString(),
+                generator: 'AuctionWorx Theme Engine',
+                state: this.state
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            try {
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `awx-theme-${Date.now()}.json`;
+                a.click();
+                this.toast('Theme exported!');
+            } finally {
+                URL.revokeObjectURL(url);
+            }
+        },
+
+        // Import theme from JSON file
+        importJSON(file) {
+            // Validate file before reading
+            if (!file || file.size === 0) {
+                this.toast('Invalid file', 'error');
+                return;
+            }
+            if (file.size > 1024 * 1024) { // 1MB limit
+                this.toast('File too large (max 1MB)', 'error');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.state) {
+                        this.pushHistory(); // Save current state first
+                        this.state = this.merge(this.clone(this.defaults), data.state);
+                        this.saveState();
+                        this.renderPanels();
+                        this.syncModeToggle();
+                        this.updatePreview();
+                        this.toast('Theme imported!');
+                    } else {
+                        this.toast('Invalid theme file: missing state', 'error');
+                    }
+                } catch (err) {
+                    this.toast('Invalid theme file', 'error');
+                }
+            };
+            reader.onerror = () => {
+                this.toast('Failed to read file', 'error');
+            };
+            reader.readAsText(file);
+        },
+
+        _activeToasts: new Set(),
+
+        toast(msg, type = 'success') {
+            // Limit to 3 simultaneous toasts to prevent memory issues
+            if (this._activeToasts.size >= 3) return;
+
+            const t = document.createElement('div');
+            t.className = `te-toast ${type}`;
+            t.textContent = msg;
+            document.body.appendChild(t);
+            this._activeToasts.add(t);
+
+            requestAnimationFrame(() => t.classList.add('show'));
+            setTimeout(() => {
+                t.classList.remove('show');
+                setTimeout(() => {
+                    t.remove();
+                    this._activeToasts.delete(t);
+                }, 300);
+            }, 2500);
+        }
+    };
+
+    // Initialize on DOM ready
+    document.addEventListener('DOMContentLoaded', () => ThemeEngine.init());
+    </script>
+</body>
+</html>

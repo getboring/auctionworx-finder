@@ -1,0 +1,211 @@
+/*
+ * SALVATION ARMY RECIPE: Trust Badges & Charity Messaging
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Adds visual trust indicators essential for charity/nonprofit sites.
+ * Includes donation impact messaging, security badges, and
+ * charity verification seals.
+ */
+
+/* Trust badge container */
+.trust-badges {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* Individual badge */
+.trust-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: #555;
+}
+
+.trust-badge-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+}
+
+.trust-badge-text {
+    font-size: 0.75rem;
+    font-weight: 500;
+    max-width: 100px;
+}
+
+/* Charity impact banner */
+.charity-impact {
+    background-color: #9A1919;
+    color: #ffffff;
+    text-align: center;
+    padding: 1rem;
+}
+
+.charity-impact h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+}
+
+.charity-impact p {
+    font-size: 1rem;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* Impact stats row */
+.impact-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    padding: 2rem;
+    background-color: #ffffff;
+}
+
+.impact-stat {
+    text-align: center;
+}
+
+.impact-stat .number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #9A1919;
+}
+
+.impact-stat .label {
+    font-size: 0.875rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Donation CTA button */
+.donate-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #9A1919;
+    color: #ffffff !important;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.donate-cta:hover {
+    background-color: #7d1414;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+.donate-cta svg,
+.donate-cta i {
+    font-size: 1.125rem;
+}
+
+/* Mission statement box */
+.mission-statement {
+    background-color: #fefefe;
+    border-left: 4px solid #9A1919;
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+}
+
+.mission-statement h4 {
+    color: #9A1919;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.mission-statement p {
+    color: #555;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* "Your Purchase Helps" inline message */
+.purchase-impact {
+    background-color: #fff8f8;
+    border: 1px solid #f0d0d0;
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #555;
+}
+
+.purchase-impact strong {
+    color: #9A1919;
+}
+
+/* Footer trust section */
+.footer-trust {
+    text-align: center;
+    padding: 2rem;
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+.footer-trust img {
+    max-height: 60px;
+    margin: 0 1rem;
+    opacity: 0.8;
+    filter: brightness(0) invert(1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .trust-badges {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .impact-stats {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .impact-stat .number {
+        font-size: 2rem;
+    }
+}
+
+/*
+ * USAGE: Add trust badges to your footer or homepage:
+ *
+ * <div class="trust-badges">
+ *     <div class="trust-badge">
+ *         <img src="/Content/Images/badges/secure.svg" class="trust-badge-icon" alt="Secure">
+ *         <span class="trust-badge-text">Secure Checkout</span>
+ *     </div>
+ *     <div class="trust-badge">
+ *         <img src="/Content/Images/badges/501c3.svg" class="trust-badge-icon" alt="501(c)(3)">
+ *         <span class="trust-badge-text">501(c)(3) Nonprofit</span>
+ *     </div>
+ *     <div class="trust-badge">
+ *         <img src="/Content/Images/badges/charity-nav.svg" class="trust-badge-icon" alt="Charity Navigator">
+ *         <span class="trust-badge-text">Charity Navigator Rated</span>
+ *     </div>
+ * </div>
+ *
+ * <div class="charity-impact">
+ *     <h3>Your Purchase Makes a Difference</h3>
+ *     <p>Every item sold helps fund community programs and job training.</p>
+ * </div>
+ */

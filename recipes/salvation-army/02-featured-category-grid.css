@@ -1,0 +1,138 @@
+/*
+ * SALVATION ARMY RECIPE: Featured Category Grid
+ * Difficulty: Moderate
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Creates a 9-tile category grid with background images,
+ * perfect for thrift store categories like Clothing, Furniture,
+ * Electronics, etc. Uses CSS Grid for responsive layout.
+ */
+
+/* Category grid container */
+.featured-categories,
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 2rem 0;
+}
+
+/* Individual category tiles */
+.category-tile {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-tile:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark overlay for text readability */
+.category-tile::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.7) 0%,
+        rgba(0, 0, 0, 0.2) 50%,
+        transparent 100%
+    );
+    z-index: 1;
+}
+
+/* Category title */
+.category-tile .category-name {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    z-index: 2;
+    color: #ffffff;
+    font-size: 1.125rem;
+    font-weight: 600;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Item count badge */
+.category-tile .item-count {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Hover effect on overlay */
+.category-tile:hover::before {
+    background: linear-gradient(
+        to top,
+        rgba(154, 25, 25, 0.8) 0%,
+        rgba(154, 25, 25, 0.3) 50%,
+        transparent 100%
+    );
+}
+
+/* Responsive: 2 columns on tablet */
+@media (max-width: 991px) {
+    .featured-categories,
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Responsive: 1 column on mobile */
+@media (max-width: 575px) {
+    .featured-categories,
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .category-tile {
+        aspect-ratio: 16 / 9;
+    }
+}
+
+/*
+ * USAGE: Add this HTML structure to your homepage:
+ *
+ * <div class="featured-categories">
+ *     <a href="/Browse?category=clothing" class="category-tile"
+ *        style="background-image: url('/Content/Images/categories/clothing.jpg');">
+ *         <span class="item-count">245 items</span>
+ *         <span class="category-name">Clothing</span>
+ *     </a>
+ *     <a href="/Browse?category=furniture" class="category-tile"
+ *        style="background-image: url('/Content/Images/categories/furniture.jpg');">
+ *         <span class="item-count">89 items</span>
+ *         <span class="category-name">Furniture</span>
+ *     </a>
+ *     <!-- Add more tiles... -->
+ * </div>
+ *
+ * SUGGESTED THRIFT CATEGORIES:
+ * - Clothing & Accessories
+ * - Furniture
+ * - Electronics
+ * - Home Decor
+ * - Books & Media
+ * - Toys & Games
+ * - Kitchen & Dining
+ * - Sports & Outdoors
+ * - Jewelry & Watches
+ */

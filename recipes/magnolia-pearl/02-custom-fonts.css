@@ -1,0 +1,131 @@
+/*
+ * MAGNOLIA PEARL RECIPE: Custom Typography
+ * Difficulty: Moderate
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Magnolia Pearl uses a distinctive typography system with multiple
+ * decorative fonts. This recipe shows how to achieve a similar
+ * vintage/boho aesthetic using Google Fonts alternatives.
+ *
+ * Original Fonts (proprietary):
+ * - 'Ozzy' - Display headings
+ * - 'pearl' - Logo/decorative
+ * - '1786_glc_fourniernormal' - Body text (18th century style)
+ * - 'againtsfreshregular' - Handwritten accents
+ * - 'Nav-Bold' - Navigation
+ *
+ * Google Font Alternatives:
+ * - Cormorant Garamond - Elegant serif (body text)
+ * - Playfair Display - Display serif (headings)
+ * - Caveat - Handwritten style (accents)
+ */
+
+/* ===== Google Fonts Import ===== */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@400;700;900&family=Caveat:wght@400;700&display=swap');
+
+/* ===== Base Typography ===== */
+body {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #594E4B;
+}
+
+/* ===== Headings ===== */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    color: #594E4B;
+    line-height: 1.3;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 900;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+/* ===== Navigation ===== */
+.navbar-nav > li > a {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* ===== Logo/Brand Text ===== */
+.navbar-brand,
+.site-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 900;
+    font-size: 1.75rem;
+}
+
+/* ===== Handwritten Accent Text ===== */
+/* Use this class for special callouts, quotes, or promotional text */
+.handwritten,
+.accent-text {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* ===== Button Text ===== */
+.btn {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+}
+
+/* ===== Product Titles ===== */
+.galleryTitle,
+.listing-title,
+.product-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.125rem;
+}
+
+/* ===== Price Display ===== */
+.galleryPrice,
+.current-bid,
+.listing-price {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+/* ===== Captions and Small Text ===== */
+.caption,
+.small,
+small,
+.text-muted {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.875rem;
+}
+
+/* ===== Responsive Typography ===== */
+@media (max-width: 767px) {
+    h1 {
+        font-size: 1.875rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .handwritten,
+    .accent-text {
+        font-size: 1.25rem;
+    }
+}

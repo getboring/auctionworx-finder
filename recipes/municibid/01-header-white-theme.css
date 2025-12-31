@@ -1,0 +1,58 @@
+/*
+ * MUNICIBID RECIPE: White Header Theme
+ * Difficulty: ⭐ Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * This replaces the default navy (#151C3D) header with a clean white theme.
+ */
+
+/* White header background */
+.header-splash {
+    background-color: #ffffff !important;
+}
+
+/* Dark text for white background */
+.navbar-default .navbar-nav > li > a {
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+    color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Logo area adjustments */
+.logo img {
+    /* Ensure logo is visible on white background */
+    /* You may need a dark version of your logo */
+}
+
+/* Navigation toggle (hamburger) for mobile */
+.navbar-default .navbar-toggle {
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Search bar styling for white theme */
+.nav-secondary {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.nav-secondary .form-control {
+    background-color: #ffffff;
+    border-color: #ced4da;
+    color: #333;
+}
+
+/* Dropdown menus */
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.9);
+}

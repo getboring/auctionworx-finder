@@ -1,0 +1,159 @@
+/*
+ * NM ESTATE AUCTIONS RECIPE: Southwest Color Theme
+ * Difficulty: Easy
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Transforms the default AuctionWorx colors into a warm Southwest palette.
+ * Inspired by New Mexico desert landscapes - terracotta, sage, sand, and turquoise.
+ */
+
+/* ================================================
+   CSS Custom Properties (Color Variables)
+   ================================================ */
+:root {
+    /* Primary Southwest Palette */
+    --nm-terracotta: #C75B39;        /* Primary accent - clay/adobe red */
+    --nm-terracotta-dark: #A14830;   /* Darker terracotta for hover states */
+    --nm-terracotta-light: #E8A090;  /* Light terracotta for backgrounds */
+
+    /* Earth Tones */
+    --nm-sand: #E6D5C3;              /* Warm sand/beige background */
+    --nm-sand-light: #F5EDE4;        /* Light sand for cards */
+    --nm-adobe: #D4A574;             /* Adobe/tan color */
+    --nm-brown: #6B4423;             /* Rich brown for text accents */
+
+    /* Accent Colors */
+    --nm-turquoise: #40A4A4;         /* Southwest turquoise accent */
+    --nm-turquoise-dark: #2D7A7A;    /* Darker turquoise */
+    --nm-sage: #8B9A7C;              /* Desert sage green */
+    --nm-copper: #B87333;            /* Copper metallic accent */
+
+    /* Neutrals */
+    --nm-cream: #FDF8F3;             /* Warm white/cream */
+    --nm-charcoal: #3D3D3D;          /* Warm charcoal for text */
+    --nm-warm-gray: #7A7267;         /* Warm gray for secondary text */
+}
+
+/* ================================================
+   Header Styling
+   ================================================ */
+.header-splash {
+    background-color: var(--nm-cream) !important;
+    border-bottom: 3px solid var(--nm-terracotta);
+}
+
+/* Navigation links */
+.navbar-default .navbar-nav > li > a {
+    color: var(--nm-charcoal);
+    font-weight: 500;
+}
+
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+    color: var(--nm-terracotta);
+    background-color: rgba(199, 91, 57, 0.08);
+}
+
+/* Active navigation state */
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover {
+    color: var(--nm-terracotta);
+    background-color: transparent;
+    border-bottom: 2px solid var(--nm-terracotta);
+}
+
+/* ================================================
+   Primary Buttons
+   ================================================ */
+.btn-primary,
+.awe-btn-primary {
+    background-color: var(--nm-terracotta) !important;
+    border-color: var(--nm-terracotta) !important;
+    color: #ffffff !important;
+}
+
+.btn-primary:hover,
+.awe-btn-primary:hover {
+    background-color: var(--nm-terracotta-dark) !important;
+    border-color: var(--nm-terracotta-dark) !important;
+}
+
+/* Secondary/Outline buttons */
+.btn-default,
+.btn-outline {
+    border-color: var(--nm-terracotta);
+    color: var(--nm-terracotta);
+}
+
+.btn-default:hover,
+.btn-outline:hover {
+    background-color: var(--nm-terracotta);
+    color: #ffffff;
+}
+
+/* ================================================
+   Page Background
+   ================================================ */
+body {
+    background-color: var(--nm-sand-light);
+}
+
+.main-content,
+.container-fluid {
+    background-color: var(--nm-sand-light);
+}
+
+/* ================================================
+   Links
+   ================================================ */
+a {
+    color: var(--nm-terracotta);
+}
+
+a:hover {
+    color: var(--nm-terracotta-dark);
+}
+
+/* ================================================
+   Footer
+   ================================================ */
+.footer,
+footer {
+    background-color: var(--nm-brown) !important;
+    color: var(--nm-sand-light);
+}
+
+.footer a,
+footer a {
+    color: var(--nm-adobe);
+}
+
+.footer a:hover,
+footer a:hover {
+    color: var(--nm-cream);
+}
+
+/* ================================================
+   Accent Elements
+   ================================================ */
+
+/* Badges and labels */
+.badge,
+.label-primary {
+    background-color: var(--nm-turquoise);
+}
+
+/* Price highlights */
+.current-bid,
+.price-highlight {
+    color: var(--nm-terracotta);
+    font-weight: 700;
+}
+
+/* Selection/focus states */
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--nm-turquoise);
+    box-shadow: 0 0 0 3px rgba(64, 164, 164, 0.15);
+}

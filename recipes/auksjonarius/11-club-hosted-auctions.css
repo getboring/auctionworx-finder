@@ -1,0 +1,199 @@
+/*
+ * AUKSJONARIUS RECIPE: Club-Hosted Auctions Display
+ * Difficulty: Moderate
+ * Apply via: CMS > Content > Header Scripts
+ *
+ * Styling for philatelic club/society-hosted auctions.
+ * Displays club branding, member benefits, and multi-seller events.
+ */
+
+/* Club auction header */
+.club-auction-header,
+.seller-profile-header {
+    background: linear-gradient(135deg, #21354f 0%, #2c4666 100%);
+    color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+/* Club logo */
+.club-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    background: #ffffff;
+    object-fit: contain;
+    padding: 8px;
+}
+
+/* Club name */
+.club-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+/* Club description/tagline */
+.club-tagline {
+    font-size: 0.9375rem;
+    opacity: 0.9;
+}
+
+/* Member badge */
+.member-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.member-badge::before {
+    content: "\2713";
+    font-weight: bold;
+}
+
+/* Club auction stats */
+.club-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.club-stat {
+    text-align: center;
+}
+
+.club-stat-value {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.club-stat-label {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Multi-seller indicator */
+.multi-seller-auction {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+}
+
+.multi-seller-auction strong {
+    color: #856404;
+}
+
+/* Individual seller within club auction */
+.seller-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.seller-section:last-child {
+    border-bottom: none;
+}
+
+.seller-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+}
+
+.seller-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e8e8e8;
+}
+
+.seller-name {
+    font-weight: 600;
+    color: #21354f;
+}
+
+.seller-items-count {
+    font-size: 0.8125rem;
+    color: #666;
+}
+
+/* Club event banner */
+.club-event-banner {
+    position: relative;
+    background: #21354f;
+    color: #ffffff;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.club-event-banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 150px;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 50%, rgba(255,255,255,0.05) 50%);
+}
+
+.event-dates {
+    font-size: 0.875rem;
+    opacity: 0.9;
+}
+
+.event-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+}
+
+/* Join club CTA */
+.join-club-cta {
+    background: #f5f7fa;
+    border: 1px solid #e0e5eb;
+    border-radius: 8px;
+    padding: 1.25rem;
+    text-align: center;
+}
+
+.join-club-cta h4 {
+    margin-bottom: 0.5rem;
+    color: #21354f;
+}
+
+.join-club-cta p {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.join-club-cta .btn {
+    background: #21354f;
+    color: #ffffff;
+    border: none;
+    padding: 0.625rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.join-club-cta .btn:hover {
+    background: #2c4666;
+}
